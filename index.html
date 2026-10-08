@@ -730,7 +730,7 @@ function sectionResume(text){
   for(const ln of lines){
     const c = cleanHead(ln.text);
     let matched=null;
-    if(c.length>0 && c.length<=40 && c.split(' ').length<=5 && !/[.,]$/.test(c)){
+    if(c.length>0 && !/[.,]$/.test(c)){
       for(const [re,type] of RES_HEADS){ if(re.test(c)){ matched=type; break; } }
     }
     if(matched){ cur=matched; ln.heading=true; heads.push(c); if(matched==='evidence') hasEvidence=true; if(matched==='list') hasSkills=true; }
@@ -749,7 +749,7 @@ const NEU_HEAD=/\b(responsibilities|what you('|’)ll do|about (us|the role|the 
 function sectionJD(text){
   const lines=splitLines(text); let cur='neutral';
   for(const ln of lines){
-    const t=ln.text.trim(); const short=t.length<=60 && t.split(/\s+/).length<=7 && !/^[-•*·–—]|^\d+[.)]/.test(t);
+    const t=ln.text.trim(); const short=!/^[-•*·–—]|^\d+[.)]/.test(t);
     if(short && NICE_RE.test(t)){ cur='nice'; ln.type='nice'; continue; }
     if(short && REQ_HEAD.test(t)){ cur='req'; ln.type='req'; continue; }
     if(short && NEU_HEAD.test(t)){ cur='neutral'; ln.type='neutral'; continue; }
