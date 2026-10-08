@@ -1,0 +1,1858 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Skill Proof — Resume Matcher</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2213%22%20fill%3D%22%23C8F53B%22%2F%3E%3Cpath%20d%3D%22M14%2011h14l7%207v18H14z%22%20fill%3D%22none%22%20stroke%3D%22%23141414%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M28%2011v8h7M19%2027l4%204%208-9%22%20fill%3D%22none%22%20stroke%3D%22%23141414%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F3F3EF;--surface:#FFFFFF;
+  --glass:rgba(249,250,247,.88);--glass-field:rgba(255,255,255,.58);--glass-border:rgba(255,255,255,.8);--glass-sheen:rgba(255,255,255,.42);--glass-shadow:0 12px 36px rgba(30,40,10,.07),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.22);--ink:#141414;--muted:#5C6058;--line:rgba(20,20,20,.12);--edge:#141414;
+  --lime:#C8F53B;--lime-soft:rgba(200,245,59,.55);--olive:#3E5A06;--gridline:rgba(20,20,20,.055);--glow:rgba(200,245,59,.85);
+  --btn:#C8F53B;--btn-ink:#141414;--focus:#FFFFFF;--focus-edge:#141414;
+  --b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--warn:#141414;--ok:#141414;
+  --shadow:0 8px 18px rgba(20,20,20,.16);
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#11130F;--surface:#1A1D17;
+    --glass:rgba(34,38,31,.90);--glass-field:rgba(17,19,15,.52);--glass-border:rgba(255,255,255,.2);--glass-sheen:rgba(255,255,255,.065);--glass-shadow:0 12px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.035);--ink:#F1F3EC;--muted:#A7AC9E;--line:rgba(255,255,255,.12);--edge:#F1F3EC;
+    --lime-soft:rgba(200,245,59,.3);--olive:#DDFB82;--gridline:rgba(255,255,255,.045);--glow:rgba(200,245,59,.35);
+    --focus:#FFFFFF;--focus-edge:#050505;--b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--shadow:0 8px 18px rgba(0,0,0,.45);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#11130F;--surface:#1A1D17;
+    --glass:rgba(34,38,31,.90);--glass-field:rgba(17,19,15,.52);--glass-border:rgba(255,255,255,.2);--glass-sheen:rgba(255,255,255,.065);--glass-shadow:0 12px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.035);--ink:#F1F3EC;--muted:#A7AC9E;--line:rgba(255,255,255,.12);--edge:#F1F3EC;
+  --lime-soft:rgba(200,245,59,.3);--olive:#DDFB82;--gridline:rgba(255,255,255,.045);--glow:rgba(200,245,59,.35);
+  --focus:#FFFFFF;--focus-edge:#050505;--b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--shadow:0 8px 18px rgba(0,0,0,.45);
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{
+  isolation:isolate;
+  margin:0;color:var(--ink);font:500 1.0625rem/1.55 "Urbanist",system-ui,-apple-system,"Segoe UI",sans-serif;
+  background-color:var(--paper);
+  background-image:
+    radial-gradient(38rem 26rem at 104% -6%,var(--glow),transparent 62%),
+    radial-gradient(30rem 22rem at -6% 104%,var(--glow),transparent 62%),
+    linear-gradient(var(--gridline) 1px,transparent 1px),
+    linear-gradient(90deg,var(--gridline) 1px,transparent 1px);
+  background-size:auto,auto,44px 44px,44px 44px;
+  background-attachment:fixed,fixed,scroll,scroll;
+}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.28;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{mix-blend-mode:screen;opacity:.12}}
+:root[data-theme="dark"] body::before{mix-blend-mode:screen;opacity:.12}
+.wrap{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:3rem 1.25rem 4rem}
+h1,h2,h3{font-family:"Urbanist",system-ui,sans-serif;line-height:1.05;margin:0;letter-spacing:-.025em}
+h2{font-size:1.6rem;font-weight:800}
+h3{font-size:1.15rem;font-weight:800}
+p{margin:0}
+em{font-style:italic;font-weight:900}
+
+/* ---------- Skill Proof identity ---------- */
+.brand-header{display:flex;align-items:center;margin:-.75rem 0 2.2rem}
+.brand{display:inline-flex;align-items:center;gap:.72rem;color:var(--ink);text-decoration:none;width:fit-content}
+.brand-mark{display:block;width:46px;height:46px;flex:none;transform:rotate(-7deg);filter:drop-shadow(0 3px 0 rgba(20,20,20,.16))}
+.brand-name{font-size:1.65rem;font-weight:800;line-height:1;letter-spacing:-.055em;white-space:nowrap}
+.brand-name strong{font-weight:900}
+.brand:focus-visible{border-radius:8px}
+@media(max-width:600px){.brand-header{margin:-.5rem 0 1.7rem}.brand-mark{width:39px;height:39px}.brand-name{font-size:1.45rem}}
+
+/* ---------- Hero ---------- */
+.headline{position:relative;width:fit-content;margin:0 auto}
+.hero{position:relative;max-width:760px;margin:0 auto;padding:1rem 0 .5rem}
+.kicker{font-weight:800;font-size:clamp(1.3rem,2.6vw,1.75rem);letter-spacing:-.02em;text-align:center}
+.hero h1{position:relative;margin:1.6rem auto 0;width:fit-content;text-align:center;font-weight:500;font-size:clamp(2.35rem,7.4vw,5.1rem);line-height:1.08}
+.hero h1 em{font-weight:900}
+.sel{position:relative;display:inline-block;background:var(--lime-soft);color:var(--olive);font-style:italic;font-weight:900;padding:0 .12em;margin:0 .04em}
+.sel::before,.sel::after{content:"";position:absolute;width:2px;background:var(--lime);height:calc(100% + .35em)}
+.sel::before{left:-2px;top:-.35em}
+.sel::after{right:-2px;bottom:-.08em;height:calc(100% + .08em)}
+.sel i::before,.sel i::after{content:"";position:absolute;border:.2em solid transparent}
+.sel i::before{left:-.2em;top:-.55em;border-top:.32em solid var(--lime)}
+.sel i::after{right:-.2em;bottom:-.3em;border-bottom:.26em solid var(--lime)}
+.sticker{display:inline-flex;align-items:center;gap:.4rem;background:var(--lime);color:#141414;font:700 1.02rem/1.2 "Urbanist",system-ui,sans-serif;letter-spacing:0;padding:.4rem 1rem;border-radius:999px;box-shadow:var(--shadow);white-space:nowrap}
+.target{width:34px;height:34px;flex:none}
+.stickers{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.9rem 1rem;margin-top:2rem}
+.headline > .stickers .sticker:nth-child(1){transform:rotate(-4deg)}
+.headline > .stickers .sticker:nth-child(2){transform:rotate(3deg)}
+.headline > .stickers .sticker:nth-child(3){transform:rotate(-2deg)}
+.stickers .target{display:none}
+
+.lede{margin:2.2rem auto 0;max-width:58ch;color:var(--muted);font-size:1.15rem;text-align:center;font-weight:500}
+.legend{display:flex;flex-wrap:wrap;gap:.55rem 1.3rem;margin-top:1rem;font-size:.95rem;font-weight:600}
+.legend > span{display:inline-flex;align-items:center;gap:.45rem}
+.legend .mk{white-space:nowrap}
+
+/* ---------- Highlight chips ---------- */
+.mk{padding:.02em .45em;border-radius:999px;-webkit-box-decoration-break:clone;box-decoration-break:clone;color:#141414;font-weight:700}
+.mk-b{background:var(--b)}.mk-l{background:var(--l)}.mk-w{background:var(--w)}.mk-m{background:var(--m)}
+pre.ats .mk{border-radius:4px;padding:0 .15em;font-weight:600}
+
+/* ---------- Inputs ---------- */
+.inputs{display:grid;grid-template-columns:1fr;gap:1.4rem;margin-top:3rem}
+@media (min-width:820px){.inputs{grid-template-columns:1fr 1fr}}
+/* Dense frosted surfaces hide the strands; a separate soft glow lights their faces. */
+.pane,.rolebar,.summary,.group{
+  background:linear-gradient(145deg,var(--glass-sheen),transparent 55%),var(--glass);
+  border:1.5px solid var(--glass-border);border-radius:18px;
+  -webkit-backdrop-filter:blur(26px) saturate(115%);
+  backdrop-filter:blur(26px) saturate(115%);
+  box-shadow:var(--glass-shadow);
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+  .pane,.rolebar,.summary,.group{background:var(--surface);border-color:var(--line)}
+}
+.pane{padding:1.1rem 1.1rem 1.15rem;display:flex;flex-direction:column;gap:.7rem;min-width:0}
+.pane-head{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
+label.title{display:inline-block;font-weight:800;font-size:1.2rem;letter-spacing:-.01em;background:var(--lime);color:#141414;border:1.5px solid #141414;padding:.1rem .65rem;border-radius:6px;transform:rotate(-1.5deg)}
+.rolebar label.title{justify-self:start}
+textarea{width:100%;min-height:280px;resize:vertical;border:1.5px solid var(--line);border-radius:12px;background:var(--glass-field);color:var(--ink);font:500 .98rem/1.55 "Urbanist",system-ui,sans-serif;padding:.8rem}
+textarea::placeholder{color:var(--muted)}
+textarea::selection,input::selection{background:#FFF;color:#141414}
+.hint{font-size:.93rem;color:var(--muted)}
+.pane.dropping{outline:3px dashed var(--lime);outline-offset:4px;background:linear-gradient(var(--lime-soft),var(--lime-soft)),var(--glass);box-shadow:var(--glass-shadow)}
+.pane.dropping textarea{opacity:.6}
+.file-btn{position:relative;display:inline-flex;align-items:center;gap:.35rem;border:1.5px solid var(--edge);border-radius:999px;padding:.35rem .9rem;font-size:.92rem;font-weight:700;cursor:pointer;background:var(--surface)}
+.file-btn:hover{background:var(--lime-soft);color:var(--ink)}
+.file-btn:active{transform:translateY(1px) scale(.98)}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+
+/* ---------- Buttons ---------- */
+.actions{display:flex;flex-direction:column;align-items:center;gap:1.1rem;margin-top:2rem;text-align:center}
+.cta-main{display:flex;flex-direction:column;align-items:center;gap:.7rem;width:100%}
+.cta-sub{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.6rem}
+.cta-sub button:not(.link){font-size:.93rem;padding:.55rem 1.1rem}
+.cta-sub button:not(.link):hover{background:var(--lime);color:#141414;transform:translateY(-2px);box-shadow:0 3px 0 var(--edge)}
+.cta-sub button:not(.link):active{transform:translateY(1px) scale(.98);box-shadow:none}
+.cta-label{color:var(--muted);font-weight:700;font-size:.95rem}
+button,.file-btn{transition:background-color .15s,color .15s,border-color .15s,box-shadow .15s,transform .12s ease,filter .15s,opacity .15s}
+button{font:700 1rem/1.2 "Urbanist",system-ui,sans-serif;cursor:pointer;border-radius:999px;padding:.72rem 1.35rem;border:1.5px solid var(--edge);background:var(--surface);color:var(--ink)}
+button:where(:not(.primary):not(.link):not(.result-tab):not(.must-segment)):hover{background:var(--lime-soft)}
+button:where(:not(.primary):not(.link):not(.result-tab):not(.must-segment)):active{transform:translateY(1px) scale(.98);box-shadow:none}
+button.primary{background:var(--btn);color:var(--btn-ink);border-color:#141414;font-weight:900;font-size:1.3rem;padding:1rem 3rem;box-shadow:0 5px 0 #141414;width:min(420px,100%);letter-spacing:-.01em}
+button.primary:hover{background:#D6FA63}
+button.primary:active{transform:translateY(4px);box-shadow:0 1px 0 #141414}
+button.link{border:none;background:none;padding:.4rem .2rem;text-decoration:underline;text-underline-offset:4px;color:var(--muted);box-shadow:none}
+button.link:hover{background:none;color:var(--ink);text-decoration-thickness:2px}
+button.link:active{transform:translateY(1px);opacity:.72}
+button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none!important}
+#msg{font-weight:800;background:var(--m);color:#141414;padding:.2rem .7rem;border-radius:999px}
+#msg:empty{display:none}
+.file-btn.is-processing{cursor:wait;opacity:.68}
+.file-btn.is-processing::after{content:"";width:.8rem;height:.8rem;border:2px solid var(--line);border-top-color:var(--ink);border-radius:50%;animation:spin .7s linear infinite}
+.snackbar{position:fixed;z-index:80;left:50%;bottom:max(1.2rem,env(safe-area-inset-bottom,0px));width:max-content;max-width:calc(100vw - 2rem);padding:.72rem 1rem;border:1.5px solid #141414;border-radius:12px;background:var(--lime);color:#141414;font-weight:800;box-shadow:0 8px 24px rgba(20,20,20,.22);opacity:0;transform:translate(-50%,18px);pointer-events:none;transition:opacity .2s,transform .25s cubic-bezier(.2,.9,.3,1.2)}
+.snackbar.is-visible{opacity:1;transform:translate(-50%,0)}
+.processing-screen{padding:clamp(1.5rem,4vw,2.6rem);min-height:270px;display:grid;place-items:center;text-align:center}
+.processing-inner{width:min(560px,100%)}
+.processing-spinner{width:54px;height:54px;margin:0 auto 1rem;border:5px solid var(--line);border-top-color:var(--lime);border-right-color:var(--lime);border-radius:50%;animation:spin .75s linear infinite;box-shadow:0 0 24px var(--lime-soft)}
+.processing-inner h1{font-size:clamp(1.55rem,4vw,2.2rem);font-weight:900}
+.processing-inner .hint{margin-top:.5rem}
+.processing-lines{display:grid;gap:.65rem;margin:1.5rem auto 0;max-width:430px}
+.processing-lines span{height:12px;border-radius:999px;background:linear-gradient(90deg,var(--line),var(--lime-soft),var(--line));background-size:220% 100%;animation:shimmer 1.1s linear infinite}
+.processing-lines span:nth-child(2){width:82%;justify-self:center}.processing-lines span:nth-child(3){width:64%;justify-self:center}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{to{background-position:-220% 0}}
+@media(prefers-reduced-motion:reduce){.snackbar{transition:none}.file-btn.is-processing::after,.processing-spinner,.processing-lines span{animation:none}}
+
+/* ---------- Results ---------- */
+#results{margin-top:3rem}
+.wrap.is-results>.hero,.wrap.is-results>.inputs,.wrap.is-results>.rolebar,.wrap.is-results>.actions,.wrap.is-results>footer{display:none}
+.wrap.is-results{max-width:1080px;padding-top:1.6rem}
+.wrap.is-results .brand-header{margin-bottom:1.35rem}
+.wrap.is-results #results{margin-top:0}
+.results-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.results-heading h1{font-size:clamp(1.65rem,4vw,2.35rem);font-weight:800;letter-spacing:-.04em}
+.results-heading .back{white-space:nowrap}
+.result-tabs{position:sticky;top:10px;z-index:12;display:flex;gap:.55rem;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:.7rem;margin:0 0 1.15rem;border:1px solid var(--glass-border);border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(115%);backdrop-filter:blur(22px) saturate(115%);box-shadow:var(--glass-shadow)}
+.result-tabs::-webkit-scrollbar{display:none}
+.result-tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:.45rem;padding:.57rem 1rem;border:1.5px solid transparent;background:transparent;color:var(--muted);font-size:.96rem;font-weight:800;white-space:nowrap;transition:background .15s,border-color .15s,color .15s,transform .2s}
+.result-tab:hover{background:var(--lime-soft);color:var(--ink)}
+.result-tab:active{transform:scale(.98)}
+.result-tab[aria-selected="true"]{background:var(--lime);color:#141414;border-color:#141414;box-shadow:0 2px 0 rgba(20,20,20,.14)}
+.result-count{font-size:.78rem;opacity:.75}
+.result-panel{min-width:0;scroll-margin-top:6rem}
+.result-panel[hidden]{display:none!important}
+.must-have-summary{padding:clamp(1.2rem,3vw,2rem)}
+.must-label{color:var(--muted);font-size:.96rem;font-weight:800;letter-spacing:.035em;text-transform:uppercase}
+.must-topline{display:flex;align-items:center;gap:clamp(1rem,4vw,2.75rem);flex-wrap:wrap;margin:.35rem 0 1rem}
+.must-count{display:flex;align-items:baseline;letter-spacing:-.065em;line-height:.98}
+.must-count strong{font-size:clamp(3.25rem,9vw,5.6rem);font-weight:900;color:var(--ink)}
+.must-count span{font-size:clamp(1.8rem,5vw,3rem);font-weight:500;color:var(--muted);letter-spacing:-.045em}
+.must-verdict{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.must-verdict strong{font-size:clamp(1.3rem,3vw,1.85rem);font-weight:900;letter-spacing:-.035em}
+.must-verdict .hint{margin:0}
+.must-segment-wrap{margin-top:.35rem}
+.must-have-bar{display:flex;gap:3px;width:100%;height:25px;overflow:hidden;border-radius:999px;padding:3px;background:rgba(20,20,20,.07)}
+.must-segment{position:relative;z-index:1;flex:1 1 0;min-width:8px;height:100%;padding:0;border:0;border-radius:999px;background:var(--segment-color);box-shadow:inset 0 1px 1px rgba(255,255,255,.28);transition:transform .12s ease,filter .15s}
+.must-segment:hover{filter:brightness(1.08)}
+.must-segment:active{transform:scaleY(.86);filter:brightness(.96)}
+.must-segment:focus-visible{z-index:2}
+.must-b{--segment-color:var(--b)}.must-l{--segment-color:var(--l)}.must-w{--segment-color:var(--w)}.must-m{--segment-color:var(--m)}
+.must-empty{color:var(--muted);font-size:.95rem;margin:.75rem 0}
+.nice-line{margin:1rem 0 1.2rem;font-weight:700}
+.all-skills{border-top:1px solid var(--line);padding-top:1.15rem}
+.all-skills h2{font-size:1.2rem;letter-spacing:-.02em}
+.must-segment .sr{font-size:0} 
+.term.skill-flash{animation:skill-flash 1.8s ease-out}
+@keyframes skill-flash{0%,20%{box-shadow:0 0 0 4px var(--lime),0 0 28px rgba(200,245,59,.6);background:rgba(200,245,59,.2)}100%{box-shadow:none;background:transparent}}
+@media(prefers-reduced-motion:reduce){.term.skill-flash{animation:none;box-shadow:0 0 0 4px var(--lime)}}
+.result-panel>.cols:first-child,.result-panel>.role-results:first-child{margin-top:0}
+@media(max-width:600px){
+ .wrap.is-results{padding:1rem .8rem 3rem}
+ .wrap.is-results .brand-header{margin-bottom:1rem}
+ .results-heading{align-items:flex-start;flex-direction:column;gap:.55rem}
+ .results-heading h1{font-size:1.75rem}
+ .result-tabs{top:6px;gap:.3rem;padding:.45rem}
+ .result-tab{padding:.52rem .82rem;font-size:.9rem}
+}
+.summary{padding:1.5rem}
+.summary p.big{font-size:1.3rem;font-weight:600;max-width:60ch;margin-top:.6rem}
+.bar{display:flex;height:46px;border-radius:999px;overflow:hidden;margin-top:1.2rem;border:1.5px solid var(--edge)}
+.bar div{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;min-width:0;color:#141414}
+.cols{display:grid;grid-template-columns:1fr;gap:1.25rem;margin-top:1.25rem}
+@media (min-width:900px){.cols{grid-template-columns:1fr 1fr}}
+.group{padding:1.25rem 1.25rem .7rem;min-width:0}
+.group h3{font-size:1.25rem}
+.group > p.hint{margin:.4rem 0 .7rem}
+.term{border-top:1px solid var(--line);padding:.85rem 0;display:grid;grid-template-columns:1fr auto;gap:.2rem .75rem}
+.term .name{font-weight:800}
+.term .detail{grid-column:1/-1;font-size:.96rem;color:var(--muted);overflow-wrap:anywhere}
+.term .detail q{color:var(--ink);font-style:italic;font-weight:600}
+.tags{display:inline-flex;gap:.4rem;margin-left:.5rem;vertical-align:1px}
+.tag{font-size:.78rem;border:1.5px solid var(--line);border-radius:999px;padding:.02rem .55rem;color:var(--muted);font-weight:700}
+.tag.req{border-color:var(--edge);color:var(--ink);background:var(--lime-soft)}
+.x{padding:.2rem .7rem;font-size:.84rem;color:var(--muted);border-color:var(--line)}
+.chips{display:flex;flex-wrap:wrap;gap:.55rem .45rem;margin-top:1rem}
+.chip{font-size:.95rem;padding:.25rem .7rem}
+.empty{color:var(--muted);padding:.85rem 0;border-top:1px solid var(--line);font-weight:600}
+.checks{list-style:none;padding:0;margin:.7rem 0 0}
+.checks li{border-top:1px solid var(--line);padding:.75rem 0;display:grid;grid-template-columns:6.3rem 1fr;gap:.75rem;align-items:baseline}
+.status{justify-self:start;font-size:.8rem;font-weight:800;padding:.12rem .6rem;border-radius:999px;color:#141414}
+.status.ok{background:var(--b)}.status.warn{background:var(--m)}
+.section{margin-top:1.25rem}
+.ats-wrap{overflow-x:auto;margin-top:.9rem;border:1.5px solid var(--line);border-radius:12px;background:var(--glass-field)}
+pre.ats{margin:0;padding:1rem;font:500 .95rem/1.65 "Urbanist",system-ui,sans-serif;white-space:pre-wrap;word-break:break-word;min-width:0}
+
+/* ---------- Role picker ---------- */
+.rolebar{margin-top:1.4rem;padding:1.1rem;display:grid;gap:.65rem}
+.rp{position:relative;max-width:560px}
+.rp-box{display:flex;align-items:center;border:1.5px solid var(--edge);border-radius:999px;background:var(--glass-field);padding-right:.35rem}
+.rp-box input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:600 1rem "Urbanist",system-ui,sans-serif;padding:.72rem 1rem;outline:none}
+.rp-box::after{content:"";width:.55rem;height:.55rem;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg) translateY(-3px);margin:0 .8rem 0 .2rem;flex:none}
+.rp-reset{padding:.28rem .75rem;font-size:.84rem}
+.rp-pop{position:absolute;z-index:20;top:calc(100% + 8px);left:0;width:min(640px,calc(100vw - 2.5rem));background:var(--surface);border:1.5px solid var(--edge);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.rp-domains{display:flex;gap:.4rem;overflow-x:auto;-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);mask-image:linear-gradient(90deg,#000 88%,transparent);padding:.75rem .75rem .6rem;border-bottom:1px solid var(--line);scrollbar-width:thin}
+.rp-domains button{flex:none;padding:.3rem .8rem;font-size:.88rem}
+.rp-domains button[aria-pressed="true"]{background:var(--lime);color:#141414;border-color:#141414}
+.rp-list{list-style:none;margin:0;padding:.3rem 0;max-height:min(380px,55vh);overflow-y:auto}
+.rp-group{padding:.7rem .95rem .25rem;font-size:.84rem;color:var(--muted);font-weight:800}
+.rp-opt{padding:.55rem .95rem;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:.1rem .75rem;align-items:baseline}
+.rp-opt .rp-name{font-weight:700}
+.rp-opt .rp-sub{grid-column:1/-1;font-size:.86rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rp-opt .rp-dom{font-size:.8rem;color:var(--muted);font-weight:700}
+.rp-opt[aria-selected="true"] .rp-name::after{content:"  (picked)";font-weight:600;color:var(--muted);font-size:.85rem}
+.rp-opt.active{background:var(--lime-soft);box-shadow:inset 4px 0 0 var(--lime)}
+.rp-opt mark{background:var(--lime);color:#141414;border-radius:3px;padding:0 .08em}
+.rp-empty{padding:1rem .95rem;color:var(--muted);font-weight:600}
+.rp-foot{margin:0;padding:.5rem .95rem;border-top:1px solid var(--line);font-size:.83rem;color:var(--muted)}
+
+footer{margin:3.5rem auto 0;color:var(--muted);font-size:.95rem;max-width:70ch;text-align:center}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media (prefers-reduced-motion:no-preference){
+  #results.show{animation:rise .35s ease-out}@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .stickers .sticker{animation:pop .5s cubic-bezier(.3,1.5,.5,1) both}
+  .stickers .sticker:nth-child(2){animation-delay:.12s}.stickers .sticker:nth-child(3){animation-delay:.24s}
+  @keyframes pop{from{opacity:0;scale:.6}to{opacity:1;scale:1}}
+}
+
+/* ---------- Hover tilt on every neon green element ---------- */
+.sticker,.target,label.title,.mk-b,.status.ok,.tag.req,.rp-opt mark,.bar-b{transition:transform .7s cubic-bezier(.25,1.2,.4,1),background-color .15s}
+.stickers .sticker,.stickers .target{pointer-events:auto}
+.mk-b,.rp-opt mark,.status.ok,.tag.req{display:inline-block}
+.bar-b{position:relative;z-index:1}.must-segment.must-b{z-index:1}
+.is-tilted{transform:rotate(18deg)!important}
+.bar:has(.bar-b.is-tilted){overflow:visible}
+@media (prefers-reduced-motion:reduce){
+  .sticker,.target,label.title,.mk-b,.status.ok,.tag.req,.rp-opt mark,.bar-b{transition:none}
+}
+
+/* One focus language across links, buttons, fields, uploads and the role picker. */
+.brand:focus-visible,
+button:focus-visible,
+.file-btn:focus-within,
+textarea:focus-visible,
+.rp-box:focus-within{
+  outline:3px solid var(--focus);
+  outline-offset:2px;
+  box-shadow:0 0 0 6px var(--focus-edge);
+}
+
+/* Paper grain (0), strands (1), frosted content (2), clipped soft light (3). */
+#cursorTrail{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:1}
+#cursorGlow{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:3}
+#cometCursor{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50}
+@media (hover:hover) and (pointer:fine){html.comet-active,html.comet-active *{cursor:none!important}}
+@media (prefers-reduced-motion:reduce){#cursorTrail,#cursorGlow,#cometCursor{display:none}}
+</style>
+</head>
+<body>
+<canvas id="cursorTrail" aria-hidden="true"></canvas>
+<canvas id="cursorGlow" aria-hidden="true"></canvas>
+<canvas id="cometCursor" aria-hidden="true"></canvas>
+<div class="snackbar" id="snackbar" role="status" aria-live="polite" aria-atomic="true"></div>
+<main class="wrap" id="top">
+  <div class="brand-header">
+    <a class="brand" href="#top" aria-label="Skill Proof home"><svg class="brand-mark" aria-hidden="true" focusable="false" viewBox="0 0 48 48"><rect width="48" height="48" rx="13" fill="#C8F53B"/><path d="M14 11h14l7 7v18H14z" fill="none" stroke="#141414" stroke-width="2.5" stroke-linejoin="round"/><path d="M28 11v8h7M19 27l4 4 8-9" fill="none" stroke="#141414" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="brand-name">Skill <strong>Proof</strong></span></a>
+  </div>
+  <header class="hero">
+    <p class="kicker">Resume check. Zero fluff.</p>
+    <div class="headline">
+    <h1>Don't just <em>list</em> it.<br><span class="sel"><i aria-hidden="true"></i>Prove</span> you are<br><em>worth it.</em></h1>
+    <div class="stickers" aria-hidden="true">
+        <span class="sticker">No keyword soup</span>
+        <span class="sticker">Private by default</span>
+        <span class="sticker">Built for all roles</span>
+        <svg class="target t1" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#C8F53B"/><circle cx="20" cy="20" r="11" fill="none" stroke="#141414" stroke-width="2.5"/><circle cx="20" cy="20" r="4" fill="#141414"/><path d="M20 20 L33 7" stroke="#141414" stroke-width="2.5" stroke-linecap="round"/></svg>
+        <svg class="target t2" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#C8F53B"/><circle cx="20" cy="20" r="11" fill="none" stroke="#141414" stroke-width="2.5"/><circle cx="20" cy="20" r="4" fill="#141414"/><path d="M20 20 L33 7" stroke="#141414" stroke-width="2.5" stroke-linecap="round"/></svg>
+    </div>
+    </div>
+    <p class="lede">Resume in. Job description in. See what's backed by evidence, what needs proof, and what's missing. Nothing leaves your browser.</p>
+  </header>
+
+  <div class="inputs">
+    <section class="pane">
+      <div class="pane-head">
+        <label class="title" for="resume">Your resume</label>
+        <span class="file-btn">Upload PDF, DOCX or TXT<input id="file" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" aria-label="Upload resume file"></span>
+      </div>
+      <textarea id="resume" placeholder="Paste your resume here, or drop a file."></textarea>
+      <p class="hint" id="fileStatus" role="status" aria-live="polite" aria-atomic="true">Upload a file to check exactly what the ATS can read.</p>
+    </section>
+    <section class="pane">
+      <div class="pane-head"><label class="title" for="jd">The job description</label>
+        <span class="file-btn">Upload PDF, DOCX or TXT<input id="jdFile" type="file" accept=".pdf,.docx,.txt,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" aria-label="Upload job description file"></span></div>
+      <textarea id="jd" placeholder="Paste the full job description, including requirements."></textarea>
+      <p class="hint" id="jdStatus" role="status" aria-live="polite" aria-atomic="true">Include the full description so must-haves and nice-to-haves stay accurate.</p>
+    </section>
+  </div>
+
+  <section class="rolebar" aria-labelledby="roleLabel">
+    <label id="roleLabel" class="title" for="roleInput">Your target role</label>
+    <div class="rp" id="rp">
+      <div class="rp-box">
+        <input id="roleInput" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="roleList" aria-describedby="roleHint" autocomplete="off" spellcheck="false" value="Detect from job description">
+        <button type="button" class="rp-reset" id="roleReset" aria-label="Detect the role from the job description" hidden>Auto-detect</button>
+      </div>
+      <div class="rp-pop" id="rpPop" hidden>
+        <div class="rp-domains" role="group" aria-label="Filter roles by domain" id="rpDomains"></div>
+        <ul class="rp-list" id="roleList" role="listbox" aria-label="Roles"></ul>
+        <p class="rp-foot" id="rpCount" aria-live="polite"></p>
+      </div>
+    </div>
+    <p class="hint" id="roleHint"></p>
+  </section>
+
+  <div class="actions">
+    <div class="cta-main">
+      <button class="primary" id="run">Check my resume</button>
+      <span id="msg" role="status"></span>
+    </div>
+    <div class="cta-sub">
+      <span class="cta-label">Want to see how it works?</span>
+      <button id="sampleDesign">Try a product designer example</button>
+      <button id="sample">Try a software engineer example</button>
+      <button class="link" id="clear" hidden>Start fresh</button>
+    </div>
+  </div>
+
+  <div id="results" aria-live="polite"></div>
+
+  <footer>Not a real ATS. No tool can promise interviews. Add only what's true.</footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const reEsc = s => s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+
+/* ---------- Skill dictionary: [Display name, ...aliases] or a single string ---------- */
+const GROUPS = [
+ ["JavaScript","js","javascript","ecmascript"],["TypeScript","ts","typescript"],
+ ["Python","python"],["Java","java"],["C++","c++","cpp"],"C#",".NET",["Go","golang","Go"],"Rust","Ruby","Scala","PHP","Kotlin","Swift",
+ ["Node.js","node.js","nodejs"],["React","react","react.js","reactjs"],["Next.js","next.js","nextjs"],["Vue","vue","vue.js","vuejs"],["Angular","angular","angularjs"],
+ "Django","Flask","FastAPI","Spring Boot","Express.js",["HTML","html","html5"],["CSS","css","css3"],"Tailwind","Sass",
+ "SQL","NoSQL",["PostgreSQL","postgresql","postgres"],"MySQL",["MongoDB","mongodb","mongo"],"Redis","Elasticsearch","DynamoDB",
+ ["Kafka","kafka","apache kafka"],["Spark","spark","apache spark","pyspark"],"Hadoop","Airflow","Snowflake","dbt","BigQuery","Databricks",
+ ["ETL","etl","elt","data pipeline","data pipelines"],
+ ["AWS","aws","amazon web services"],["GCP","gcp","google cloud","google cloud platform"],["Azure","azure","microsoft azure"],
+ ["Kubernetes","kubernetes","k8s"],["Docker","docker","containerization","containers"],["Terraform","terraform","infrastructure as code","infrastructure-as-code"],
+ "Ansible","Jenkins","GitHub Actions",["CI/CD","ci/cd","ci cd","continuous integration","continuous delivery","continuous deployment"],
+ ["Git","git","version control"],"GitHub","GitLab","Linux",
+ ["DevOps","devops","sre","site reliability","site reliability engineering"],["Observability","observability","monitoring"],"Prometheus","Grafana","Datadog",
+ ["REST APIs","rest","restful","rest api","rest apis","restful apis"],"GraphQL","gRPC",["Microservices","microservices","microservice","microservice architecture"],
+ ["System design","system design","distributed systems","scalable systems"],
+ ["Automated testing","unit testing","integration testing","test automation","automated testing"],"Selenium","Jest","Pytest",["QA","qa","quality assurance"],
+ ["Security","cybersecurity","information security","application security","owasp"],
+ "Android",["iOS","iOS"],"React Native","Flutter",
+ ["Machine learning","ml","machine learning"],["AI","ai","artificial intelligence"],["Deep learning","deep learning","neural networks"],
+ ["LLMs","llm","llms","large language models","generative ai","genai"],["NLP","nlp","natural language processing"],"Computer vision",
+ "Pandas","NumPy","TensorFlow","PyTorch",["scikit-learn","scikit-learn","sklearn"],
+ ["Data analysis","data analysis","data analytics"],["Data visualization","data visualization","dashboards","dashboarding"],"Tableau",["Power BI","power bi","powerbi"],"Looker",
+ ["Excel","excel","microsoft excel","spreadsheets"],["Statistics","statistics","statistical analysis","statistical modeling"],
+ ["A/B testing","a/b testing","ab testing","split testing","experimentation"],
+ ["Agile","agile","scrum","kanban"],"Jira",["Product management","product management"],["Roadmaps","roadmap","roadmaps","product roadmap"],
+ ["Stakeholder management","stakeholder management","stakeholders","cross-functional"],["Project management","project management","program management"],
+ ["Team leadership","team leadership","led a team","managed a team","people management","mentor","mentoring","mentored","mentorship"],
+ ["Communication","communication","communication skills","written communication","verbal communication","written and verbal communication"],["Problem solving","problem solving","problem-solving"],
+ ["SEO","seo","search engine optimization"],["Paid search","sem","ppc","paid search","google ads"],["Content marketing","content marketing","content strategy"],
+ ["Social media","social media","social media marketing"],"Email marketing",["Marketing automation","marketing automation"],"HubSpot","Marketo",
+ ["Google Analytics","google analytics","ga4"],["Salesforce","salesforce","sfdc"],"CRM",["Lead generation","lead generation","demand generation"],"B2B","SaaS",["KPIs","kpi","kpis"],
+ ["Recruiting","recruiting","recruitment","talent acquisition"],["University recruiting","university recruiting","campus recruiting","campus recruiter","university recruiter","college recruiting","campus hiring"],
+ ["Sourcing","sourcing","candidate sourcing"],["Applicant tracking systems","applicant tracking","applicant tracking system"],"Greenhouse","Workday",
+ ["Financial modeling","financial modeling","financial modelling"],"Forecasting","Budgeting","Accounting","GAAP","IFRS",
+ "Figma",
+ ["Customer success","customer success","account management"],"Negotiation"
+];
+const MORE = [
+ /* Languages & runtimes */
+ "Perl","Elixir","Haskell","MATLAB","Julia","Dart","Objective-C","Solidity","Lua","Clojure","Groovy",["R","r programming","rstudio"],["VBA","vba"],
+ ["Bash","bash","shell scripting","shell scripts"],"PowerShell",
+ /* Web & frontend */
+ "Redux","Svelte","Nuxt","jQuery","Bootstrap",["Material UI","material ui","mui"],"Webpack","Vite",["Three.js","three.js","threejs"],["D3.js","d3.js","d3"],
+ ["Responsive design","responsive design","mobile-first"],["Web performance","web performance","core web vitals","page speed"],["PWAs","pwa","pwas","progressive web apps"],
+ ["Accessibility","accessibility","a11y","wcag"],"WebSockets",["Ruby on Rails","ruby on rails","rails"],"Laravel",["Spring","spring framework"],"Hibernate",["ASP.NET","asp.net"],
+ /* Mobile */
+ "SwiftUI","Jetpack Compose","Xcode","Android Studio",
+ /* Backend, APIs, messaging */
+ ["API design","api design","api development"],["API integration","api integration","third-party integrations","integrations"],"Webhooks",
+ ["OAuth","oauth","oauth2"],["JWT","jwt"],["SSO","sso","single sign-on","saml"],"RabbitMQ","Celery","Protobuf","Nginx",["Serverless","serverless"],
+ ["Event-driven architecture","event-driven","event driven architecture","event-driven architecture"],["Caching","caching"],
+ /* Databases & data engineering */
+ ["SQL Server","sql server","mssql"],["Oracle Database","oracle","oracle database"],"SQLite","Cassandra","Neo4j","ClickHouse","Redshift","Kinesis","Flink",
+ ["Delta Lake","delta lake","lakehouse"],["Data warehousing","data warehousing","data warehouse"],["Data modeling","data modeling","data modelling","dimensional modeling"],
+ ["Data governance","data governance"],["Data quality","data quality"],["SSIS","ssis"],["SSRS","ssrs"],"Informatica","Fivetran",["Looker Studio","looker studio","google data studio"],
+ ["Business intelligence","business intelligence"],"Jupyter",
+ /* Cloud & infra */
+ ["Amazon S3","s3","amazon s3"],["EC2","ec2"],["AWS Lambda","aws lambda","lambda"],["ECS","ecs"],["EKS","eks"],"CloudFormation","OpenShift","Istio","Helm",
+ ["Argo CD","argo cd","argocd"],"CircleCI","Bitbucket","Maven","Gradle","Chef","Puppet","Vagrant",["Cloud architecture","cloud architecture","cloud infrastructure"],
+ ["Load balancing","load balancing"],["High availability","high availability","fault tolerance"],["Incident management","incident management","on-call"],
+ /* Networking & IT */
+ ["Networking","computer networking","network administration","tcp/ip"],["DNS","dns"],["VPN","vpn"],"Active Directory","Windows Server","ITIL",
+ ["IT support","help desk","it support","desktop support"],["Virtualization","virtualization","vmware","hyper-v"],"ServiceNow","CCNA",
+ /* Security */
+ ["Penetration testing","penetration testing","pentesting","ethical hacking"],["Vulnerability assessment","vulnerability assessment","vulnerability management"],
+ ["SIEM","siem"],"Splunk",["IAM","iam","identity and access management"],["Zero trust","zero trust"],["Incident response","incident response"],["Threat modeling","threat modeling","threat modelling"],
+ ["Network security","network security","firewalls"],["Cloud security","cloud security"],["ISO 27001","iso 27001"],["SOC 2","soc 2","soc2"],["NIST","nist"],
+ "CISSP",["CEH","ceh"],"OSCP",["CompTIA Security+","comptia security+","security+"],"Encryption","DevSecOps","Okta","Wireshark","Burp Suite",
+ /* Testing */
+ "Cypress","Playwright","Postman","JUnit","TestNG",["Performance testing","performance testing","load testing","jmeter"],["Manual testing","manual testing"],["TDD","tdd","test-driven development"],
+ /* Embedded, hardware, engineering */
+ ["Embedded systems","embedded systems","embedded c","firmware"],["RTOS","rtos"],"FPGA","Verilog","VHDL",["PCB design","pcb design"],["Microcontrollers","microcontrollers","arduino","raspberry pi"],
+ "AutoCAD","SolidWorks","CATIA","ANSYS","Revit",["PLC","plc","plc programming"],["SCADA","scada"],["CAD","cad"],["GD&T","gd&t"],
+ /* Game & XR */
+ ["Unity","unity"],"Unreal Engine",["AR/VR","ar/vr","augmented reality","virtual reality"],
+ /* Web3 */
+ ["Blockchain","blockchain","web3","smart contracts"],
+ /* ML / AI / data science */
+ ["Regression","regression","linear regression","logistic regression"],["Classification","classification models"],["Clustering","clustering"],
+ ["Time series","time series","time-series"],["Feature engineering","feature engineering"],["Hyperparameter tuning","hyperparameter tuning"],"XGBoost","LightGBM","Keras","OpenCV",
+ ["Hugging Face","hugging face","huggingface"],"LangChain",["RAG","rag","retrieval-augmented generation","retrieval augmented generation"],["Prompt engineering","prompt engineering"],
+ ["Fine-tuning","fine-tuning","fine tuning"],["MLOps","mlops"],"MLflow","Kubeflow",["SageMaker","sagemaker","amazon sagemaker"],["Vertex AI","vertex ai"],
+ ["Vector databases","vector database","vector databases","pinecone","weaviate","faiss"],["OpenAI API","openai","openai api"],["Reinforcement learning","reinforcement learning"],
+ ["Recommendation systems","recommendation systems","recommender systems"],["Hypothesis testing","hypothesis testing","statistical significance"],["Causal inference","causal inference"],
+ ["Predictive modeling","predictive modeling","predictive modelling","predictive analytics"],["SPSS","spss"],["SAS","sas"],"Stata",
+ /* Product */
+ ["Product strategy","product strategy"],["Go-to-market","go-to-market","gtm","go to market"],["User stories","user stories"],["PRDs","prd","prds","product requirements"],
+ ["Requirements gathering","requirements gathering","requirements analysis","requirement gathering"],["Market research","market research"],["Competitive analysis","competitive analysis","competitor analysis"],
+ ["Product analytics","product analytics"],["OKRs","okr","okrs"],["Prioritization","prioritization","prioritisation"],["Customer discovery","customer discovery","customer interviews"],
+ ["MVP","mvp"],["Product-led growth","product-led growth","plg"],["Pricing strategy","pricing strategy","pricing"],["Backlog management","backlog management","backlog grooming","backlog refinement"],
+ ["Release management","release management"],"Amplitude","Mixpanel","Segment","Optimizely","Hotjar",
+ /* Business analysis & consulting */
+ ["Business analysis","business analysis"],["Process mapping","process mapping","bpmn"],["Gap analysis","gap analysis"],["Market sizing","market sizing"],
+ ["Business strategy","business strategy","corporate strategy","strategic planning"],["Management consulting","management consulting"],["PowerPoint","powerpoint","microsoft powerpoint"],
+ ["Presentation skills","presentation skills","presentations","public speaking"],["Storytelling","storytelling","data storytelling"],
+ /* Design */
+ 
+ ["Adobe XD","adobe xd"],"Sketch",["Adobe Illustrator","illustrator","adobe illustrator"],
+ ["Photoshop","photoshop","adobe photoshop"],["InDesign","indesign"],["After Effects","after effects"],["Premiere Pro","premiere pro"],["Adobe Creative Suite","adobe creative suite","creative cloud"],
+ "Canva",["Branding","branding","brand identity"],"Typography",["Graphic design","graphic design"],["Design thinking","design thinking"],
+ ["Heuristic evaluation","heuristic evaluation"],["Video editing","video editing"],
+ /* Marketing */
+ ["Performance marketing","performance marketing"],["Growth marketing","growth marketing","growth hacking"],["Brand marketing","brand marketing","brand management"],
+ ["Product marketing","product marketing"],["Copywriting","copywriting"],["CRO","cro","conversion rate optimization","conversion optimization"],
+ ["Marketing analytics","marketing analytics"],["Meta Ads","meta ads","facebook ads","instagram ads"],["LinkedIn Ads","linkedin ads"],["Influencer marketing","influencer marketing"],
+ ["Affiliate marketing","affiliate marketing"],["Public relations","public relations","media relations"],["Event marketing","event marketing"],
+ ["Customer segmentation","customer segmentation","market segmentation"],["Marketing attribution","attribution","marketing attribution"],["Keyword research","keyword research"],
+ ["Link building","link building"],"SEMrush","Ahrefs","Mailchimp","Klaviyo",["Campaign management","campaign management"],["ROI analysis","roi","roas"],
+ ["Unit economics","cac","ltv","unit economics"],["Funnel optimization","funnel optimization","funnel analysis","conversion funnel"],["Digital marketing","digital marketing"],
+ ["Community management","community management"],"Shopify","WordPress","Webflow",["E-commerce","e-commerce","ecommerce"],["Localization","localization","localisation"],
+ /* Sales */
+ ["Enterprise sales","enterprise sales"],["B2B sales","b2b sales","saas sales"],["Business development","business development"],["Prospecting","prospecting","lead qualification"],
+ ["Cold outreach","cold calling","cold outreach","cold emailing","outbound sales"],["Pipeline management","pipeline management"],["Quota attainment","quota attainment","quota"],
+ ["Consultative selling","consultative selling","solution selling","value selling"],["Sales forecasting","sales forecasting"],["Territory management","territory management"],
+ ["Key account management","key account management","key accounts"],["Channel sales","channel sales","channel partners"],["Partnerships","partnerships","strategic partnerships"],
+ ["Upselling","upselling","cross-selling","upsell"],["Revenue operations","revenue operations","revops","sales operations"],"Salesloft","Outreach","Gong","ZoomInfo",
+ ["LinkedIn Sales Navigator","sales navigator","linkedin sales navigator"],"MEDDIC",["SPIN selling","spin selling"],["RFPs","rfp","rfps"],["Sales presentations","sales presentations","product demos","demos"],
+ /* Customer support & success */
+ ["Customer support","customer support","customer service"],["Technical support","technical support"],"Zendesk","Freshdesk","Intercom",["CSAT","csat"],["NPS","nps","net promoter score"],
+ ["Customer retention","customer retention","churn reduction","churn"],["Customer onboarding","customer onboarding","client onboarding"],["Escalation management","escalation management","escalations"],
+ ["SLAs","sla","slas"],["Ticketing systems","ticketing","ticketing system"],
+ /* Finance & accounting */
+ ["FP&A","fp&a"],["Financial analysis","financial analysis"],["Financial reporting","financial reporting","financial statements"],["Variance analysis","variance analysis"],
+ ["Valuation","valuation","valuations"],["DCF","dcf","discounted cash flow"],["M&A","m&a","mergers and acquisitions"],["Due diligence","due diligence"],["Corporate finance","corporate finance"],
+ ["Investment banking","investment banking"],["Equity research","equity research"],["Portfolio management","portfolio management"],["Risk management","risk management","risk assessment"],
+ ["Credit analysis","credit analysis","credit risk"],["Underwriting","underwriting"],["Treasury","treasury"],["Cash flow management","cash flow management","cash flow"],
+ ["Accounts payable","accounts payable"],["Accounts receivable","accounts receivable"],["General ledger","general ledger"],["Reconciliation","reconciliation","reconciliations","bank reconciliation"],
+ "Bookkeeping",["Month-end close","month-end close","month end close","financial close"],["Auditing","auditing","internal audit","external audit"],
+ ["Taxation","taxation","tax compliance","direct tax","indirect tax"],["GST","gst"],["TDS","tds"],["Tally","tally","tally erp"],"QuickBooks","Xero","NetSuite",
+ ["SAP","sap"],["SAP FICO","sap fico","sap fi"],["Bloomberg Terminal","bloomberg terminal","bloomberg"],["CPA","cpa"],["Chartered Accountant","chartered accountant"],["CFA","cfa"],
+ ["ACCA","acca"],["FRM","frm"],["SOX","sox","sarbanes-oxley"],["Cost accounting","cost accounting","costing"],"Payroll",["Financial planning","financial planning"],
+ ["Capital markets","capital markets"],["Derivatives","derivatives"],["Fixed income","fixed income"],["Private equity","private equity"],["Venture capital","venture capital"],
+ /* HR & people */
+ ["HR business partnering","hr business partner","hrbp","hr business partnering"],["Employee relations","employee relations"],["Performance management","performance management","performance reviews"],
+ ["Compensation and benefits","compensation and benefits","total rewards"],["Employee onboarding","employee onboarding","new hire onboarding"],
+ ["Employee engagement","employee engagement"],["Learning and development","learning and development","l&d","training and development"],["Talent management","talent management"],
+ ["Succession planning","succession planning"],["Workforce planning","workforce planning","headcount planning"],["HRIS","hris","hrms"],"BambooHR","SuccessFactors",
+ ["Employment law","employment law","labor law","labour law"],["DEI","dei","diversity and inclusion","diversity, equity and inclusion"],["Interviewing","interviewing","structured interviews"],
+ ["Employer branding","employer branding"],["Boolean search","boolean search"],["LinkedIn Recruiter","linkedin recruiter"],["Headhunting","headhunting","executive search"],
+ ["Offer negotiation","offer negotiation"],["Background verification","background verification","background checks"],["HR policies","hr policies","policy development"],
+ ["Organizational development","organizational development","organisational development"],["Change management","change management"],
+ /* Operations & supply chain */
+ ["Supply chain management","supply chain","supply chain management"],["Logistics","logistics"],["Procurement","procurement","strategic sourcing","purchasing"],
+ ["Vendor management","vendor management","supplier management"],["Inventory management","inventory management","inventory control"],["Demand planning","demand planning","demand forecasting"],
+ ["Warehouse management","warehouse management","wms"],["ERP","erp"],["SAP MM","sap mm"],["Operations management","operations management"],
+ ["Process improvement","process improvement","process optimization","continuous improvement"],["SOPs","sop","sops","standard operating procedures"],
+ ["Six Sigma","six sigma","lean six sigma"],["Lean","lean manufacturing","lean methodology"],"Kaizen",["Root cause analysis","root cause analysis","rca"],
+ ["Quality control","quality control","quality management"],["ISO 9001","iso 9001"],["GMP","gmp","good manufacturing practice"],["Fleet management","fleet management"],
+ ["Last-mile delivery","last-mile","last mile delivery"],["Import/export","import/export","export documentation","customs clearance"],["Production planning","production planning"],
+ ["Capacity planning","capacity planning"],["Budget management","budget management","cost control","cost reduction"],
+ /* Project & program management */
+ ["PMP","pmp"],["PRINCE2","prince2"],["Waterfall","waterfall"],["SAFe","SAFe","scaled agile"],["Risk mitigation","risk mitigation"],["Resource planning","resource planning","resource allocation"],
+ ["MS Project","ms project","microsoft project"],"Asana","Trello","Confluence","Smartsheet",["Monday.com","monday.com"],"Notion",["Scrum Master","scrum master"],
+ /* Automation & enterprise platforms */
+ ["RPA","rpa","robotic process automation"],"UiPath","Automation Anywhere",["Power Automate","power automate"],["Power Apps","power apps"],["Low-code","low-code","no-code"],
+ "Zapier",["ABAP","abap","sap abap"],"Dynamics 365",
+ /* Healthcare & life sciences */
+ ["Patient care","patient care"],["Clinical research","clinical research"],["Clinical trials","clinical trials"],["EHR/EMR","ehr","emr","electronic health records"],["Epic","epic systems"],
+ "Cerner","HIPAA",["ICD-10","icd-10"],["Medical coding","medical coding","medical billing"],"Pharmacovigilance",["Good Clinical Practice","good clinical practice","ich-gcp"],
+ ["Regulatory affairs","regulatory affairs","regulatory submissions"],["FDA","fda"],["BLS","bls","basic life support"],["ACLS","acls"],
+ /* Legal & compliance */
+ ["Contract drafting","contract drafting"],["Contract negotiation","contract negotiation"],["Contract management","contract management"],["Legal research","legal research"],
+ ["Compliance","compliance","regulatory compliance"],"Litigation",["Corporate law","corporate law"],["Intellectual property","intellectual property"],"GDPR",
+ ["KYC","kyc","know your customer"],["AML","aml","anti-money laundering"],["Data privacy","data privacy","data protection"],
+ /* Education & training */
+ ["Curriculum design","curriculum design","curriculum development"],["Lesson planning","lesson planning"],["Instructional design","instructional design"],
+ ["Classroom management","classroom management"],["E-learning","e-learning","elearning"],["LMS","lms","learning management system"],"Articulate Storyline",["Training delivery","training delivery","corporate training","facilitation"],
+ /* Writing & content */
+ ["Technical writing","technical writing","documentation"],["Content writing","content writing","blogging"],["Editing","editing","proofreading"],["Research","research skills"],
+ /* Soft skills */
+ ["Collaboration","collaboration","teamwork"],["Time management","time management"],["Attention to detail","attention to detail","detail-oriented"],["Critical thinking","critical thinking"],
+ ["Adaptability","adaptability","flexibility"],["Analytical skills","analytical skills","analytical thinking"],["Decision making","decision making","decision-making"],
+ ["Conflict resolution","conflict resolution"],["Customer focus","customer focus","customer-centric","customer obsession"],["Self-starter","self-starter","self-motivated"],
+ ["Multitasking","multitasking","multi-tasking"],["Interpersonal skills","interpersonal skills","relationship building"],["Leadership","leadership","leadership skills"]
+];
+
+
+/* ---------- Design roles: built from Product Designer, UX Designer and Design Engineer postings ---------- */
+const DESIGN = [
+ /* Research */
+ ["User research","user research","ux research","design research"],
+ ["Usability testing","usability testing","usability tests","usability test","user testing","moderated testing","unmoderated testing","usability sessions"],
+ ["User interviews","user interviews","user interview","contextual inquiry","stakeholder interviews"],
+ ["Surveys","surveys","survey design"],
+ ["Qualitative research","qualitative research","qualitative methods","qualitative"],
+ ["Quantitative research","quantitative research","quantitative methods","quantitative"],
+ ["Research synthesis","research synthesis","synthesis","affinity mapping","affinity diagramming"],
+ ["Personas","personas","persona","user personas"],
+ ["Journey mapping","journey mapping","journey maps","journey map","customer journey","customer journeys","user journeys","user journey","customer journey mapping"],
+ ["Empathy maps","empathy maps","empathy mapping"],
+ ["Service design","service design","service blueprints","service blueprint"],
+ ["Card sorting","card sorting","tree testing"],
+ ["UX audits","ux audit","ux audits","usability audit","usability audits"],
+ ["Product discovery","product discovery","discovery","continuous discovery"],
+ ["Problem framing","problem framing","problem definition"],
+ ["Data-informed design","data-informed","data-driven","data informed","data driven"],
+ /* Core UX / UI craft */
+ ["User flows","user flows","user flow","task flows","task flow"],
+ ["Wireframing","wireframing","wireframes","wireframe","low-fidelity","lo-fi"],
+ ["Prototyping","prototyping","prototypes","prototype","interactive prototypes","clickable prototypes"],
+ ["High-fidelity design","high-fidelity","hi-fi","mockups","mockup","pixel-perfect"],
+ ["Visual design","visual design","ui design","interface design","visual craft"],
+ ["Interaction design","interaction design","interaction patterns","ixd"],
+ ["Information architecture","information architecture","sitemaps","sitemap"],
+ ["Design systems","design system","design systems","component library","component libraries","ui kit","pattern library"],
+ ["Design tokens","design tokens","token system","style dictionary","tokens studio","figma tokens"],
+ ["Figma auto layout","auto layout","auto-layout"],
+ ["Design QA","design qa","visual qa","implementation review"],
+ ["Developer handoff","handoff","hand-off","developer handoff","dev mode","design specs","redlines","annotations"],
+ ["Design critique","design critique","design critiques","design reviews","design review"],
+ ["End-to-end design","end-to-end","end to end","0 to 1","0-to-1","zero-to-one","zero to one","concept to launch"],
+ ["Product thinking","product thinking","product sense"],
+ ["Systems thinking","systems thinking"],
+ ["Craft","craft","high-craft","visual polish","polish"],
+ ["Design strategy","design strategy","design vision","north star"],
+ ["UX writing","ux writing","content design","microcopy","ux copy"],
+ ["Edge cases and states","edge cases","empty states","error states","loading states"],
+ ["Mobile design","mobile design","mobile apps","mobile app","native mobile","native apps"],
+ ["Web design","web design","web applications","web apps","web app"],
+ ["Enterprise UX","enterprise software","enterprise ux","complex workflows","complex systems"],
+ ["Consumer products","consumer products","consumer apps","consumer app","b2c"],
+ ["Inclusive design","inclusive design","universal design"],
+ ["Human Interface Guidelines","human interface guidelines","hig","apple hig"],
+ ["Material Design","material design"],
+ ["Microinteractions","microinteractions","micro-interactions","micro interactions"],
+ ["Motion design","motion design","motion graphics","motion language"],
+ ["Animation","animation","animations","ui animation","easing","easing curves","spring animations"],
+ ["Design sprints","design sprint","design sprints"],
+ ["Workshop facilitation","workshop facilitation","workshops","facilitate workshops"],
+ ["Storyboarding","storyboards","storyboarding"],
+ ["Sketching","sketching","whiteboarding"],
+ ["Illustration","illustration","illustrations"],
+ ["Iconography","iconography","icon design"],
+ ["Color theory","color theory","colour theory"],
+ ["Layout and grids","grid systems","layout","layouts"],
+ ["DesignOps","designops","design ops","design operations"],
+ ["Growth design","growth design"],
+ /* Design tools */
+ "FigJam","Figma Make",["Framer","framer"],["ProtoPie","protopie"],["Principle","principle"],["Rive","rive"],["Lottie","lottie"],["GSAP","gsap"],
+ ["Spline","spline"],"Blender",["Cinema 4D","cinema 4d","c4d"],["Origami Studio","origami studio"],"Zeplin",["Miro","miro"],["Mural","mural"],
+ ["Maze","maze"],["UserTesting","usertesting","usertesting.com"],"Optimal Workshop",["Lookback","lookback"],["Dovetail","dovetail"],"UserZoom","FullStory",
+ /* AI-era prototyping */
+ ["AI prototyping","ai prototyping","vibe coding","vibe-coding","ai-assisted prototyping","coded prototypes","code prototypes","prototyping in code","prototype in code"],
+ ["v0","v0"],"Lovable",["Bolt","bolt","bolt.new"],["Cursor","cursor"],"Claude Code",["GitHub Copilot","github copilot","copilot"],
+ /* Design engineering */
+ ["Front-end development","front-end development","frontend development","front-end","frontend","front end"],
+ ["Framer Motion","framer motion","motion.dev"],"Storybook","Chromatic",["Visual regression testing","visual regression","visual regression testing"],
+ ["Radix UI","radix","radix ui"],["shadcn/ui","shadcn","shadcn/ui"],["Styled Components","styled-components","styled components","css-in-js"],
+ ["CSS Grid and Flexbox","css grid","flexbox"],["CSS animations","css animations","css transitions","keyframes"],["SVG","svg"],["WebGL","webgl","shaders","glsl"],
+ ["View Transitions","view transitions","view transitions api"],"Vercel",["Component APIs","component api","component apis","component api design"],
+ ["Semantic HTML","semantic html"],["Keyboard accessibility","keyboard navigation","focus states","focus management","screen readers","screen reader","aria"],
+ ["Design to code","design-to-code","design to code","design implementation"]
+];
+const EXACT = new Set(["Go","iOS","SAFe","v0"]);
+const CAP = new Set(["framer","rive","principle","spline","miro","mural","maze","lookback","dovetail","cursor","bolt","react","excel","swift","spark","workday","greenhouse","snowflake","flutter","angular","airflow","rust","ruby","jest","looker","julia","dart","lua","bootstrap","vite","celery","helm","chef","puppet","vagrant","lambda","unity","sketch","segment","amplitude","outreach","gong","cypress","playwright","postman","asana","confluence","notion","tally","oracle","cassandra","waterfall","derivatives","bloomberg","epic","maven"]);
+const UFORCE = new Set(["aria"]);
+const IFORCE = new Set(["dbt","git","vue","npm","tax","s3","d3","ec2"]);
+function modeFor(a){
+  if(EXACT.has(a)) return 'X';
+  if(IFORCE.has(a)) return 'i';
+  if(UFORCE.has(a)) return 'U';
+  if(/^[a-z]{1,3}$/.test(a) || a==='rest') return 'U';
+  if(CAP.has(a)) return 'C';
+  return 'i';
+}
+function makeRe(a){
+  const src = a.split(/\s+/).map(reEsc).join('[ \\t\\-]+');
+  return new RegExp('(?<![A-Za-z0-9+#])'+src+'(?![A-Za-z0-9+#])','gi');
+}
+const ALIASLOW = new Set();
+const DICT = GROUPS.concat(MORE,DESIGN).map(g=>{
+  const arr = typeof g==='string' ? [g,g] : g;
+  const al = [...new Set(arr.slice(1).map(a=>EXACT.has(a)?a:a.toLowerCase()))];
+  al.forEach(a=>ALIASLOW.add(a.toLowerCase()));
+  return {name:arr[0], key:'d:'+arr[0].toLowerCase(), aliases:al.map(a=>({a,mode:modeFor(a),re:makeRe(a)}))};
+});
+
+const BYNAME = Object.fromEntries(DICT.map(g=>[g.name,g]));
+BYNAME['Framer'].aliases[0].re = /(?<![A-Za-z0-9+#])framer(?![A-Za-z0-9+#])(?![ \t]+motion)/gi;
+function findAll(text, al){
+  const re = al.re; re.lastIndex = 0; const out=[]; let m;
+  while((m=re.exec(text))){
+    const t=m[0]; let ok=true;
+    if(al.mode==='U') ok = t===t.toUpperCase();
+    else if(al.mode==='C') ok = /[A-Z]/.test(t[0]);
+    else if(al.mode==='X') ok = t===al.a;
+    if(ok) out.push({i:m.index,len:t.length,t,a:al.a.toLowerCase()});
+    if(m[0].length===0) re.lastIndex++;
+  }
+  return out;
+}
+function dedupe(occ){
+  occ.sort((x,y)=>x.i-y.i || y.len-x.len);
+  const out=[]; let end=-1;
+  for(const o of occ){ if(o.i>=end){ out.push(o); end=o.i+o.len; } }
+  return out;
+}
+
+/* ---------- Stop words for extra-term extraction ---------- */
+const STOP = new Set(("pm pms a an the and or of to in on at by for with from as is are be will can you your we our us they their it its this that these those who what why how when where which "+
+"i me my he she team teams company role roles job jobs position about apply applicants candidate candidates location remote hybrid onsite office salary benefits perks equal opportunity employer eoe "+
+"senior junior lead principal staff head engineer engineers engineering manager managers developer developers director associate intern analyst specialist consultant "+
+"years year experience responsibilities requirements qualifications nice must preferred bonus plus full time part contract "+
+"strong excellent good great ability work working build building design help join day week month new ideal ideally "+
+"january february march april may june july august september october november december jan feb mar apr jun jul aug sep sept oct nov dec monday tuesday wednesday thursday friday "+
+"india us usa uk eu apac emea ceo cto cfo coo hr faq tbd ok etc e.g i.e and/or vs per via our we're you'll you're we'll "+
+"bachelor bachelors master masters degree phd bs ms ba ma btech mtech mba "+
+"inc ltd llc pvt corp series startup mission vision values culture diversity inclusion").split(/\s+/));
+
+function isSentenceStart(text,i){
+  let j=i-1;
+  while(j>=0 && (text[j]===' '||text[j]==='\t'||text[j]==='"'||text[j]==='“')) j--;
+  if(j<0) return true;
+  return '.!?:\n•*-–—|(;'.includes(text[j]);
+}
+
+/* ---------- Line / section helpers ---------- */
+function splitLines(text){
+  const lines=[]; let pos=0;
+  for(const raw of text.split('\n')){ lines.push({text:raw,start:pos}); pos+=raw.length+1; }
+  return lines;
+}
+function lineAt(lines,idx){
+  let lo=0,hi=lines.length-1;
+  while(lo<hi){ const mid=(lo+hi+1)>>1; if(lines[mid].start<=idx) lo=mid; else hi=mid-1; }
+  return lo;
+}
+function cleanHead(s){ return s.replace(/^[\s•*\-–—#|]+/,'').replace(/[:\s|]+$/,'').replace(/\s+/g,' ').trim().toLowerCase(); }
+const RES_HEADS = [
+  [/^(technical skills|key skills|core skills|skills|core competencies|competencies|tech stack|technical stack|tools|technologies|tools (and|&) technologies|skills (and|&) tools)\b/,'list'],
+  [/^(professional summary|summary|profile|professional profile|objective|career objective|about me)\b/,'summary'],
+  [/^(work experience|professional experience|relevant experience|experience|employment|employment history|work history|projects|personal projects|key projects|internships?|leadership|volunteer(ing)?|achievements|accomplishments)\b/,'evidence'],
+  [/^(education|certifications?|licenses|courses|coursework|awards|honors|publications|languages|interests|hobbies|references)\b/,'other']
+];
+function sectionResume(text){
+  const lines = splitLines(text);
+  let cur='header', hasEvidence=false, hasSkills=false; const heads=[];
+  for(const ln of lines){
+    const c = cleanHead(ln.text);
+    let matched=null;
+    if(c.length>0 && c.length<=40 && c.split(' ').length<=5 && !/[.,]$/.test(c)){
+      for(const [re,type] of RES_HEADS){ if(re.test(c)){ matched=type; break; } }
+    }
+    if(matched){ cur=matched; ln.heading=true; heads.push(c); if(matched==='evidence') hasEvidence=true; if(matched==='list') hasSkills=true; }
+    ln.type=cur;
+  }
+  for(const ln of lines){
+    const commas=(ln.text.match(/,/g)||[]).length;
+    ln.evidence = hasEvidence ? (ln.type==='evidence' && !ln.heading) : (ln.text.trim().length>50 && commas<4);
+  }
+  return {lines,hasEvidence,hasSkills,heads};
+}
+const NICE_RE=/\b(nice[- ]to[- ]have|preferred|bonus|good[- ]to[- ]have|a plus|desirable|ideally)\b/i;
+const REQ_HEAD=/\b(requirements?|qualifications?|must[- ]haves?|you have|what you('|’)ll need|what we('|’)re looking for|who you are|minimum|essential)\b/i;
+const REQ_INLINE=/\b(required|must|mandatory|essential)\b/i;
+const NEU_HEAD=/\b(responsibilities|what you('|’)ll do|about (us|the role|the team)|the role|benefits|perks|who we are|our culture)\b/i;
+function sectionJD(text){
+  const lines=splitLines(text); let cur='neutral';
+  for(const ln of lines){
+    const t=ln.text.trim(); const short=t.length<=60 && t.split(/\s+/).length<=7 && !/^[-•*·–—]|^\d+[.)]/.test(t);
+    if(short && NICE_RE.test(t)){ cur='nice'; ln.type='nice'; continue; }
+    if(short && REQ_HEAD.test(t)){ cur='req'; ln.type='req'; continue; }
+    if(short && NEU_HEAD.test(t)){ cur='neutral'; ln.type='neutral'; continue; }
+    ln.type = NICE_RE.test(t) ? 'nice' : REQ_INLINE.test(t) ? 'req' : cur;
+  }
+  return lines;
+}
+const PRI={req:3,neutral:2,nice:1};
+function stem(w){ for(const s of ['ing','ers','es','ed','er','s','e']){ if(w.endsWith(s)&&w.length-s.length>=3) return w.slice(0,-s.length); } return w; }
+function sameWord(a,b){
+  if(a===b) return true;
+  const A=a.split(/[\s-]+/),B=b.split(/[\s-]+/);
+  return A.length===B.length && A.every((x,i)=>stem(x)===stem(B[i]));
+}
+
+/* ---------- Analysis ---------- */
+let ignored = new Set();
+function analyze(resume, jd){
+  const R = sectionResume(resume);
+  const J = sectionJD(jd);
+  const terms=[];
+  let masked = jd;
+
+  for(const g of DICT){
+    let jOcc=[]; for(const al of g.aliases) jOcc.push(...findAll(jd,al));
+    jOcc=dedupe(jOcc);
+    if(!jOcc.length) continue;
+    for(const o of jOcc) masked = masked.slice(0,o.i)+' '.repeat(o.len)+masked.slice(o.i+o.len);
+    let pri=0; for(const o of jOcc){ pri=Math.max(pri,PRI[J[lineAt(J,o.i)].type]||2); }
+    const freq={}; for(const o of jOcc){ freq[o.a]=(freq[o.a]||0)+1; }
+    const topAlias=Object.keys(freq).sort((x,y)=>freq[y]-freq[x])[0];
+    const jdWord=jOcc.find(o=>o.a===topAlias).t;
+    const jdAliases=new Set(jOcc.map(o=>o.a));
+    let rOcc=[]; for(const al of g.aliases) rOcc.push(...findAll(resume,al));
+    rOcc=dedupe(rOcc);
+    const t=classify({key:g.key,name:g.name,jdWord,jdCount:jOcc.length,pri,jdAliases},rOcc,R); t.jOcc=jOcc; terms.push(t);
+  }
+
+  const allJ=terms.flatMap(t=>t.jOcc.map(o=>({i:o.i,e:o.i+o.len,k:t.key})));
+  for(let n=terms.length-1;n>=0;n--){
+    const t=terms[n];
+    const own=t.jOcc.filter(o=>!allJ.some(x=>x.k!==t.key && x.i<=o.i && x.e>=o.i+o.len && (x.e-x.i)>o.len));
+    if(!own.length) terms.splice(n,1);
+  }
+  // Extra terms not in the dictionary: tool-like tokens, acronyms, repeated proper nouns
+  const counts=new Map(); const tokRe=/[A-Za-z][A-Za-z0-9+#.\/-]*[A-Za-z0-9+#]/g; let m;
+  while((m=tokRe.exec(masked))){
+    const t=m[0], low=t.toLowerCase();
+    if(STOP.has(low)||ALIASLOW.has(low)||t.length<2||t.includes('/')) continue;
+    const tech=/[+#]|\.[A-Za-z]|[a-z][A-Z]|[A-Za-z]\d/.test(t);
+    const caps=/^[A-Z]{2,6}s?$/.test(t);
+    const cap=/^[A-Z][a-z]{2,}$/.test(t) && !isSentenceStart(masked,m.index);
+    if(!(tech||caps||cap)) continue;
+    const e=counts.get(low)||{t,n:0,need:(tech||caps)?1:2,idx:[]};
+    e.n++; e.idx.push(m.index); counts.set(low,e);
+  }
+  const extras=[...counts.values()].filter(e=>e.n>=e.need).sort((a,b)=>b.n-a.n).slice(0,12);
+  for(const e of extras){
+    let pri=0; for(const i of e.idx){ pri=Math.max(pri,PRI[J[lineAt(J,i)].type]||2); }
+    const al={a:e.t.toLowerCase(),mode:'i',re:makeRe(e.t.toLowerCase())};
+    const rOcc=dedupe(findAll(resume,al));
+    terms.push(classify({key:'x:'+e.t.toLowerCase(),name:e.t,jdWord:e.t,jdCount:e.n,pri,jdAliases:new Set([e.t.toLowerCase()])},rOcc,R));
+  }
+
+  const active=terms.filter(t=>!ignored.has(t.key));
+  active.sort((a,b)=>(b.pri-a.pri)||(b.jdCount-a.jdCount));
+  return {terms:active,hidden:terms.length-active.length,R,stuffing:stuffing(resume,jd,R,active),parse:parseChecks(resume,R)};
+}
+function classify(t,rOcc,R){
+  t.rOcc=rOcc; t.rCount=rOcc.length;
+  if(!rOcc.length){ t.status='missing'; return t; }
+  const exact=rOcc.filter(o=>[...t.jdAliases].some(a=>sameWord(a,o.a)));
+  if(!exact.length){
+    t.status='wording';
+    t.resumeWords=[...new Set(rOcc.map(o=>o.t))].slice(0,3);
+    return t;
+  }
+  const ev=exact.find(o=>R.lines[lineAt(R.lines,o.i)].evidence)||rOcc.find(o=>R.lines[lineAt(R.lines,o.i)].evidence);
+  if(ev){ t.status='backed'; t.line=R.lines[lineAt(R.lines,ev.i)].text.trim(); }
+  else {
+    t.status='listed';
+    const ln=R.lines[lineAt(R.lines,exact[0].i)];
+    t.where = ln.type==='list'?'skills':ln.type==='summary'?'your summary':ln.type==='other'?'education':'your header';
+  }
+  return t;
+}
+function words(s){ return (s.toLowerCase().match(/[a-z0-9+#]+/g)||[]); }
+function stuffing(resume,jd,R,terms){
+  const out=[];
+  const skillText=R.lines.filter(l=>l.type==='list'&&!l.heading).map(l=>l.text).join(',');
+  const items=skillText.split(/[,|•;·]| {2,}|\t/).map(s=>s.trim()).filter(s=>s.length>1&&s.length<40);
+  if(items.length>30) out.push(`${items.length} skills listed. That's a keyword dump. Keep what you can defend in an interview.`);
+  const rep=terms.filter(t=>t.rCount>5).map(t=>`${t.name} (${t.rCount}×)`);
+  if(rep.length) out.push(`On repeat: ${rep.join(', ')}. Saying it louder doesn't make it truer.`);
+  const listed=terms.filter(t=>t.status==='listed').length, backed=terms.filter(t=>t.status==='backed').length;
+  if(listed>=3 && listed>backed) out.push(`${listed} skills claimed, only ${backed} proven. Recruiters notice.`);
+  const jw=words(jd), rw=words(resume), N=8;
+  if(jw.length>=N && rw.length>=N){
+    const set=new Set(); for(let i=0;i+N<=jw.length;i++) set.add(jw.slice(i,i+N).join(' '));
+    const hits=[]; let i=0;
+    while(i+N<=rw.length){
+      if(set.has(rw.slice(i,i+N).join(' '))){
+        let j=i+N; while(j<rw.length && set.has(rw.slice(j-N+1,j+1).join(' '))) j++;
+        hits.push(rw.slice(i,j).join(' ')); i=j;
+      } else i++;
+    }
+    if(hits.length) out.push({copied:hits.slice(0,4)});
+  }
+  return out;
+}
+function parseChecks(text,R){
+  const c=[];
+  const push=(ok,label,msg)=>c.push({ok,label,msg});
+  push(/[\w.+-]+@[\w-]+\.[\w.]+/.test(text),'Email',/[\w.+-]+@[\w-]+\.[\w.]+/.test(text)?'Found.':'Missing. Put it in plain text up top.');
+  const ph=/(\+?\d[\d ().-]{8,}\d)/.test(text);
+  push(ph,'Phone',ph?'Found.':'Missing.');
+  const years=(text.match(/\b(19|20)\d{2}\b/g)||[]).length;
+  push(years>=2,'Dates',years>=2?`${years} found. Readable.`:'Barely any. ATS can\'t count your years without them.');
+  push(R.hasEvidence,'Experience',R.hasEvidence?'Heading found.':'No "Experience" heading. ATS can miss your experience without one.');
+  push(R.hasSkills,'Skills',R.hasSkills?'Heading found.':'No skills heading. Optional, but handy for searches.');
+  const odd=/[\uFFFD\uE000-\uF8FF\uFB00-\uFB06]/.test(text);
+  push(!odd,'Characters',odd?'Garbled text found. Icons or fancy fonts are turning into junk.':'No junk.');
+  const glued=text.match(/[A-Za-z]{28,}/);
+  push(!glued,'Spacing',glued?`Words glued together, like "${glued[0].slice(0,40)}…". Blame tables.`:'Clean.');
+  const ne=R.lines.filter(l=>l.text.trim()); const shortL=ne.filter(l=>l.text.trim().split(/\s+/).length<=3).length;
+  const cols=ne.length>20 && shortL/ne.length>0.45;
+  push(!cols,'Layout',cols?'Looks scrambled. Columns or text boxes can confuse ATS.':'Reads top to bottom.');
+  const wc=words(text).length;
+  push(wc>=200&&wc<=1200,'Length',wc<200?`Only ${wc} words came through. Part of it may be unreadable.`:wc>1200?`${wc} words. Nobody's reading all that. Trim.`:`${wc} words. Good.`);
+  return c;
+}
+
+
+/* ---------- Role profiles (from recurring requirements in real postings) ---------- */
+const ROLE_CATALOG = [
+ /* Design */
+ {id:'product',label:'Product Designer',domain:'Design',kind:'design',titles:['product designer','product design lead','senior product designer','staff product designer','principal product designer'],expect:['End-to-end design','User research','Usability testing','Prototyping','Visual design','Interaction design','Design systems','Figma','Stakeholder management','Data-informed design','Product thinking','Design QA','Systems thinking','Craft']},
+ {id:'ux',label:'UX Designer',domain:'Design',kind:'ux',titles:['ux designer','ui/ux designer','ux/ui designer','user experience designer','interaction designer','ux design lead','experience designer'],expect:['User research','Usability testing','Wireframing','Prototyping','Information architecture','User flows','Personas','Journey mapping','Interaction design','Accessibility','Figma','Surveys','Research synthesis','UX audits']},
+ {id:'deseng',label:'Design Engineer',domain:'Design',kind:'deseng',titles:['design engineer','ux engineer','design technologist','creative technologist','ui engineer','design systems engineer','frontend design engineer'],expect:['React','TypeScript','CSS','HTML','Design systems','Design tokens','Storybook','Figma','Animation','Framer Motion','Accessibility','Visual design','Prototyping','Next.js','Tailwind','Git']},
+ {id:'ui',label:'UI Designer',domain:'Design',kind:'design',titles:['ui designer','visual designer','interface designer','digital designer'],expect:['Visual design','Figma','Design systems','Typography','Layout and grids','Color theory','Prototyping','High-fidelity design','Interaction design','Iconography','Accessibility','Responsive design','Developer handoff','Microinteractions']},
+ {id:'uxr',label:'UX Researcher',domain:'Design',kind:'ux',titles:['ux researcher','user researcher','design researcher','research lead','ux research lead'],expect:['User research','Usability testing','User interviews','Surveys','Qualitative research','Quantitative research','Research synthesis','Personas','Journey mapping','Card sorting','Stakeholder management','Data-informed design','Dovetail','Maze']},
+ {id:'dsd',label:'Design Systems Designer',domain:'Design',kind:'design',titles:['design systems designer','design system designer','design systems lead'],expect:['Design systems','Design tokens','Figma','Figma auto layout','Storybook','Accessibility','Component APIs','Visual design','Developer handoff','Systems thinking','Design QA','Technical writing']},
+ {id:'content',label:'Content Designer / UX Writer',domain:'Design',kind:'design',titles:['content designer','ux writer','content strategist','product writer'],expect:['UX writing','Information architecture','User research','Usability testing','Accessibility','Figma','Design systems','Localization','Editing','Stakeholder management','Technical writing']},
+ {id:'service',label:'Service Designer',domain:'Design',kind:'ux',titles:['service designer','customer experience designer','cx designer'],expect:['Service design','Journey mapping','Workshop facilitation','User research','User interviews','Personas','Design thinking','Research synthesis','Process mapping','Prototyping','Stakeholder management']},
+ {id:'motion',label:'Motion Designer',domain:'Design',kind:'design',titles:['motion designer','motion graphics designer','animator'],expect:['Motion design','Animation','After Effects','Cinema 4D','Lottie','Rive','Microinteractions','Storyboarding','Illustration','Figma','Branding','Adobe Creative Suite']},
+ {id:'graphic',label:'Graphic / Brand Designer',domain:'Design',kind:'design',titles:['graphic designer','brand designer','communication designer','marketing designer','creative designer'],expect:['Graphic design','Branding','Typography','Adobe Illustrator','Photoshop','InDesign','Adobe Creative Suite','Layout and grids','Color theory','Illustration','Iconography','Figma','Motion design']},
+ {id:'desmgr',label:'Design Manager / Lead',domain:'Design',kind:'design',titles:['design manager','head of design','design director','lead designer','design lead','vp of design'],expect:['Team leadership','Design strategy','Design critique','Stakeholder management','Product thinking','DesignOps','Recruiting','Roadmaps','End-to-end design','Design systems','Communication','Workshop facilitation']},
+ /* Engineering */
+ {id:'fe',label:'Frontend Engineer',domain:'Engineering',kind:'eng',titles:['frontend engineer','front-end engineer','frontend developer','front-end developer','react developer','ui developer','web developer'],expect:['JavaScript','TypeScript','React','HTML','CSS','Next.js','Automated testing','Jest','Web performance','Accessibility','Responsive design','Git','REST APIs','GraphQL','CI/CD']},
+ {id:'be',label:'Backend Engineer',domain:'Engineering',kind:'eng',titles:['backend engineer','back-end engineer','backend developer','back-end developer','server engineer','api engineer'],expect:['Python','Java','Go','Node.js','SQL','PostgreSQL','REST APIs','Microservices','System design','Docker','Kubernetes','AWS','Kafka','Redis','CI/CD','Automated testing']},
+ {id:'fs',label:'Full-Stack Engineer',domain:'Engineering',kind:'eng',titles:['full-stack engineer','full stack engineer','fullstack engineer','full-stack developer','full stack developer','software engineer','software developer','sde'],expect:['JavaScript','TypeScript','React','Node.js','SQL','PostgreSQL','REST APIs','GraphQL','AWS','Docker','Git','CI/CD','Automated testing','System design']},
+ {id:'mobile',label:'Mobile Engineer',domain:'Engineering',kind:'eng',titles:['mobile engineer','ios engineer','android engineer','ios developer','android developer','mobile developer','flutter developer','react native developer'],expect:['Swift','Kotlin','iOS','Android','SwiftUI','Jetpack Compose','React Native','Flutter','Xcode','Android Studio','REST APIs','Automated testing','CI/CD','Git']},
+ {id:'devops',label:'DevOps / SRE Engineer',domain:'Engineering',kind:'eng',titles:['devops engineer','site reliability engineer','sre','platform engineer','infrastructure engineer','cloud engineer'],expect:['DevOps','Kubernetes','Docker','Terraform','AWS','CI/CD','Linux','Observability','Prometheus','Grafana','Incident management','Bash','Python','Helm','Networking']},
+ {id:'qa',label:'QA / Test Engineer',domain:'Engineering',kind:'eng',titles:['qa engineer','test engineer','sdet','automation engineer','quality engineer','qa analyst'],expect:['Automated testing','Manual testing','Selenium','Cypress','Playwright','Performance testing','Postman','Jira','Agile','CI/CD','Python','Java','SQL','REST APIs']},
+ {id:'sec',label:'Security Engineer',domain:'Engineering',kind:'eng',titles:['security engineer','security analyst','cybersecurity analyst','application security engineer','penetration tester','soc analyst'],expect:['Security','Penetration testing','Vulnerability assessment','SIEM','IAM','Incident response','Network security','Cloud security','Threat modeling','AWS','Python','Linux','Encryption','ISO 27001']},
+ {id:'embedded',label:'Embedded / Hardware Engineer',domain:'Engineering',kind:'eng',titles:['embedded engineer','firmware engineer','embedded software engineer','hardware engineer','electronics engineer'],expect:['Embedded systems','C++','RTOS','Microcontrollers','PCB design','FPGA','Verilog','Python','Linux','Git']},
+ {id:'em',label:'Engineering Manager',domain:'Engineering',kind:'eng',titles:['engineering manager','head of engineering','engineering lead','tech lead','director of engineering'],expect:['Team leadership','System design','Agile','Stakeholder management','Roadmaps','Recruiting','Project management','Communication','Performance management','CI/CD','Microservices']},
+ /* Data & AI */
+ {id:'da',label:'Data Analyst',domain:'Data & AI',kind:'general',titles:['data analyst','analytics analyst','product analyst','marketing analyst','reporting analyst'],expect:['SQL','Excel','Tableau','Power BI','Python','Data analysis','Data visualization','Statistics','A/B testing','KPIs','Looker','Storytelling','Stakeholder management','Google Analytics']},
+ {id:'ds',label:'Data Scientist',domain:'Data & AI',kind:'general',titles:['data scientist','applied scientist','research scientist'],expect:['Python','SQL','Machine learning','Statistics','Pandas','scikit-learn','A/B testing','Hypothesis testing','Feature engineering','Predictive modeling','Data visualization','Deep learning','Causal inference','Communication']},
+ {id:'de',label:'Data Engineer',domain:'Data & AI',kind:'eng',titles:['data engineer','analytics engineer','big data engineer','etl developer'],expect:['SQL','Python','Spark','Airflow','ETL','Kafka','Snowflake','dbt','Data modeling','Data warehousing','AWS','BigQuery','Databricks','Data quality']},
+ {id:'mle',label:'Machine Learning Engineer',domain:'Data & AI',kind:'eng',titles:['machine learning engineer','ml engineer','mlops engineer','deep learning engineer','computer vision engineer'],expect:['Python','Machine learning','Deep learning','PyTorch','TensorFlow','MLOps','MLflow','Docker','Kubernetes','AWS','Feature engineering','LLMs','SQL','System design']},
+ {id:'ai',label:'AI / LLM Engineer',domain:'Data & AI',kind:'eng',titles:['ai engineer','llm engineer','generative ai engineer','genai engineer','applied ai engineer','prompt engineer'],expect:['LLMs','Python','RAG','Prompt engineering','LangChain','Vector databases','OpenAI API','Fine-tuning','Machine learning','NLP','REST APIs','Docker','AWS','TypeScript']},
+ {id:'bi',label:'BI Analyst / Developer',domain:'Data & AI',kind:'general',titles:['bi analyst','business intelligence analyst','bi developer','power bi developer','tableau developer'],expect:['SQL','Power BI','Tableau','Business intelligence','Data modeling','Excel','KPIs','Data visualization','Data warehousing','ETL','Looker','Stakeholder management']},
+ /* Product */
+ {id:'pm',label:'Product Manager',domain:'Product',kind:'general',titles:['product manager','senior product manager','group product manager','associate product manager','apm','product lead'],expect:['Product management','Roadmaps','Product strategy','User stories','PRDs','Stakeholder management','Prioritization','A/B testing','Product analytics','SQL','Agile','Customer discovery','Go-to-market','OKRs','Market research']},
+ {id:'tpm',label:'Technical Product Manager',domain:'Product',kind:'general',titles:['technical product manager','platform product manager','tpm'],expect:['Product management','Roadmaps','System design','REST APIs','User stories','PRDs','Stakeholder management','Prioritization','Agile','Jira','SQL','Product analytics']},
+ {id:'po',label:'Product Owner',domain:'Product',kind:'general',titles:['product owner'],expect:['Agile','User stories','Backlog management','Jira','Stakeholder management','Prioritization','Roadmaps','Requirements gathering','Scrum Master','Communication']},
+ {id:'ba',label:'Business Analyst',domain:'Product',kind:'general',titles:['business analyst','business systems analyst','functional analyst'],expect:['Business analysis','Requirements gathering','SQL','Excel','Process mapping','Stakeholder management','Jira','Power BI','Tableau','User stories','Gap analysis','Agile','Data analysis']},
+ {id:'proj',label:'Project / Program Manager',domain:'Product',kind:'general',titles:['project manager','program manager','technical program manager','delivery manager','pmo'],expect:['Project management','Agile','PMP','Stakeholder management','Risk management','Jira','MS Project','Budget management','Change management','Resource planning','Communication']},
+ /* Marketing */
+ {id:'dm',label:'Digital Marketing Manager',domain:'Marketing',kind:'general',titles:['digital marketing manager','digital marketing specialist','marketing manager','digital marketing executive'],expect:['Digital marketing','SEO','Paid search','Meta Ads','Google Analytics','Content marketing','Email marketing','Social media','Marketing automation','CRO','Marketing analytics','Campaign management','HubSpot','A/B testing']},
+ {id:'perf',label:'Performance Marketer',domain:'Marketing',kind:'general',titles:['performance marketer','performance marketing manager','paid media manager','ppc specialist','paid acquisition manager'],expect:['Performance marketing','Paid search','Meta Ads','LinkedIn Ads','Google Analytics','CRO','A/B testing','ROI analysis','Unit economics','Marketing attribution','Funnel optimization','Excel','SQL']},
+ {id:'seo',label:'SEO Specialist',domain:'Marketing',kind:'general',titles:['seo specialist','seo manager','seo analyst','seo executive'],expect:['SEO','Keyword research','Link building','Content marketing','Google Analytics','SEMrush','Ahrefs','Web performance','WordPress','HTML','Copywriting','Data analysis']},
+ {id:'pmm',label:'Product Marketing Manager',domain:'Marketing',kind:'general',titles:['product marketing manager','product marketer','pmm'],expect:['Product marketing','Go-to-market','Market research','Competitive analysis','Customer segmentation','Pricing strategy','Copywriting','Sales presentations','Storytelling','Stakeholder management','Content marketing']},
+ {id:'growth',label:'Growth Marketer',domain:'Marketing',kind:'general',titles:['growth marketer','growth manager','growth marketing manager','growth lead'],expect:['Growth marketing','A/B testing','Funnel optimization','SQL','Product analytics','Amplitude','Mixpanel','Unit economics','CRO','Email marketing','Marketing attribution']},
+ {id:'content-mkt',label:'Content Writer / Copywriter',domain:'Marketing',kind:'general',titles:['content writer','copywriter','content marketer','content marketing manager','content strategist'],expect:['Content writing','Copywriting','Content marketing','SEO','Editing','Social media','Storytelling','WordPress','Keyword research','Email marketing']},
+ {id:'social',label:'Social Media Manager',domain:'Marketing',kind:'general',titles:['social media manager','social media executive','community manager','social media specialist'],expect:['Social media','Content marketing','Copywriting','Community management','Influencer marketing','Canva','Video editing','Meta Ads','Marketing analytics','Campaign management']},
+ /* Sales & Customer */
+ {id:'ae',label:'Account Executive',domain:'Sales & Customer',kind:'general',titles:['account executive','sales executive','enterprise account executive','sales manager'],expect:['B2B sales','Enterprise sales','Pipeline management','Salesforce','Quota attainment','Prospecting','Consultative selling','Negotiation','Sales forecasting','MEDDIC','Sales presentations','CRM','Business development']},
+ {id:'sdr',label:'SDR / BDR',domain:'Sales & Customer',kind:'general',titles:['sales development representative','business development representative','sdr','bdr','inside sales'],expect:['Prospecting','Cold outreach','Lead generation','Salesforce','HubSpot','Salesloft','Outreach','LinkedIn Sales Navigator','CRM','Pipeline management','Communication']},
+ {id:'csm',label:'Customer Success Manager',domain:'Sales & Customer',kind:'general',titles:['customer success manager','customer success','client success manager'],expect:['Customer success','Customer retention','Customer onboarding','Upselling','Stakeholder management','NPS','CRM','Salesforce','SaaS','Escalation management','Communication']},
+ {id:'am',label:'Account Manager',domain:'Sales & Customer',kind:'general',titles:['account manager','key account manager','client relationship manager'],expect:['Key account management','Customer retention','Upselling','Negotiation','CRM','Salesforce','Stakeholder management','Sales forecasting','Communication']},
+ {id:'support',label:'Customer Support Specialist',domain:'Sales & Customer',kind:'general',titles:['customer support','support specialist','customer service representative','technical support engineer','support engineer'],expect:['Customer support','Technical support','Zendesk','Freshdesk','Intercom','Ticketing systems','CSAT','SLAs','Escalation management','Communication','Problem solving']},
+ /* Finance */
+ {id:'fa',label:'Financial Analyst',domain:'Finance',kind:'general',titles:['financial analyst','fp&a analyst','finance analyst','fp&a manager'],expect:['Financial modeling','FP&A','Excel','Variance analysis','Forecasting','Budgeting','Financial reporting','Power BI','SQL','Valuation','PowerPoint','Stakeholder management']},
+ {id:'acct',label:'Accountant',domain:'Finance',kind:'general',titles:['accountant','accounts executive','chartered accountant','staff accountant','senior accountant','accounting manager'],expect:['Accounting','General ledger','Reconciliation','Month-end close','Accounts payable','Accounts receivable','Taxation','GST','Tally','SAP','Excel','Financial reporting','GAAP','IFRS']},
+ {id:'ib',label:'Investment Banking Analyst',domain:'Finance',kind:'general',titles:['investment banking analyst','investment banking associate','m&a analyst','corporate finance analyst'],expect:['Financial modeling','Valuation','DCF','M&A','Due diligence','Excel','PowerPoint','Investment banking','Capital markets','Corporate finance']},
+ {id:'audit',label:'Auditor',domain:'Finance',kind:'general',titles:['auditor','internal auditor','audit associate','audit manager'],expect:['Auditing','Accounting','Risk management','Compliance','SOX','IFRS','GAAP','Excel','Financial reporting']},
+ /* People */
+ {id:'rec',label:'Recruiter / Talent Acquisition',domain:'People',kind:'general',titles:['recruiter','talent acquisition','technical recruiter','talent partner','sourcer'],expect:['Recruiting','Sourcing','Applicant tracking systems','Interviewing','Boolean search','LinkedIn Recruiter','Stakeholder management','Offer negotiation','Employer branding','Greenhouse','Workday']},
+ {id:'hrbp',label:'HR Business Partner',domain:'People',kind:'general',titles:['hr business partner','hrbp','hr manager','people partner','hr generalist'],expect:['HR business partnering','Employee relations','Performance management','Compensation and benefits','Employment law','Change management','Talent management','HRIS','Workforce planning','Employee engagement','Stakeholder management']},
+ {id:'ld',label:'Learning & Development',domain:'People',kind:'general',titles:['learning and development','l&d manager','training manager','instructional designer','learning designer'],expect:['Learning and development','Instructional design','Training delivery','E-learning','LMS','Curriculum design','Articulate Storyline','Storyboarding','Stakeholder management']},
+ /* Operations */
+ {id:'ops',label:'Operations Manager',domain:'Operations',kind:'general',titles:['operations manager','business operations','operations lead','operations executive','bizops'],expect:['Operations management','Process improvement','KPIs','SOPs','Vendor management','Budget management','Excel','Stakeholder management','Team leadership','Six Sigma','Root cause analysis']},
+ {id:'scm',label:'Supply Chain / Procurement',domain:'Operations',kind:'general',titles:['supply chain manager','supply chain analyst','procurement manager','logistics manager','purchase manager','buyer'],expect:['Supply chain management','Logistics','Procurement','Inventory management','Demand planning','Vendor management','ERP','SAP','Excel','Warehouse management']},
+ /* Other fields */
+ {id:'legal',label:'Legal Counsel',domain:'Other fields',kind:'general',titles:['legal counsel','corporate counsel','lawyer','legal associate','compliance officer'],expect:['Contract drafting','Contract negotiation','Compliance','Corporate law','Legal research','Data privacy','Intellectual property','GDPR','Litigation','Risk management']},
+ {id:'cra',label:'Clinical Research Associate',domain:'Other fields',kind:'general',titles:['clinical research associate','clinical research coordinator','clinical trial associate'],expect:['Clinical trials','Clinical research','Good Clinical Practice','Regulatory affairs','FDA','Pharmacovigilance','Communication']},
+ {id:'general',label:'Other role',domain:'Other fields',kind:'general',titles:[],expect:[]}
+];
+const DOMAINS=['Design','Engineering','Data & AI','Product','Marketing','Sales & Customer','Finance','People','Operations','Other fields'];
+const KW={pm:'pm',tpm:'pm',ae:'ae',csm:'csm',uxr:'uxr',ux:'ui ux',ui:'ui ux',fe:'fe web',be:'be server',fs:'swe',mle:'ml',ai:'genai',desmgr:'manager',rec:'hr',ld:'hr training',hrbp:'hr people'};
+ROLE_CATALOG.forEach(r=>{ r.kw=KW[r.id]||''; });
+const ROLES=Object.fromEntries(ROLE_CATALOG.map(r=>[r.id,r]));
+ROLE_CATALOG.forEach(r=>{ r.res=[r.label.toLowerCase(),...r.titles].map(t=>({len:t.length,re:new RegExp('(?<![a-z])'+reEsc(t)+'(?![a-z])','i')})); });
+function detectRole(jd){
+  for(const scope of [jd.slice(0,300),jd]){
+    let best=null;
+    for(const r of ROLE_CATALOG) for(const t of r.res){ if(t.re.test(scope) && (!best||t.len>best.len)) best={id:r.id,len:t.len}; }
+    if(best) return best.id;
+  }
+  return 'general';
+}
+function groupStatus(g,resume,R){
+  let occ=[]; for(const al of g.aliases) occ.push(...findAll(resume,al)); occ=dedupe(occ);
+  if(!occ.length) return {status:'missing'};
+  const ev=occ.find(o=>R.lines[lineAt(R.lines,o.i)].evidence);
+  if(ev) return {status:'backed',line:R.lines[lineAt(R.lines,ev.i)].text.trim()};
+  return {status:'listed'};
+}
+function expectations(role,resume,R,terms){
+  const cfg=ROLES[role]; if(!cfg||!cfg.expect.length) return null;
+  const inJD=new Set(terms.map(t=>t.key));
+  return cfg.expect.map(n=>BYNAME[n]).filter(Boolean).map(g=>Object.assign({name:g.name,key:g.key,inJD:inJD.has(g.key)},groupStatus(g,resume,R)));
+}
+const MON={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,sept:8,oct:9,nov:10,dec:11};
+const DR=/(?:(jan|feb|mar|apr|may|jun|jul|aug|sept|sep|oct|nov|dec)[a-z]*\.?\s*[’']?)?((?:19|20)\d{2})\s*(?:–|-|—|to|until)\s*(?:(jan|feb|mar|apr|may|jun|jul|aug|sept|sep|oct|nov|dec)[a-z]*\.?\s*[’']?)?((?:19|20)\d{2}|present|current|now|today|till date|ongoing)/gi;
+function resumeYears(R){
+  const now=new Date(); const nowM=now.getFullYear()*12+now.getMonth(); const iv=[];
+  for(const ln of R.lines){
+    if(R.hasEvidence && ln.type!=='evidence') continue;
+    DR.lastIndex=0; let m;
+    while((m=DR.exec(ln.text))){
+      const s=(+m[2])*12+(m[1]?MON[m[1].toLowerCase()]:0);
+      const e=/^\d/.test(m[4])?(+m[4])*12+(m[3]?MON[m[3].toLowerCase()]:11):nowM;
+      if(e>=s && e-s<600) iv.push([s,Math.min(e,nowM)]);
+    }
+  }
+  if(!iv.length) return null;
+  iv.sort((a,b)=>a[0]-b[0]); let total=0,[cs,ce]=iv[0];
+  for(const [s,e] of iv.slice(1)){ if(s<=ce){ ce=Math.max(ce,e); } else { total+=ce-cs; cs=s; ce=e; } }
+  total+=ce-cs; return Math.round(total/6)/2;
+}
+function jdYears(jd){
+  const re=/(\d{1,2})\s*\+?\s*(?:(?:-|–|to)\s*\d{1,2}\s*)?\+?\s*years?/gi; let m;
+  while((m=re.exec(jd))){ const after=jd.slice(m.index,m.index+90); if(/experience|design|engineer|product|professional|industry|building|shipping|working/i.test(after)) return +m[1]; }
+  return null;
+}
+function roleChecks(role,resume,jd,R,exp){
+  const c=[]; const push=(ok,label,msg)=>c.push({ok,label,msg});
+  const need=jdYears(jd), have=resumeYears(R);
+  if(need!==null && have!==null) push(have>=need,'Experience',`They want ${need}+ years. You show ~${have}.${have>=need?'':' Got freelance or projects? Add them, with dates.'}`);
+  else if(need!==null) push(false,'Experience',`They want ${need}+ years. We found no dates, so ATS can\'t count yours.`);
+  const bullets=R.lines.filter(l=>l.evidence && l.text.trim().length>35 && !DR.test(l.text)); DR.lastIndex=0;
+  const withNum=bullets.filter(l=>/\d/.test(l.text.replace(/\b(19|20)\d{2}\b/g,'')));
+  if(bullets.length) push(withNum.length/bullets.length>=0.35,'Impact',`${withNum.length} of ${bullets.length} bullets have numbers.${withNum.length/bullets.length<0.35?' Show results, not duties.':''}`);
+  const kind=(ROLES[role]||{}).kind||'general';
+  if(kind==='eng'){
+    const code=/(github\.com|gitlab\.com|bitbucket\.org|codepen\.io|kaggle\.com|huggingface\.co)/i.test(resume);
+    push(code,'Code link',code?'Found.':'None. Show the code, not just the claim.');
+  }
+  if(!['design','ux','deseng'].includes(kind)) return c;
+  const hosts=/(behance\.net|dribbble\.com|framer\.(website|site|ai|app)|read\.cv|notion\.site|webflow\.io|cargo\.site|carrd\.co|vercel\.app|github\.io|netlify\.app|squarespace\.com|wixsite\.com|bento\.me|contra\.com)/i;
+  const personal=[...resume.matchAll(/(?<![@\w.])(?:https?:\/\/)?(?:www\.)?([a-z0-9-]+)\.(design|me|io|co|com|in|site|studio|xyz|dev|art|work|page|website)\b/gi)].filter(m=>!/^(linkedin|gmail|github|google|yahoo|outlook|hotmail|icloud|email|mail)$/i.test(m[1]));
+  const hasPortfolio=hosts.test(resume)||/portfolio/i.test(resume)||personal.length>0;
+  push(hasPortfolio,'Portfolio',hasPortfolio?'Found.':'No link? For a designer, that\'s a dealbreaker.');
+  const collab=R.lines.some(l=>l.evidence && /\b(engineers?|engineering|developers?|PMs?|product managers?|researchers?|cross-functional|stakeholders?|product teams?)\b/.test(l.text));
+  push(collab,'Collaboration',collab?'You name your partners.':'Designing solo? Name the PMs and engineers.');
+  const shipped=R.lines.some(l=>l.evidence && (/\b(shipped|launched|released|delivered|rolled out|went live|in production|live)\b/i.test(l.text) || /\d+(\.\d+)?\s*%/.test(l.text)));
+  push(shipped,'Shipped work',shipped?'Real launches, real results.':'Nothing shipped? Say what launched.');
+  if(kind==='deseng'){
+    const code=/(github\.com|gitlab\.com|codepen\.io|codesandbox\.io|vercel\.app|netlify\.app|github\.io)/i.test(resume);
+    push(code,'Code link',code?'Found.':'No GitHub or live build. Show, don\'t tell.');
+    const designSide=['Visual design','Design systems','Figma','Prototyping','Animation','Interaction design','Motion design'];
+    const codeSide=['React','TypeScript','CSS','HTML','Storybook','Next.js','Tailwind','JavaScript'];
+    const count=names=>names.map(n=>BYNAME[n]).filter(Boolean).filter(g=>groupStatus(g,resume,R).status==='backed').length;
+    const d=count(designSide), k=count(codeSide);
+    push(d>0&&k>0,'Design and code',`${d} design, ${k} code.${d===0?' Where\'s the design?':k===0?' Where\'s the code?':' Balanced.'}`);
+  }
+  if(kind==='ux'){
+    const methods=['Usability testing','User interviews','Surveys','Card sorting','Journey mapping','Personas','Research synthesis','UX audits'].map(n=>BYNAME[n]).filter(g=>groupStatus(g,resume,R).status==='backed');
+    push(methods.length>=2,'Research methods',methods.length?`${methods.map(g=>g.name).join(', ')}.${methods.length<2?' One more, with the result.':''}`:'None named. Which methods did you actually run?');
+  }
+  return c;
+}
+
+/* ---------- Rendering ---------- */
+function priTag(t){ return t.pri===3?'<span class="tag req">Required</span>':t.pri===1?'<span class="tag">Nice to have</span>':''; }
+function termRow(t){
+  let d='';
+  if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
+  if(t.status==='listed') d=`Only in ${t.where}. Show it in a bullet.`;
+  if(t.status==='wording') d=`They say <q>${esc(t.jdWord)}</q>. You say <q>${t.resumeWords.map(esc).join('</q>, <q>')}</q>. Steal their word.`;
+  if(t.status==='backed') d=`<q>${esc(t.line.length>150?t.line.slice(0,150)+'…':t.line)}</q>`;
+  return `<div class="term" id="${esc(t.detailId||'')}" tabindex="-1"><div class="name">${esc(t.name)}<span class="tags">${priTag(t)}</span></div>
+  <button class="x" data-ignore="${esc(t.key)}" aria-label="Ignore ${esc(t.name)}">Not relevant</button>
+  <div class="detail">${d}</div></div>`;
+}
+function group(title,cls,hint,list,emptyMsg){
+  return `<section class="group"><h3><span class="mk ${cls}">${title}</span> <span class="hint">${list.length}</span></h3><p class="hint">${hint}</p>
+  ${list.length?list.map(termRow).join(''):`<div class="empty">${emptyMsg}</div>`}</section>`;
+}
+function highlight(text,terms){
+  const cls={backed:'mk-b',listed:'mk-l',wording:'mk-w'}; const ranges=[];
+  for(const t of terms){ if(cls[t.status]) for(const o of t.rOcc) ranges.push({i:o.i,e:o.i+o.len,c:cls[t.status]}); }
+  ranges.sort((a,b)=>a.i-b.i||b.e-a.e);
+  let out='',pos=0;
+  for(const r of ranges){ if(r.i<pos) continue; out+=esc(text.slice(pos,r.i))+`<span class="mk ${r.c}">${esc(text.slice(r.i,r.e))}</span>`; pos=r.e; }
+  return out+esc(text.slice(pos));
+}
+function resultsPage(panels,active='overview'){
+  const tabs=panels.map(p=>`<button type="button" class="result-tab" id="tab-${p.id}" role="tab" aria-selected="${p.id===active}" aria-controls="panel-${p.id}" tabindex="${p.id===active?'0':'-1'}" data-result-tab="${p.id}">${esc(p.label)}${p.count!==undefined?`<span class="result-count" aria-hidden="true">${p.count}</span>`:''}</button>`).join('');
+  const contents=panels.map(p=>`<section class="result-panel" id="panel-${p.id}" role="tabpanel" aria-labelledby="tab-${p.id}" tabindex="0"${p.id===active?'':' hidden'}>${p.content}</section>`).join('');
+  return `<div class="results-screen">
+    <div class="results-heading"><h1 tabindex="-1">Your resume check</h1><button type="button" class="back" id="editInputs" aria-label="Back to your resume and job description">← Edit details</button></div>
+    <div class="result-tabs" role="tablist" aria-label="Resume results">${tabs}</div>${contents}
+  </div>`;
+}
+function showResults(){
+  $('#top').classList.add('is-results');
+  window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
+function showEditor(){
+  $('#top').classList.remove('is-results');
+  $('#resume').focus({preventScroll:true});
+  window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+}
+let snackbarTimer;
+function showSnackbar(message){
+  const bar=$('#snackbar');
+  clearTimeout(snackbarTimer);
+  bar.textContent=message;
+  bar.classList.add('is-visible');
+  snackbarTimer=setTimeout(()=>{
+    bar.classList.remove('is-visible');
+    setTimeout(()=>{if(!bar.classList.contains('is-visible'))bar.textContent='';},250);
+  },4000);
+}
+let renderTicket=0;
+function renderWithLoader(label='Checking your resume…'){
+  if(!$('#resume').value.trim() || !$('#jd').value.trim()){render();return;}
+  const ticket=++renderTicket,box=$('#results'),run=$('#run');
+  clearToast();
+  run.disabled=true;run.setAttribute('aria-busy','true');run.textContent='Checking…';
+  box.setAttribute('aria-busy','true');box.className='show';
+  box.innerHTML=`<section class="processing-screen summary" role="status" aria-live="polite" aria-label="${esc(label)}">
+    <div class="processing-inner"><div class="processing-spinner" aria-hidden="true"></div><h1>${esc(label)}</h1>
+    <p class="hint">Matching your evidence against the job description.</p><div class="processing-lines" aria-hidden="true"><span></span><span></span><span></span></div></div></section>`;
+  showResults();
+  setTimeout(()=>{
+    if(ticket!==renderTicket)return;
+    try{render();}
+    catch(err){
+      box.innerHTML=resultsPage([{id:'overview',label:'Overview',content:'<section class="group summary"><h2>We couldn\'t complete the check</h2><p class="big">Your text is still here. Go back and try once more.</p></section>'}]);
+      bindAfter();showResults();showSnackbar('We couldn\'t complete the check. Your text is still here.');
+    }finally{
+      box.removeAttribute('aria-busy');run.disabled=false;run.removeAttribute('aria-busy');run.textContent='Check my resume';
+      requestAnimationFrame(()=>$('.results-heading h1')?.focus({preventScroll:true}));
+    }
+  },480);
+}
+let toastTimer;
+function clearToast(){
+  clearTimeout(toastTimer);
+  toastTimer=0;
+  $('#msg').textContent='';
+}
+function showToast(message){
+  clearToast();
+  $('#msg').textContent=message;
+  toastTimer=setTimeout(clearToast,4000);
+}
+function render(){
+  const resume=$('#resume').value,jd=$('#jd').value,box=$('#results');
+  clearToast();
+  if(!resume.trim()||!jd.trim()){showToast('Add your resume and job description to continue.');box.innerHTML='';return;}
+  const A=analyze(resume,jd),T=A.terms,sel=roleMode,role=sel==='auto'?detectRole(jd):sel;
+  const EXP=expectations(role,resume,A.R,T),RC=roleChecks(role,resume,jd,A.R,EXP);
+  const by=s=>T.filter(t=>t.status===s),b=by('backed'),l=by('listed'),w=by('wording'),m=by('missing');
+  const required=T.filter(t=>t.pri===3),nice=T.filter(t=>t.pri===1);
+  const reqProven=required.filter(t=>t.status==='backed').length;
+  const niceProven=nice.filter(t=>t.status==='backed').length;
+  T.forEach((t,i)=>{t.detailId='skill-detail-'+i;});
+  if(!T.length){
+    const content=`<section class="group summary"><h2>No skills found</h2><p class="big">We could not identify any skills in this job description. Try pasting the complete description.</p>${A.hidden?`<button class="link" id="reset">Show ${A.hidden} ignored term${A.hidden>1?'s':''}</button>`:''}</section>`;
+    box.className='';void box.offsetWidth;box.className='show';
+    box.innerHTML=resultsPage([{id:'overview',label:'Overview',content}]);bindAfter();showResults();return;
+  }
+  const statusClass={backed:'must-b',listed:'must-l',wording:'must-w',missing:'must-m'};
+  const statusName={backed:'Proven',listed:'Only listed',wording:'Different wording',missing:'Missing'};
+  const seg=(n,c,label)=>n?`<div style="flex:${n};background:var(${c})" title="${label}: ${n}">${n}</div>`:'';
+  const mustSegments=[...required].sort((a,b)=>({backed:0,listed:1,wording:2,missing:3}[a.status]-({backed:0,listed:1,wording:2,missing:3}[b.status])))
+    .map(t=>`<button type="button" class="must-segment ${statusClass[t.status]}" data-skill-target="${t.detailId}" aria-label="${esc(t.name)}: ${statusName[t.status]}. Show skill details" title="${esc(t.name)} — ${statusName[t.status]}"></button>`).join('');
+  const st=A.stuffing;
+  const stuffHtml=st.length?st.map(s=>typeof s==='string'?`<li><span class="status warn">Fix this</span><span>${esc(s)}</span></li>`:
+    `<li><span class="status warn">Fix this</span><span>Copy-paste caught: ${s.copied.map(p=>`<q>${esc(p)}</q>`).join(', ')}. Use your own words.</span></li>`).join(''):
+    `<li><span class="status ok">All good</span><span>No keyword stuffing or copied phrases found.</span></li>`;
+  const verdict=reqProven===required.length && required.length?'Flawless.':!required.length?'No must-haves.':reqProven/required.length>=.75?'Nearly there.':reqProven/required.length>=.4?'Work to do.':'Ouch.';
+  const overview=`<section class="summary must-have-summary">
+    <p class="must-label">Must-haves proven</p>
+    <div class="must-topline">
+      <p class="must-count" aria-label="${reqProven} of ${required.length} must-haves proven"><strong>${reqProven}</strong><span>/${required.length}</span></p>
+      <div class="must-verdict"><strong>${verdict}</strong><p class="hint">Not an ATS score.</p></div>
+    </div>
+    <div class="must-segment-wrap">
+      ${required.length?`<div class="must-have-bar" role="group" aria-label="Must-have skills, ordered from proven to missing">${mustSegments}</div>`:`<p class="must-empty">No must-have skills were called out in this job description.</p>`}
+    </div>
+    <p class="nice-line">Nice-to-haves: ${niceProven} of ${nice.length} proven.</p>
+    <div class="all-skills">
+      <h2>All ${T.length} skills in the job description</h2>
+      <div class="bar" role="img" aria-label="All ${T.length} skills in the job description: ${b.length} backed, ${l.length} only listed, ${w.length} different wording, ${m.length} missing">
+        ${seg(b.length,'--b','Backed')}${seg(l.length,'--l','Only listed')}${seg(w.length,'--w','Different wording')}${seg(m.length,'--m','Missing')}
+      </div>
+      <div class="legend" aria-label="Colour key"><span><span class="mk mk-b">Backed</span> proven</span><span><span class="mk mk-l">Only listed</span> named, not demonstrated</span><span><span class="mk mk-w">Different wording</span> same idea, different language</span><span><span class="mk mk-m">Missing</span> not found</span></div>
+    </div>
+    ${A.hidden?`<p class="hint" style="margin-top:.8rem">${A.hidden} ignored. <button class="link" id="reset">Restore</button></p>`:''}
+  </section>`;
+  const skills=`<div class="cols">
+    ${group('Missing','mk-m','Requested in the job description, but not found in your resume.',m,'Nothing missing. Every requested skill appears in your resume.')}
+    ${group('Only listed','mk-l','Named in your resume, but not backed by an example.',l,'Every listed skill is backed by evidence.')}
+    ${group('Different wording','mk-w','The skill matches, but the wording differs from the job description.',w,'Your wording already matches the job description.')}
+    ${group('Backed','mk-b','Supported by evidence from your experience.',b,'No skills are backed by evidence yet. Start with the must-haves.')}
+  </div>`;
+  const roleContent=roleHtml(role,EXP,RC);
+  const checks=`<div class="cols">
+    <section class="group"><h2>Keyword quality</h2><ul class="checks">${stuffHtml}</ul></section>
+    <section class="group"><h2>Can ATS read it?</h2><ul class="checks">${A.parse.map(p=>`<li><span class="status ${p.ok?'ok':'warn'}">${p.ok?'All good':'Fix this'}</span><span><strong>${p.label}.</strong> ${esc(p.msg)}</span></li>`).join('')}</ul></section>
+  </div>`;
+  const ats=`<section class="group section"><h2>What ATS sees</h2><p class="hint">This is the text an ATS is likely to read. If it looks jumbled here, simplify the source file.</p><div class="ats-wrap"><pre class="ats">${highlight(resume,T)}</pre></div></section>`;
+  const panels=[{id:'overview',label:'Overview',content:overview},{id:'skills',label:'Skill match',count:T.length,content:skills}];
+  if(roleContent)panels.push({id:'role',label:'Role insights',content:`<div class="role-results">${roleContent}</div>`});
+  panels.push({id:'checks',label:'Resume checks',content:checks},{id:'ats',label:'ATS view',content:ats});
+  box.className='';void box.offsetWidth;box.className='show';
+  box.innerHTML=resultsPage(panels);bindAfter();showResults();
+}
+function roleHtml(role,EXP,RC){
+  const cls={backed:'mk-b',listed:'mk-l',missing:'mk-m'}; const word={backed:'backed',listed:'only listed',missing:'missing'};
+  const expHtml = EXP ? `<section class="group"><h2>${ROLES[role].label} starter pack</h2>
+    <p class="hint">Common expectations for this role. • = also requested in this job description.</p>
+    <div class="chips">${EXP.map(e=>`<span class="chip mk ${cls[e.status]}" title="${esc(e.name)}: ${word[e.status]}${e.line?' ('+esc(e.line.slice(0,120))+')':''}">${esc(e.name)}${e.inJD?' <span aria-label="also requested in this job description">•</span>':''}<span class="sr">, ${word[e.status]}</span></span>`).join('')}</div>
+    ${(()=>{const miss=EXP.filter(e=>e.status==='missing'),lst=EXP.filter(e=>e.status==='listed');
+      return `<p class="hint" style="margin-top:.9rem">${miss.length?`Missing: ${miss.map(e=>esc(e.name)).join(', ')}.`:'Everything covered.'}${lst.length?` Unproven: ${lst.map(e=>esc(e.name)).join(', ')}.`:''}</p>`})()}
+  </section>` : '';
+  const rcHtml = RC.length ? `<section class="group"><h2>Role-specific checks</h2><ul class="checks">${RC.map(p=>`<li><span class="status ${p.ok?'ok':'warn'}">${p.ok?'All good':'Fix this'}</span><span><strong>${p.label}.</strong> ${esc(p.msg)}</span></li>`).join('')}</ul></section>` : '';
+  if(!expHtml && !rcHtml) return '';
+  return `<div class="cols">${expHtml}${rcHtml}</div>`;
+}
+function bindAfter(){
+  document.querySelectorAll('[data-ignore]').forEach(btn=>btn.addEventListener('click',()=>{ ignored.add(btn.dataset.ignore); renderWithLoader('Refreshing your results…'); }));
+  const reset=$('#reset'); if(reset) reset.addEventListener('click',()=>{ ignored.clear(); renderWithLoader('Restoring ignored skills…'); });
+  const back=$('#editInputs');if(back)back.addEventListener('click',showEditor);
+  const tabs=[...document.querySelectorAll('[data-result-tab]')];
+  function activate(tab,focus=false){
+    tabs.forEach(t=>{const selected=t===tab;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;
+      const panel=document.getElementById(t.getAttribute('aria-controls'));if(panel)panel.hidden=!selected;});
+    if(focus)tab.focus();
+  }
+  document.querySelectorAll('[data-skill-target]').forEach(segment=>segment.addEventListener('click',()=>{
+    const tab=tabs.find(t=>t.dataset.resultTab==='skills');
+    if(tab)activate(tab);
+    const target=document.getElementById(segment.dataset.skillTarget);
+    if(!target)return;
+    target.focus({preventScroll:true});
+    target.scrollIntoView({block:'center',behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+    target.classList.remove('skill-flash');void target.offsetWidth;target.classList.add('skill-flash');
+    setTimeout(()=>target.classList.remove('skill-flash'),1900);
+  }));
+  tabs.forEach((tab,index)=>{
+    tab.addEventListener('click',()=>activate(tab));
+    tab.addEventListener('keydown',e=>{
+      let next=index;
+      if(e.key==='ArrowRight')next=(index+1)%tabs.length;
+      else if(e.key==='ArrowLeft')next=(index-1+tabs.length)%tabs.length;
+      else if(e.key==='Home')next=0;
+      else if(e.key==='End')next=tabs.length-1;
+      else return;
+      e.preventDefault();activate(tabs[next],true);
+    });
+  });
+}
+
+
+/* ---------- Role picker (searchable combobox grouped by domain) ---------- */
+let roleMode='auto', domainFilter='All', activeIdx=-1, visibleOpts=[], pickerOpen=false;
+const rInput=$('#roleInput'), rPop=$('#rpPop'), rList=$('#roleList'), rDomains=$('#rpDomains');
+function roleText(id){ return id==='auto'?'Detect from job description':ROLES[id].label; }
+function hl(text,q){
+  if(!q) return esc(text);
+  const toks=q.toLowerCase().split(/\s+/).filter(Boolean); const low=text.toLowerCase(); const marks=[];
+  toks.forEach(t=>{ const i=low.indexOf(t); if(i>=0) marks.push([i,i+t.length]); });
+  marks.sort((a,b)=>a[0]-b[0]); let out='',pos=0;
+  for(const [a,b] of marks){ if(a<pos) continue; out+=esc(text.slice(pos,a))+'<mark>'+esc(text.slice(a,b))+'</mark>'; pos=b; }
+  return out+esc(text.slice(pos));
+}
+function scoreRole(r,q){
+  if(!q) return 1;
+  const toks=q.toLowerCase().split(/\s+/).filter(Boolean); let total=0;
+  const label=r.label.toLowerCase(), titles=r.titles.join(' | ')+' | '+r.kw, dom=r.domain.toLowerCase(), skills=r.expect.join(' | ').toLowerCase();
+  for(const t of toks){
+    const e=reEsc(t), word=new RegExp('(^|[\\s/(|&-])'+e+'($|[\\s/)|&-])'), start=new RegExp('(^|[\\s/(|&-])'+e);
+    const has=f=> t.length<4 ? start.test(f) : f.includes(t);
+    let sc=0;
+    if(word.test(label)) sc=10; else if(start.test(label)) sc=8; else if(t.length>=4 && label.includes(t)) sc=7;
+    else if(has(dom)) sc=6; else if(has(titles)) sc=5; else if(has(skills)) sc=2;
+    if(!sc) return 0; total+=sc;
+  }
+  return total;
+}
+function matchedSkill(r,q){
+  if(!q) return '';
+  const toks=q.toLowerCase().split(/\s+/).filter(Boolean);
+  if(toks.every(t=>r.label.toLowerCase().includes(t)||r.titles.join(' ').includes(t)||r.domain.toLowerCase().includes(t))) return '';
+  const hit=r.expect.filter(e=>toks.some(t=>e.toLowerCase().includes(t)));
+  return hit.length?'Usually asks for '+hit.slice(0,3).join(', '):'';
+}
+function renderDomains(){
+  rDomains.innerHTML=['All',...DOMAINS].map(d=>`<button type="button" data-dom="${esc(d)}" aria-pressed="${d===domainFilter}">${esc(d)}</button>`).join('');
+  rDomains.querySelectorAll('button').forEach(b=>{
+    b.addEventListener('mousedown',e=>e.preventDefault());
+    b.addEventListener('click',()=>{ domainFilter=b.dataset.dom; renderDomains(); renderList(); rInput.focus(); });
+  });
+}
+function renderList(){
+  const q=rInput.value.trim(); let html=''; visibleOpts=[];
+  const pool=ROLE_CATALOG.filter(r=>domainFilter==='All'||r.domain===domainFilter);
+  const addOpt=(id,name,sub,dom)=>{
+    const i=visibleOpts.length; visibleOpts.push(id);
+    html+=`<li class="rp-opt" role="option" id="ro-${id}" data-id="${id}" data-i="${i}" aria-selected="${roleMode===id}"><span class="rp-name">${name}</span>${dom?`<span class="rp-dom">${esc(dom)}</span>`:''}${sub?`<span class="rp-sub">${sub}</span>`:''}</li>`;
+  };
+  if(!q && domainFilter==='All'){
+    addOpt('auto','Detect from job description','We will identify the role for you.','');
+  }
+  if(q){
+    const ranked=pool.map(r=>({r,s:scoreRole(r,q)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s||ROLE_CATALOG.indexOf(a.r)-ROLE_CATALOG.indexOf(b.r));
+    ranked.forEach(({r})=>addOpt(r.id,hl(r.label,q),esc(matchedSkill(r,q)||r.titles.slice(0,3).join(', ')),domainFilter==='All'?r.domain:''));
+  } else {
+    for(const d of DOMAINS){
+      const rs=pool.filter(r=>r.domain===d); if(!rs.length) continue;
+      html+=`<li class="rp-group" role="presentation">${esc(d)}</li>`;
+      rs.forEach(r=>addOpt(r.id,esc(r.label),esc(r.expect.slice(0,4).join(', ')),''));
+    }
+  }
+  if(!visibleOpts.length) html=`<li class="rp-empty" role="presentation">No roles match “${esc(q)}”${domainFilter!=='All'?` in ${esc(domainFilter)}`:''}. Try “design” or “data”.</li>`;
+  rList.innerHTML=html; rList.scrollTop=0;
+  const n=visibleOpts.filter(x=>x!=='auto').length;
+  $('#rpCount').textContent=`${n} role${n===1?'':'s'}${domainFilter!=='All'?' in '+domainFilter:''}${q?' matching “'+q+'”':''}. Search by title, domain or skill.`;
+  rList.querySelectorAll('.rp-opt').forEach(li=>{
+    li.addEventListener('mousedown',e=>e.preventDefault());
+    li.addEventListener('click',()=>{ setRole(li.dataset.id); closePicker(); });
+    li.addEventListener('mousemove',()=>setActive(+li.dataset.i,false));
+  });
+  const cur=visibleOpts.indexOf(roleMode);
+  setActive(q?0:(cur>=0?cur:0),!q);
+}
+function setActive(i,scroll=true){
+  if(!visibleOpts.length){ activeIdx=-1; rInput.removeAttribute('aria-activedescendant'); return; }
+  activeIdx=Math.max(0,Math.min(i,visibleOpts.length-1));
+  rList.querySelectorAll('.rp-opt').forEach(li=>li.classList.toggle('active',+li.dataset.i===activeIdx));
+  const el=$('#ro-'+CSS.escape(visibleOpts[activeIdx]));
+  rInput.setAttribute('aria-activedescendant',el.id);
+  if(scroll) el.scrollIntoView({block:'nearest'});
+}
+function openPicker(){
+  if(pickerOpen) return; pickerOpen=true;
+  rPop.hidden=false; rInput.setAttribute('aria-expanded','true');
+  rInput.placeholder=roleText(roleMode); rInput.value='';
+  renderDomains(); renderList();
+}
+function closePicker(){
+  if(!pickerOpen) return; pickerOpen=false;
+  rPop.hidden=true; rInput.setAttribute('aria-expanded','false'); rInput.removeAttribute('aria-activedescendant');
+  rInput.value=roleText(roleMode); rInput.placeholder='';
+}
+function updateRoleHint(){
+  const h=$('#roleHint'), jd=$('#jd').value.trim();
+  $('#roleReset').hidden = roleMode==='auto';
+  if(roleMode!=='auto'){ const r=ROLES[roleMode]; h.textContent = r.id==='general' ? 'Using general resume checks.' : `Selected role: ${r.label}.`; return; }
+  if(!jd){ h.textContent='We will detect the role from the job description. Or choose one.'; return; }
+  const d=detectRole(jd);
+  h.textContent = d==='general' ? 'We could not detect the role. Choose one for more relevant checks.' : `Detected role: ${ROLES[d].label}. Change it if needed.`;
+}
+function setRole(id){
+  roleMode=id; if(!pickerOpen) rInput.value=roleText(id);
+  updateRoleHint();
+  if($('#top').classList.contains('is-results') && $('#results').innerHTML.trim()) renderWithLoader('Refreshing role insights…');
+}
+rInput.addEventListener('focus',openPicker);
+rInput.addEventListener('click',openPicker);
+rInput.addEventListener('input',()=>{ if(!pickerOpen){ const v=rInput.value; openPicker(); rInput.value=v; } renderList(); });
+rInput.addEventListener('keydown',e=>{
+  if(!pickerOpen && e.key.length===1 && !e.ctrlKey && !e.metaKey && !e.altKey){ openPicker(); }
+  if(e.key==='ArrowDown'){ e.preventDefault(); if(!pickerOpen) openPicker(); else setActive(activeIdx+1); }
+  else if(e.key==='ArrowUp'){ e.preventDefault(); if(pickerOpen) setActive(activeIdx-1); }
+  else if(e.key==='Home' && pickerOpen && !rInput.value){ e.preventDefault(); setActive(0); }
+  else if(e.key==='End' && pickerOpen && !rInput.value){ e.preventDefault(); setActive(visibleOpts.length-1); }
+  else if(e.key==='Enter'){ if(pickerOpen && activeIdx>=0){ e.preventDefault(); setRole(visibleOpts[activeIdx]); closePicker(); } }
+  else if(e.key==='Escape'){ if(pickerOpen){ e.preventDefault(); closePicker(); } }
+  else if(e.key==='Tab'){ closePicker(); }
+});
+rInput.addEventListener('blur',()=>setTimeout(()=>{ if(!$('#rp').contains(document.activeElement)) closePicker(); },0));
+document.addEventListener('mousedown',e=>{ if(pickerOpen && !$('#rp').contains(e.target)) { closePicker(); rInput.blur(); } });
+$('#roleReset').addEventListener('click',()=>{ setRole('auto'); });
+let hintTimer; $('#jd').addEventListener('input',()=>{ clearTimeout(hintTimer); hintTimer=setTimeout(updateRoleHint,250); });
+updateRoleHint();
+
+
+/* ---------- Hover tilt: stays tilted until the pointer leaves the element's original footprint ---------- */
+(function(){
+  if(!window.matchMedia || !matchMedia('(hover:hover)').matches) return;
+  const SEL='.sticker,.target,label.title,.rp-opt mark';
+  let tilted=null, rect=null;
+  const untilt=()=>{ if(tilted){ tilted.classList.remove('is-tilted'); tilted=null; rect=null; } };
+  document.addEventListener('pointerover',e=>{
+    if(e.pointerType && e.pointerType!=='mouse') return;
+    const el=e.target.closest && e.target.closest(SEL);
+    if(!el || el===tilted) return;
+    untilt(); rect=el.getBoundingClientRect(); tilted=el; el.classList.add('is-tilted');
+  });
+  document.addEventListener('pointermove',e=>{
+    if(!tilted){
+      if(e.pointerType && e.pointerType!=='mouse') return;
+      const el=e.target.closest && e.target.closest(SEL);
+      if(el){ rect=el.getBoundingClientRect(); tilted=el; el.classList.add('is-tilted'); }
+      return;
+    }
+    if(!tilted.isConnected){ untilt(); return; }
+    const inside=e.clientX>=rect.left && e.clientX<=rect.right && e.clientY>=rect.top && e.clientY<=rect.bottom;
+    if(!inside && !tilted.contains(e.target)) untilt();
+  });
+  document.documentElement.addEventListener('pointerleave',untilt);
+  window.addEventListener('scroll',untilt,{passive:true});
+  window.addEventListener('blur',untilt);
+})();
+
+/* ---------- File reading ---------- */
+async function readPdf(buf){
+  if(!window.pdfjsLib) throw new Error('The PDF reader is unavailable. Paste the text instead');
+  pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  const pdf=await pdfjsLib.getDocument({data:buf}).promise; let out='';
+  for(let p=1;p<=pdf.numPages;p++){
+    const page=await pdf.getPage(p); const tc=await page.getTextContent(); let lastY=null;
+    for(const it of tc.items){
+      const y=it.transform?it.transform[5]:null;
+      if(lastY!==null && y!==null && Math.abs(y-lastY)>2 && !out.endsWith('\n')) out+='\n';
+      out+=it.str; if(it.hasEOL) out+='\n'; if(y!==null) lastY=y;
+    }
+    out+='\n\n';
+  }
+  return out.replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+async function readAnyFile(f){
+  const name=f.name||'file';
+  if(/\.doc$/i.test(name)) throw new Error('Old .doc files are not supported. Save it as .docx or PDF');
+  if(!/\.(pdf|docx|txt|md|text)$/i.test(name) && !/^(text\/|application\/pdf)/.test(f.type)) throw new Error('Use a PDF, DOCX, TXT, or MD file');
+  if(f.size>15*1024*1024) throw new Error('The file is over the 15 MB limit');
+  let text='';
+  if(/\.pdf$/i.test(name)||f.type==='application/pdf') text=await readPdf(await f.arrayBuffer());
+  else if(/\.docx$/i.test(name)){ if(!window.mammoth) throw new Error('The DOCX reader is unavailable. Paste the text instead'); text=(await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()})).value; }
+  else text=await f.text();
+  text=text.replace(/\r\n?/g,'\n').replace(/\u00a0/g,' ').trim();
+  if(!text) throw new Error('No readable text was found. If this is a scanned file, paste the text instead');
+  return text;
+}
+const UPLOADS={
+  resume:{area:'#resume',status:'#fileStatus',ok:n=>`${n} added. Your resume is ready to check.`},
+  jd:{area:'#jd',status:'#jdStatus',ok:n=>`${n} added. Your job description is ready.`}
+};
+async function loadInto(which,f){
+  const u=UPLOADS[which],st=$(u.status),input=$(which==='resume'?'#file':'#jdFile'),control=input.closest('.file-btn');
+  input.disabled=true;control.classList.add('is-processing');control.setAttribute('aria-busy','true');
+  st.textContent=`Reading ${f.name}… This may take a moment.`;
+  try{
+    const text=await readAnyFile(f);
+    $(u.area).value=text; updateClear();
+    st.textContent=u.ok(f.name);
+    showSnackbar(`${which==='resume'?'Resume':'Job description'} added from ${f.name}.`);
+    if(which==='jd') updateRoleHint();
+    if($('#top').classList.contains('is-results') && $('#results').innerHTML.trim() && $('#resume').value.trim() && $('#jd').value.trim()) renderWithLoader('Refreshing your results…');
+  }catch(err){
+    st.textContent=`Could not read ${f.name}. ${err.message}.`;
+    showSnackbar(`Could not add ${f.name}. Check the file and try again.`);
+  }finally{
+    input.disabled=false;control.classList.remove('is-processing');control.removeAttribute('aria-busy');
+  }
+}
+[['#file','resume'],['#jdFile','jd']].forEach(([sel,which])=>{
+  const input=$(sel);
+  input.addEventListener('change',async e=>{
+    const f=e.target.files[0];
+    try{if(f)await loadInto(which,f);}
+    finally{e.target.value='';e.target.blur();}
+  });
+  input.addEventListener('cancel',e=>e.target.blur());
+});
+document.querySelectorAll('.pane').forEach(pane=>{
+  const which=pane.querySelector('#jd')?'jd':'resume'; let depth=0;
+  pane.addEventListener('dragenter',e=>{ if(![...(e.dataTransfer?.types||[])].includes('Files')) return; e.preventDefault(); depth++; pane.classList.add('dropping'); });
+  pane.addEventListener('dragover',e=>{ if([...(e.dataTransfer?.types||[])].includes('Files')){ e.preventDefault(); e.dataTransfer.dropEffect='copy'; } });
+  pane.addEventListener('dragleave',()=>{ depth=Math.max(0,depth-1); if(!depth) pane.classList.remove('dropping'); });
+  pane.addEventListener('drop',e=>{ const f=e.dataTransfer?.files?.[0]; if(!f) return; e.preventDefault(); depth=0; pane.classList.remove('dropping'); loadInto(which,f); });
+});
+
+/* ---------- Sample ---------- */
+const SAMPLE_JD=`Senior Backend Engineer, Payments Platform
+
+About the role
+You'll design and build the services that move money for millions of users, working closely with product, data and SRE teams.
+
+What you'll do
+- Design, build and operate microservices in Go and Python
+- Own REST APIs used by web and mobile clients
+- Improve reliability and observability of our Kafka-based event pipeline
+- Mentor engineers and lead design reviews
+
+Requirements
+- 5+ years of backend development experience
+- Strong experience with Python or Golang
+- Production experience with PostgreSQL and Redis
+- Hands-on experience with Kubernetes and AWS
+- Experience building CI/CD pipelines
+- Solid understanding of system design and distributed systems
+- Clear written and verbal communication
+
+Nice to have
+- Terraform or other infrastructure-as-code tools
+- GraphQL
+- Experience with Datadog or Prometheus`;
+const SAMPLE_RESUME=`Priya Sharma
+priya.sharma@email.com | +91 98765 43210 | linkedin.com/in/priyasharma
+
+Summary
+Backend engineer with 6 years of experience building scalable systems. Passionate about distributed systems and mentoring.
+
+Skills
+Python, Postgres, Redis, Docker, Kubernetes, AWS, Kafka, Jenkins, Terraform, Git, Linux
+
+Experience
+Software Engineer II, FinCore Technologies (Jan 2021 – Present)
+- Built and operated 12 Python microservices handling 4M payment events per day on AWS
+- Designed REST APIs for merchant onboarding used by web and mobile clients
+- Cut p95 latency by 38% by redesigning Postgres indexes and adding Redis caching
+- Led a team of 4 engineers and ran weekly design reviews
+- Improve reliability and observability of our Kafka-based event pipeline
+
+Software Engineer, Brightcart (Jul 2018 – Dec 2020)
+- Moved deployments from manual scripts to Jenkins pipelines, cutting release time from 2 days to 3 hours
+- Built order-service APIs in Python and Django
+
+Education
+B.Tech, Computer Science, 2018`;
+const SAMPLE_DJD=`Senior Product Designer, Payments
+
+About the role
+You'll own design end-to-end for checkout and payouts, from problem framing to shipped product, working closely with product managers and engineers.
+
+What you'll do
+- Lead product discovery with PMs and run user research and usability testing
+- Turn insights into user flows, wireframes and high-fidelity prototypes in Figma
+- Contribute to and evolve our design system
+- Partner with engineers on design QA and handoff
+- Use data and A/B testing to measure the impact of your work
+
+Requirements
+- 5+ years of product design experience shipping web and mobile apps
+- A portfolio that shows strong craft, interaction design and systems thinking
+- Experience with information architecture for complex workflows
+- Strong visual design and prototyping skills
+- Clear communication and stakeholder management
+
+Nice to have
+- Experience prototyping in code (React) or with Framer
+- Motion design and microinteractions
+- Accessibility (WCAG) knowledge`;
+const SAMPLE_DRESUME=`Aarav Mehta
+aarav.design@gmail.com | +91 99887 76655 | aaravmehta.framer.website
+
+Summary
+Product designer with 6 years of experience in fintech. Skilled in Figma, design systems, user research and prototyping.
+
+Skills
+Figma, FigJam, ProtoPie, Design Systems, Wireframing, Prototyping, User Research, Usability Testing, Accessibility, Miro
+
+Experience
+Senior Product Designer, PayNest (Mar 2022 – Present)
+- Redesigned the checkout flow end-to-end with PMs and engineers, lifting conversion by 14%
+- Ran 20+ usability tests and customer interviews to reshape the merchant onboarding journey
+- Built and maintained the PayNest design system (120+ components) used by 4 product squads
+- Partnered with engineering on design QA and handoff, cutting UI bugs at release by 30%
+
+Product Designer, Shoply (Jun 2019 – Feb 2022)
+- Designed the mobile app for iOS and Android, from wireframes to high-fidelity mockups
+- Created user flows and information architecture for a new seller dashboard
+
+Education
+B.Des, Interaction Design, 2019`;
+$('#sampleDesign').addEventListener('click',()=>{ $('#resume').value=SAMPLE_DRESUME; $('#jd').value=SAMPLE_DJD; updateClear(); setRole('auto'); ignored.clear(); showSnackbar('Product designer example added.'); renderWithLoader('Checking the product designer example…'); });
+$('#sample').addEventListener('click',()=>{ $('#resume').value=SAMPLE_RESUME; $('#jd').value=SAMPLE_JD; updateClear(); setRole('auto'); ignored.clear(); showSnackbar('Software engineer example added.'); renderWithLoader('Checking the software engineer example…'); });
+function updateClear(){ $('#clear').hidden = !($('#resume').value.trim() || $('#jd').value.trim()); }
+['#resume','#jd'].forEach(sel=>$(sel).addEventListener('input',updateClear));
+$('#clear').addEventListener('click',()=>{ $('#top').classList.remove('is-results');$('#resume').value=''; $('#jd').value=''; $('#results').innerHTML=''; clearToast(); ignored.clear(); updateRoleHint(); updateClear(); $('#resume').focus(); });
+$('#run').addEventListener('click',()=>{ ignored.clear(); renderWithLoader(); });
+})();
+</script>
+
+
+<script>
+/* ---------- Lime comet with lemon-yellow / beige fading afterglow ---------- */
+(function(){
+  'use strict';
+  const canvas=document.getElementById('cursorTrail');
+  const ctx=canvas && canvas.getContext('2d');
+  const glowCanvas=document.getElementById('cursorGlow');
+  const glowCtx=glowCanvas && glowCanvas.getContext('2d');
+  const cursorCanvas=document.getElementById('cometCursor');
+  const cursorCtx=cursorCanvas && cursorCanvas.getContext('2d');
+  if(!ctx || !glowCtx || !cursorCtx) return;
+  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const token=getComputedStyle(document.documentElement).getPropertyValue('--lime').trim();
+  const hex=/^#([\da-f]{6})$/i.exec(token);
+  const rgb=hex ? [0,2,4].map(i=>parseInt(hex[1].slice(i,i+2),16)) : [200,245,59];
+  const color=(a,heat=0)=>'rgba('+rgb.map(c=>Math.round(c+(255-c)*heat)).join(',')+','+a+')';
+  const LIFE=900, FADE=1050, MAX_POINTS=160;
+  // Receding light warms from lime to lemon yellow to beige and loses opacity.
+  const coolingPalette=[rgb,[255,247,109],[232,220,192]];
+  function trailColor(alpha,age,heat=0){
+    const progress=Math.max(0,Math.min(1,age*1.45))*2;
+    const index=Math.min(1,Math.floor(progress));
+    const fraction=progress-index;
+    const mix=fraction*fraction*(3-2*fraction);
+    const channels=coolingPalette[index].map((c,i)=>{
+      const cooled=c+(coolingPalette[index+1][i]-c)*mix;
+      return Math.round(cooled+(255-cooled)*heat);
+    });
+    const opacity=alpha*Math.pow(1-Math.max(0,Math.min(1,age)),0.65);
+    return 'rgba('+channels.join(',')+','+opacity+')';
+  }
+  const recession=()=>Math.min(1,Math.max(0,(clock-lastMove)/FADE));
+  const lightAge=p=>Math.max(recession(),Math.min(1,(clock-p.t)/LIFE)*0.8);
+
+  let width=0,height=0,frame=0,lastMove=0,clock=0;
+  let target=null,head=null,history=[],sparks=[],travel=0;
+  let angle=0,speed=0,mouseCursor=false;
+
+  function stop(){
+    cancelAnimationFrame(frame); frame=0;
+    target=head=null; history=[]; sparks=[]; travel=0; clock=0; speed=0;
+    document.documentElement.classList.remove('comet-active');
+    cursorCtx.clearRect(0,0,width,height);
+    ctx.clearRect(0,0,width,height);
+    glowCtx.clearRect(0,0,width,height);
+  }
+  function resize(){
+    stop();
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    width=window.innerWidth; height=window.innerHeight;
+    canvas.width=Math.round(width*dpr); canvas.height=Math.round(height*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    glowCanvas.width=canvas.width;glowCanvas.height=canvas.height;
+    glowCtx.setTransform(dpr,0,0,dpr,0,0);
+    cursorCanvas.width=canvas.width;cursorCanvas.height=canvas.height;
+    cursorCtx.setTransform(dpr,0,0,dpr,0,0);
+  }
+  function move(e){
+    if(motion.matches || document.hidden || e.isPrimary===false) return;
+    if(e.pointerType==='touch' && !e.buttons) return;
+    const now=performance.now(), x=e.clientX,y=e.clientY;
+    if(target && Math.hypot(x-target.x,y-target.y)<0.4) return;
+    if(!head || now-lastMove>=FADE){
+      head={x,y}; history=[{x,y,t:now}]; sparks=[];
+    }
+    target={x,y}; lastMove=now;
+    mouseCursor=e.pointerType==='mouse' || e.pointerType==='pen';
+    if(!frame){clock=now;frame=requestAnimationFrame(draw);}
+  }
+  function update(t,dt){
+    const px=head.x,py=head.y;
+    const follow=1-Math.exp(-dt/24);
+    head.x+=(target.x-head.x)*follow;head.y+=(target.y-head.y)*follow;
+    const dx=head.x-px,dy=head.y-py,dist=Math.hypot(dx,dy);
+    const blend=1-Math.exp(-dt/55);
+    speed+=(Math.min(2.2,dist/Math.max(dt,1))-speed)*blend;
+    if(dist>0.3){
+      const desired=Math.atan2(dy,dx);
+      angle+=Math.atan2(Math.sin(desired-angle),Math.cos(desired-angle))*(1-Math.exp(-dt/28));
+    }
+    const last=history[history.length-1];
+    if(!last || Math.hypot(head.x-last.x,head.y-last.y)>0.6){
+      // Spatial resampling fills fast sweeps, independent of mouse polling rate.
+      const steps=Math.min(24,Math.max(1,Math.ceil(dist/5)));
+      for(let i=1;i<=steps;i++)history.push({x:px+dx*i/steps,y:py+dy*i/steps,t:t-dt+dt*i/steps});
+      if(history.length>MAX_POINTS)history.splice(0,history.length-MAX_POINTS);
+      travel+=dist;
+      if(travel>19 && dist>0){
+        travel%=19;
+        const spread=(Math.random()-0.5)*15;
+        sparks.push({x:head.x-dy/dist*spread,y:head.y+dx/dist*spread,
+          vx:-dx/Math.max(dt,1)*0.45+(Math.random()-0.5)*0.6,
+          vy:-dy/Math.max(dt,1)*0.45+(Math.random()-0.5)*0.6,t,r:0.45+Math.random()*0.65});
+        if(sparks.length>32)sparks.shift();
+      }
+    }
+    const scale=dt/(1000/60);
+    sparks.forEach(p=>{p.x+=p.vx*scale;p.y+=p.vy*scale;p.vx*=Math.pow(0.97,scale);p.vy*=Math.pow(0.97,scale);});
+  }
+  function smoothPath(points, first){
+    if(first)ctx.moveTo(points[0].x,points[0].y);
+    else ctx.lineTo(points[0].x,points[0].y);
+    // Shared cubic tangents join every segment without corners or flat ends.
+    for(let i=0;i<points.length-1;i++){
+      const a=points[Math.max(0,i-1)],b=points[i],c=points[i+1],d=points[Math.min(points.length-1,i+2)];
+      ctx.bezierCurveTo(b.x+(c.x-a.x)/6,b.y+(c.y-a.y)/6,
+        c.x-(d.x-b.x)/6,c.y-(d.y-b.y)/6,c.x,c.y);
+    }
+  }
+  function ribbon(points,size,alpha,blur,heat=0){
+    const left=[],right=[];
+    points.forEach(p=>{
+      const w=size*p.envelope;
+      left.push({x:p.x+p.nx*w,y:p.y+p.ny*w});
+      right.push({x:p.x-p.nx*w,y:p.y-p.ny*w});
+    });
+    ctx.beginPath();smoothPath(left,true);smoothPath(right.reverse(),false);ctx.closePath();
+    const age=recession();
+    ctx.fillStyle=trailColor(alpha,age,heat);
+    ctx.shadowColor=trailColor(alpha,age);ctx.shadowBlur=blur;ctx.fill();
+  }
+  function resample(points,spacing){
+    if(points.length<2)return points;
+    const out=[points[0]];let remaining=spacing;
+    for(let i=1;i<points.length;i++){
+      let a=points[i-1];const b=points[i];
+      let length=Math.hypot(b.x-a.x,b.y-a.y);
+      while(length>=remaining && length>0.001){
+        const f=remaining/length;
+        a={x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,t:a.t+(b.t-a.t)*f};
+        out.push(a);length-=remaining;remaining=spacing;
+      }
+      remaining-=length;
+    }
+    const end=points[points.length-1],last=out[out.length-1];
+    if(Math.hypot(end.x-last.x,end.y-last.y)>0.1)out.push(end);
+    else out[out.length-1]=end;
+    return out;
+  }
+  function geometry(now){
+    while(history.length>1 && now-history[0].t>LIFE)history.shift();
+    let length=0,start=history.length-1;
+    for(;start>0;start--){
+      length+=Math.hypot(history[start].x-history[start-1].x,history[start].y-history[start-1].y);
+      if(length>620)break;
+    }
+    const raw=history.slice(start);
+    if(target && raw.length && Math.hypot(target.x-raw[raw.length-1].x,target.y-raw[raw.length-1].y)>0.1)
+      raw.push({x:target.x,y:target.y,t:now});
+    // Equal spacing makes smoothing consistent at every movement speed.
+    let pts=resample(raw,8);
+    const weights=[1,4,6,4,1];
+    for(let pass=0;pass<3;pass++){
+      const previous=pts;
+      pts=previous.map((p,i)=>{
+        if(i===0 || i===previous.length-1)return p;
+        let x=0,y=0;
+        weights.forEach((w,k)=>{
+          // Linear extension preserves the endpoint tangent without a kink.
+          const j=i+k-2,n=previous.length-1;
+          let q=previous[Math.max(0,Math.min(n,j))];
+          if(j<0)q={x:previous[0].x+(previous[1].x-previous[0].x)*j,y:previous[0].y+(previous[1].y-previous[0].y)*j};
+          if(j>n)q={x:previous[n].x+(previous[n].x-previous[n-1].x)*(j-n),y:previous[n].y+(previous[n].y-previous[n-1].y)*(j-n)};
+          x+=q.x*w;y+=q.y*w;
+        });
+        return {...p,x:x/16,y:y/16};
+      });
+    }
+    pts=resample(pts,6);
+    const distances=[0];let total=0;
+    for(let i=1;i<pts.length;i++){
+      total+=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);distances.push(total);
+    }
+    const strength=Math.min(1,total/90);
+    return pts.map((p,i)=>{
+      const a=pts[Math.max(0,i-2)],b=pts[Math.min(pts.length-1,i+2)];
+      const dx=b.x-a.x,dy=b.y-a.y,len=Math.hypot(dx,dy)||1;
+      const u=distances[i]/(total||1),fresh=Math.max(0,1-(now-p.t)/LIFE);
+      return {...p,nx:-dy/len,ny:dx/len,u,
+        envelope:Math.pow(u,0.65)*Math.pow(fresh,0.4)*strength};
+    });
+  }
+  function lightCardFaces(points,fade){
+    // Only diffuse light is painted above cards. Filaments and sparks stay below.
+    glowCtx.save();glowCtx.beginPath();
+    document.querySelectorAll('.pane,.rolebar,.summary,.group').forEach(card=>{
+      const r=card.getBoundingClientRect();
+      if(r.bottom<0 || r.top>height || r.right<0 || r.left>width) return;
+      glowCtx.roundRect(r.left+1.5,r.top+1.5,Math.max(0,r.width-3),Math.max(0,r.height-3),16.5);
+    });
+    glowCtx.clip();
+    function bloom(x,y,r,alpha,age=0){
+      const g=glowCtx.createRadialGradient(x,y,0,x,y,r);
+      g.addColorStop(0,trailColor(alpha,age));
+      g.addColorStop(0.35,trailColor(alpha*0.52,age));g.addColorStop(1,trailColor(0,age));
+      glowCtx.fillStyle=g;glowCtx.beginPath();glowCtx.arc(x,y,r,0,Math.PI*2);glowCtx.fill();
+    }
+    for(let i=0;i<points.length;i+=6){
+      const p=points[i];bloom(p.x,p.y,70+24*p.envelope,0.09*p.envelope*fade,lightAge(p));
+    }
+    bloom(head.x,head.y,88,0.18*fade);
+    glowCtx.restore();
+  }
+  function drawCursor(now){
+    cursorCtx.clearRect(0,0,width,height);
+    if(!mouseCursor || !target)return;
+    const c=cursorCtx, flame=20+Math.min(1.5,speed)*12;
+    c.save();c.translate(target.x,target.y);c.rotate(angle);
+    const halo=c.createRadialGradient(-5,0,1,-5,0,32);
+    halo.addColorStop(0,color(0.64,0.2));halo.addColorStop(0.28,color(0.3));halo.addColorStop(1,color(0));
+    c.fillStyle=halo;c.beginPath();c.arc(-5,0,32,0,Math.PI*2);c.fill();
+    // The bright tip marks the exact click position; the flame extends behind it.
+    for(let i=0;i<3;i++){
+      const spread=5.2-i*1.3,tail=flame*(1+i*0.23);
+      const flicker=Math.sin(now/85+i*2.1)*Math.min(2.5,speed*1.8);
+      const g=c.createLinearGradient(-tail,0,0,0);
+      g.addColorStop(0,color(0));g.addColorStop(0.55,color(0.55));g.addColorStop(1,color(0.95,0.7));
+      c.fillStyle=g;c.shadowColor=color(0.8);c.shadowBlur=12;
+      c.beginPath();c.moveTo(0,0);
+      c.bezierCurveTo(-4,-spread,-12,-spread*1.5,-tail,flicker);
+      c.bezierCurveTo(-12,spread*0.8,-4,spread,0,0);c.fill();
+    }
+    c.shadowBlur=9;c.fillStyle=color(1,0.92);
+    c.beginPath();c.ellipse(-3,0,4,2.3,0,0,Math.PI*2);c.fill();c.restore();
+    document.documentElement.classList.add('comet-active');
+  }
+  function draw(now){
+    frame=0;
+    if(motion.matches || document.hidden){stop();return;}
+    if(now-lastMove>=FADE){
+      ctx.clearRect(0,0,width,height);glowCtx.clearRect(0,0,width,height);
+      speed=0;drawCursor(now);history=[];sparks=[];
+      if(!mouseCursor)stop();
+      return; // Leave a visible stationary cursor, without an idle animation loop.
+    }
+    const dt=Math.min(40,Math.max(1,now-clock));clock=now;
+    update(now,dt);
+    ctx.clearRect(0,0,width,height);
+    glowCtx.clearRect(0,0,width,height);
+    const fade=Math.pow(Math.max(0,1-(now-lastMove)/FADE),1.3);
+    const pts=geometry(now);
+    ctx.globalCompositeOperation='source-over';
+    if(pts.length>2){
+      // Airy outer bloom; brighter narrow body. No opaque filled cursor stroke.
+      // Diffuse radiance gives the filaments a soft, smoky light envelope.
+      ctx.shadowBlur=0;
+      for(let i=0;i<pts.length;i+=4){
+        const p=pts[i],radius=52+32*p.envelope;
+        const bloom=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,radius);
+        const age=lightAge(p);
+        bloom.addColorStop(0,trailColor(0.20*p.envelope*fade,age));
+        bloom.addColorStop(0.4,trailColor(0.09*p.envelope*fade,age));
+        bloom.addColorStop(1,trailColor(0,age));
+        ctx.fillStyle=bloom;ctx.beginPath();ctx.arc(p.x,p.y,radius,0,Math.PI*2);ctx.fill();
+      }
+      const body=pts.map(p=>({...p,envelope:p.envelope*(0.08+0.92*Math.pow(Math.sin(Math.PI*p.u),0.45))}));
+      ribbon(body,23,0.13*fade,44);
+      ribbon(body,10,0.22*fade,24);
+      for(let s=0;s<8;s++){
+        const lane=(s-3.5)/3.5;
+        const strand=pts.map(p=>{
+          const fan=Math.sin(Math.PI*p.u);
+          const offset=lane*14*fan;
+          return {...p,x:p.x+p.nx*offset,y:p.y+p.ny*offset,
+            envelope:p.envelope*(0.6+0.4*Math.sin(Math.PI*p.u))};
+        });
+        ribbon(strand,s%3===0?3.0:2.0,0.62*fade,15);
+        ribbon(strand,s%3===0?1.1:0.72,0.92*fade,4,0.55);
+      }
+    }
+    sparks=sparks.filter(p=>now-p.t<480);
+    ctx.shadowBlur=5;
+    sparks.forEach(p=>{
+      const a=Math.pow(1-(now-p.t)/480,2)*0.55*fade;
+      const age=Math.max(recession(),(now-p.t)/480);
+      ctx.fillStyle=trailColor(a,age,0.4);ctx.shadowColor=trailColor(a,age);
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+    });
+    // Compact bright nucleus, surrounded by a transparent lime bloom.
+    ctx.shadowBlur=0;
+    const glow=ctx.createRadialGradient(head.x,head.y,0,head.x,head.y,34);
+    glow.addColorStop(0,color(0.62*fade,0.5));
+    glow.addColorStop(0.18,color(0.32*fade));glow.addColorStop(1,color(0));
+    ctx.fillStyle=glow;ctx.beginPath();ctx.arc(head.x,head.y,34,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=color(0.95*fade,0.8);ctx.beginPath();ctx.arc(head.x,head.y,1.7,0,Math.PI*2);ctx.fill();
+    lightCardFaces(pts,fade);
+    drawCursor(now);
+    frame=requestAnimationFrame(draw);
+  }
+  window.addEventListener('pointermove',move,{passive:true});
+  document.documentElement.addEventListener('pointerleave',stop);
+  window.addEventListener('blur',stop);
+  window.addEventListener('resize',resize,{passive:true});
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();});
+  motion.addEventListener('change',stop);
+  resize();
+})();
+</script>
+</body>
+</html>
