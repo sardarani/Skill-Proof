@@ -98,17 +98,20 @@ OUTPUT FORMAT: Return ONLY valid JSON in the exact structure below, no markdown 
     const data = await response.json();
     let content = data.choices[0].message.content.trim();
     
-    // Strip markdown code block if present
-    if (content.startsWith('\`\`\`json')) {
-      content = content.replace(/^\`\`\`json/, '').replace(/\`\`\`$/, '').trim();
-    } else if (content.startsWith('\`\`\`')) {
-      content = content.replace(/^\`\`\`/, '').replace(/\`\`\`$/, '').trim();
+    // Find the first { and last } to extract JSON safely, ignoring markdown wrappers
+    const startIdx = content.indexOf('{');
+    const endIdx = content.lastIndexOf('}');
+    if (startIdx === -1 || endIdx === -1) {
+      throw new Error('No JSON object found in response');
     }
+    const jsonString = content.substring(startIdx, endIdx + 1);
 
-    const jsonResult = JSON.parse(content);
+    const jsonResult = JSON.parse(jsonString);
     return res.status(200).json(jsonResult);
   } catch (error) {
     console.error('Server Error:', error);
-    return res.status(500).json({ error: 'Internal server error or invalid JSON from LLM' });
+    return res.status(500).json({ error: error.message || 'Internal server error' });
   }
 }
+
+export const maxDuration = 60; // Increase Vercel timeout to 60 seconds
