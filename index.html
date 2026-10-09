@@ -1186,6 +1186,14 @@ function render(){
   const panels=[{id:'overview',label:'Overview',content:overview},{id:'skills',label:'Skill match',count:T.length,content:skills}];
   if(roleContent)panels.push({id:'role',label:'Role insights',content:`<div class="role-results">${roleContent}</div>`});
   panels.push({id:'checks',label:'Resume checks',content:checks},{id:'ats',label:'ATS view',content:ats});
+  panels.push({
+    id: 'ai-insights', 
+    label: 'Deep AI Insights ✨', 
+    content: `<section class="group section"><h2>Deep AI Insights</h2>
+              <p class="hint">Checking your resume against the exact employer requirements using AI...</p>
+              <div id="ai-insights-container" style="margin-top: 1.5rem;"><div style="display:flex; align-items:center; gap:0.5rem;"><div class="processing-spinner"></div> <span style="font-weight:500;">Fetching insights from LLM...</span></div></div>
+              </section>`
+  });
   box.className='';void box.offsetWidth;box.className='show';
   box.innerHTML=resultsPage(panels);bindAfter();showResults();
 }
@@ -1260,7 +1268,49 @@ function bindAfter(){
       e.preventDefault();activate(tabs[next],true);
     });
   });
+
+  const aiContainer = document.getElementById('ai-insights-container');
+  if(aiContainer) {
+    const role = $('#roleInput').value || 'Unknown';
+    const resume_text = $('#resume').value;
+    const job_description = $('#jd').value;
+    
+    fetch('/api/role-insights', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ target_role: role, resume_text, job_description })
+    }).then(r=>r.json()).then(data => {
+      if(data.error) throw new Error(data.error);
+      let html = `<div style="background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--edge);">`;
+      html += `<h3 style="margin-top:0;">${esc(data.summary.headline)}</h3>`;
+      html += `<p style="font-weight: 500; color: var(--ink);">Must-haves backed: <span class="tag req">${esc(data.summary.must_haves_backed)}</span></p>`;
+      if(data.summary.top_priorities && data.summary.top_priorities.length) {
+        html += `<h4 style="margin-top: 1.5rem;">Top Priorities</h4><ul style="margin-bottom: 2rem;">`;
+        data.summary.top_priorities.forEach(p => { html += `<li style="margin-bottom: 0.5rem; color: var(--ink);">${esc(p)}</li>`; });
+        html += `</ul>`;
+      }
+      const renderSkills = (skills, title) => {
+        if(!skills || !skills.length) return '';
+        let sHtml = `<h4 style="margin-top: 1.5rem; border-bottom: 1px solid var(--line); padding-bottom: 0.5rem;">${title}</h4><div style="display:flex; flex-direction:column; gap:1rem; margin-top:1rem;">`;
+        skills.forEach(s => {
+          const statusCls = s.resume_status === 'backed' ? 'ok' : s.resume_status === 'missing' ? 'warn' : 'mk-w';
+          sHtml += `<div class="term" style="margin-bottom: 0; align-items:flex-start;"><div class="name">${esc(s.skill)} <span class="tag">${esc(s.category||'skill')}</span> <span class="status ${statusCls}">${esc(s.resume_status.replace('_', ' '))}</span></div>
+          <div class="detail"><p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--ink);"><strong>Evidence:</strong> ${s.resume_evidence ? `<q>${esc(s.resume_evidence)}</q>` : 'None'}</p>
+          ${s.improvement ? `<p style="font-size: 0.9rem; margin-top: 0.5rem; color: var(--olive);">✨ <strong>AI Suggestion:</strong> ${esc(s.improvement)}</p>` : ''}</div>
+          </div>`;
+        });
+        return sHtml + `</div>`;
+      };
+      html += renderSkills(data.must_haves, "Must-Haves");
+      html += renderSkills(data.nice_to_haves, "Nice-to-Haves");
+      html += `</div>`;
+      aiContainer.innerHTML = html;
+    }).catch(err => {
+      aiContainer.innerHTML = `<p class="status warn" style="color:red;">Failed to load Deep AI Insights: ${esc(err.message)}</p>`;
+    });
+  }
 }
+
 
 
 /* ---------- Role picker (searchable combobox grouped by domain) ---------- */
