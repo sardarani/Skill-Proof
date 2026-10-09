@@ -1150,7 +1150,7 @@ function render(){
     `<li><span class="status ok">All good</span><span>No keyword stuffing or copied phrases found.</span></li>`;
   const verdict=reqProven===required.length && required.length?'Flawless.':!required.length?'No must-haves.':reqProven/required.length>=.75?'Nearly there.':reqProven/required.length>=.4?'Work to do.':'Ouch.';
   const overview=`<section class="summary must-have-summary">
-    <p class="must-label">Must-haves proven</p>
+    <p class="must-label">Proof for must-haves</p>
     <div class="must-topline">
       <p class="must-count" aria-label="${reqProven} of ${required.length} must-haves proven"><strong>${reqProven}</strong><span>/${required.length}</span></p>
       <div class="must-verdict"><strong>${verdict}</strong><p class="hint">Not an ATS score.</p></div>
