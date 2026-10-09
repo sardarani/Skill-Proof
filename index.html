@@ -1041,7 +1041,10 @@ function roleChecks(role,resume,jd,R,exp){
 function priTag(t){ return t.pri===3?'<span class="tag req">Required</span>':t.pri===1?'<span class="tag">Nice to have</span>':''; }
 function termRow(t){
   let d='';
-  if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
+  if(t.status==='missing') {
+    d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
+    if(t.pri===3) d += ` <button type="button" class="link ai-suggest-btn" data-skill="${esc(t.name)}" style="font-size:0.88rem; padding:0; margin-left:0.5rem; color:var(--olive);">✨ Suggest a bullet</button><div class="ai-suggestion" style="margin-top:0.5rem; font-size:0.92rem; font-weight:600; color:var(--ink);" hidden></div>`;
+  }
   if(t.status==='listed') d=`Only in ${t.where}. Show it in a bullet.`;
   if(t.status==='wording') d=`They say <q>${esc(t.jdWord)}</q>. You say <q>${t.resumeWords.map(esc).join('</q>, <q>')}</q>. Steal their word.`;
   if(t.status==='backed') d=`<q>${esc(t.line.length>150?t.line.slice(0,150)+'…':t.line)}</q>`;
@@ -1202,6 +1205,33 @@ function bindAfter(){
   document.querySelectorAll('[data-ignore]').forEach(btn=>btn.addEventListener('click',()=>{ ignored.add(btn.dataset.ignore); renderWithLoader('Refreshing your results…'); }));
   const reset=$('#reset'); if(reset) reset.addEventListener('click',()=>{ ignored.clear(); renderWithLoader('Restoring ignored skills…'); });
   const back=$('#editInputs');if(back)back.addEventListener('click',showEditor);
+  
+  document.querySelectorAll('.ai-suggest-btn').forEach(btn => btn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const skill = btn.dataset.skill;
+    const target = btn.nextElementSibling;
+    const role = $('#roleInput').value;
+    btn.disabled = true;
+    btn.textContent = '✨ Generating...';
+    target.hidden = false;
+    target.textContent = 'Contacting AI...';
+    try {
+      const res = await fetch('/api/suggest', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ skill, role })
+      });
+      if (!res.ok) throw new Error('Failed');
+      const data = await res.json();
+      target.innerHTML = `<span style="color:var(--olive);">AI Suggestion:</span> <span style="font-weight:500;">${esc(data.suggestion)}</span>`;
+      btn.hidden = true;
+    } catch (err) {
+      target.textContent = 'Could not generate suggestion.';
+      btn.disabled = false;
+      btn.textContent = '✨ Try again';
+    }
+  }));
+
   const tabs=[...document.querySelectorAll('[data-result-tab]')];
   function activate(tab,focus=false){
     tabs.forEach(t=>{const selected=t===tab;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;
