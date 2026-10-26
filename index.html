@@ -229,6 +229,62 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
 .term .name{font-weight:800}
 .term .detail{grid-column:1/-1;font-size:.96rem;color:var(--muted);overflow-wrap:anywhere}
 .term .detail q{color:var(--ink);font-style:italic;font-weight:600}
+.ai-suggest-btn{
+  display:inline;
+  background:none;
+  border:none;
+  padding:0;
+  margin-left:.5rem;
+  font:600 .88rem "Urbanist",system-ui,sans-serif;
+  color:var(--olive);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:3px;
+  text-decoration-color:transparent;
+  cursor:pointer;
+  opacity:0;
+  pointer-events:none;
+  vertical-align:baseline;
+  transition:opacity .2s ease-out,color .15s ease,text-decoration-color .15s ease;
+}
+.term:hover .ai-suggest-btn,
+.term:focus-within .ai-suggest-btn,
+.ai-suggest-btn:focus,
+.ai-suggest-btn:focus-visible,
+.ai-suggest-btn.is-active,
+.ai-suggest-btn.is-retry,
+.ai-suggest-btn:disabled{
+  opacity:1;
+  pointer-events:auto;
+}
+.ai-suggest-btn:hover{
+  color:var(--ink);
+  text-decoration-color:currentColor;
+}
+.ai-suggest-btn:focus-visible{
+  outline:2px solid var(--lime);
+  outline-offset:2px;
+  border-radius:2px;
+  text-decoration-color:currentColor;
+}
+.ai-suggestion{
+  margin-top:.5rem;
+  font-size:.92rem;
+  font-weight:500;
+  color:var(--ink);
+  line-height:1.5;
+}
+@media (hover:none),(pointer:coarse){
+  .ai-suggest-btn{
+    opacity:1;
+    pointer-events:auto;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  .ai-suggest-btn{
+    transition:none!important;
+  }
+}
 .tags{display:inline-flex;gap:.4rem;margin-left:.5rem;vertical-align:1px}
 .tag{font-size:.78rem;border:1.5px solid var(--line);border-radius:999px;padding:.02rem .55rem;color:var(--muted);font-weight:700}
 .tag.req{border-color:var(--edge);color:var(--ink);background:var(--lime-soft)}
@@ -1041,13 +1097,11 @@ function roleChecks(role,resume,jd,R,exp){
 function priTag(t){ return t.pri===3?'<span class="tag req">Required</span>':t.pri===1?'<span class="tag">Nice to have</span>':''; }
 function termRow(t){
   let d='';
-  if(t.status==='missing') {
-    d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
-    if(t.pri===3) d += ` <button type="button" class="link ai-suggest-btn" data-skill="${esc(t.name)}" style="font-size:0.88rem; padding:0; margin-left:0.5rem; color:var(--olive);">✨ Suggest a bullet</button><div class="ai-suggestion" style="margin-top:0.5rem; font-size:0.92rem; font-weight:600; color:var(--ink);" hidden></div>`;
-  }
+  if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
   if(t.status==='listed') d=`Only in ${t.where}. Show it in a bullet.`;
   if(t.status==='wording') d=`They say <q>${esc(t.jdWord)}</q>. You say <q>${t.resumeWords.map(esc).join('</q>, <q>')}</q>. Steal their word.`;
   if(t.status==='backed') d=`<q>${esc(t.line.length>150?t.line.slice(0,150)+'…':t.line)}</q>`;
+  d += ` <button type="button" class="ai-suggest-btn" data-skill="${esc(t.name)}">✦ Suggest a bullet</button><div class="ai-suggestion" hidden></div>`;
   return `<div class="term" id="${esc(t.detailId||'')}" tabindex="-1"><div class="name">${esc(t.name)}<span class="tags">${priTag(t)}</span></div>
   <button class="x" data-ignore="${esc(t.key)}" aria-label="Ignore ${esc(t.name)}">Not relevant</button>
   <div class="detail">${d}</div></div>`;
@@ -1222,7 +1276,9 @@ function bindAfter(){
     const role = (typeof roleMode !== 'undefined' && roleMode !== 'auto' && ROLES[roleMode] ? ROLES[roleMode].label : roleVal) || 'Target Role';
     const resume_text = $('#resume')?.value || '';
     btn.disabled = true;
-    btn.textContent = '✨ Generating...';
+    btn.classList.add('is-active');
+    btn.classList.remove('is-retry');
+    btn.textContent = '✦ Generating...';
     target.hidden = false;
     target.textContent = 'Contacting AI...';
     try {
@@ -1233,12 +1289,15 @@ function bindAfter(){
       });
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();
-      target.innerHTML = `<span style="color:var(--olive);">AI Suggestion:</span> <span style="font-weight:500;">${esc(data.suggestion)}</span>`;
+      target.innerHTML = `<span style="color:var(--olive); font-weight:700;">✦ AI Suggestion:</span> <span style="font-weight:500;">${esc(data.suggestion)}</span>`;
       btn.hidden = true;
+      btn.classList.remove('is-active');
     } catch (err) {
       target.textContent = 'Could not generate suggestion.';
       btn.disabled = false;
-      btn.textContent = '✨ Try again';
+      btn.classList.remove('is-active');
+      btn.classList.add('is-retry');
+      btn.textContent = '✦ Try again';
     }
   }));
 
