@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#11130F">
 <title>Skill Proof — Resume Matcher</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Crect%20width%3D%2248%22%20height%3D%2248%22%20rx%3D%2213%22%20fill%3D%22%23C8F53B%22%2F%3E%3Cpath%20d%3D%22M14%2011h14l7%207v18H14z%22%20fill%3D%22none%22%20stroke%3D%22%23141414%22%20stroke-width%3D%222.5%22%20stroke-linejoin%3D%22round%22%2F%3E%3Cpath%20d%3D%22M28%2011v8h7M19%2027l4%204%208-9%22%20fill%3D%22none%22%20stroke%3D%22%23141414%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,29 +12,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,700;1,800;1,900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --paper:#F3F3EF;--surface:#FFFFFF;
-  --glass:rgba(249,250,247,.88);--glass-field:rgba(255,255,255,.58);--glass-border:rgba(255,255,255,.8);--glass-sheen:rgba(255,255,255,.42);--glass-shadow:0 12px 36px rgba(30,40,10,.07),inset 0 1px 0 rgba(255,255,255,.95),inset 0 -1px 0 rgba(255,255,255,.22);--ink:#141414;--muted:#5C6058;--line:rgba(20,20,20,.12);--edge:#141414;
-  --lime:#C8F53B;--lime-soft:rgba(200,245,59,.55);--olive:#3E5A06;--gridline:rgba(20,20,20,.055);--glow:rgba(200,245,59,.85);
-  --btn:#C8F53B;--btn-ink:#141414;--focus:#FFFFFF;--focus-edge:#141414;
+  color-scheme:dark;
+  --paper:#11130F;--surface:#1A1D17;
+  --glass:rgba(34,38,31,.90);--glass-field:rgba(17,19,15,.52);--glass-border:rgba(255,255,255,.2);--glass-sheen:rgba(255,255,255,.065);--glass-shadow:0 12px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.035);--ink:#F1F3EC;--muted:#A7AC9E;--line:rgba(255,255,255,.12);--edge:#F1F3EC;
+  --lime:#C8F53B;--lime-soft:rgba(200,245,59,.3);--olive:#DDFB82;--gridline:rgba(255,255,255,.045);--glow:rgba(200,245,59,.35);
+  --btn:#C8F53B;--btn-ink:#141414;--focus:#FFFFFF;--focus-edge:#050505;
   --b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--warn:#141414;--ok:#141414;
-  --shadow:0 8px 18px rgba(20,20,20,.16);
+  --shadow:0 8px 18px rgba(0,0,0,.45);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --paper:#11130F;--surface:#1A1D17;
-    --glass:rgba(34,38,31,.90);--glass-field:rgba(17,19,15,.52);--glass-border:rgba(255,255,255,.2);--glass-sheen:rgba(255,255,255,.065);--glass-shadow:0 12px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.035);--ink:#F1F3EC;--muted:#A7AC9E;--line:rgba(255,255,255,.12);--edge:#F1F3EC;
-    --lime-soft:rgba(200,245,59,.3);--olive:#DDFB82;--gridline:rgba(255,255,255,.045);--glow:rgba(200,245,59,.35);
-    --focus:#FFFFFF;--focus-edge:#050505;--b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--shadow:0 8px 18px rgba(0,0,0,.45);
-  }
-}
-:root[data-theme="dark"]{
-  --paper:#11130F;--surface:#1A1D17;
-    --glass:rgba(34,38,31,.90);--glass-field:rgba(17,19,15,.52);--glass-border:rgba(255,255,255,.2);--glass-sheen:rgba(255,255,255,.065);--glass-shadow:0 12px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.035);--ink:#F1F3EC;--muted:#A7AC9E;--line:rgba(255,255,255,.12);--edge:#F1F3EC;
-  --lime-soft:rgba(200,245,59,.3);--olive:#DDFB82;--gridline:rgba(255,255,255,.045);--glow:rgba(200,245,59,.35);
-  --focus:#FFFFFF;--focus-edge:#050505;--b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--shadow:0 8px 18px rgba(0,0,0,.45);
 }
 *,*::before,*::after{box-sizing:inherit}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
@@ -48,10 +37,8 @@ body{
   background-size:auto,auto,44px 44px,44px 44px;
   background-attachment:fixed,fixed,scroll,scroll;
 }
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.28;mix-blend-mode:multiply;
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.12;mix-blend-mode:screen;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{mix-blend-mode:screen;opacity:.12}}
-:root[data-theme="dark"] body::before{mix-blend-mode:screen;opacity:.12}
 .wrap{position:relative;z-index:2;max-width:1120px;margin:0 auto;padding:3rem 1.25rem 4rem}
 h1,h2,h3{font-family:"Urbanist",system-ui,sans-serif;line-height:1.05;margin:0;letter-spacing:-.025em}
 h2{font-size:1.6rem;font-weight:800}
@@ -824,6 +811,7 @@ function sameWord(a,b){
 
 /* ---------- Analysis ---------- */
 let ignored = new Set();
+let restoreTab='';
 function analyze(resume, jd){
   const R = sectionResume(resume);
   const J = sectionJD(jd);
@@ -1308,6 +1296,7 @@ function bindAfter(){
       const panel=document.getElementById(t.getAttribute('aria-controls'));if(panel)panel.hidden=!selected;});
     if(focus)tab.focus();
   }
+  if(restoreTab){ const t=tabs.find(x=>x.dataset.resultTab===restoreTab); restoreTab=''; if(t) activate(t); }
   document.querySelectorAll('[data-skill-target]').forEach(segment=>segment.addEventListener('click',()=>{
     const tab=tabs.find(t=>t.dataset.resultTab==='skills');
     if(tab)activate(tab);
@@ -1378,7 +1367,14 @@ function bindAfter(){
 /* ---------- Role picker (searchable combobox grouped by domain) ---------- */
 let roleMode='auto', domainFilter='All', activeIdx=-1, visibleOpts=[], pickerOpen=false;
 const rInput=$('#roleInput'), rPop=$('#rpPop'), rList=$('#roleList'), rDomains=$('#rpDomains');
-function roleText(id){ return id==='auto'?'Detect from job description':ROLES[id].label; }
+function detectedRoleId(){
+  if(!$('#resume').value.trim()||!$('#jd').value.trim()) return null;
+  const d=detectRole($('#jd').value); return d==='general'?null:d;
+}
+function roleText(id){
+  if(id!=='auto') return ROLES[id].label;
+  const d=detectedRoleId(); return d?ROLES[d].label:'Detect from job description';
+}
 function hl(text,q){
   if(!q) return esc(text);
   const toks=q.toLowerCase().split(/\s+/).filter(Boolean); const low=text.toLowerCase(); const marks=[];
@@ -1470,9 +1466,10 @@ function updateRoleHint(){
   const h=$('#roleHint'), jd=$('#jd').value.trim();
   $('#roleReset').hidden = roleMode==='auto';
   if(roleMode!=='auto'){ const r=ROLES[roleMode]; h.textContent = r.id==='general' ? 'Using general resume checks.' : `Selected role: ${r.label}.`; return; }
-  if(!jd){ h.textContent='We will detect the role from the job description. Or choose one.'; return; }
+  if(!jd){ h.textContent='We will detect the role from the job description. Or choose one.'; if(!pickerOpen) rInput.value=roleText('auto'); return; }
   const d=detectRole(jd);
   h.textContent = d==='general' ? 'We could not detect the role. Choose one for more relevant checks.' : `Detected role: ${ROLES[d].label}. Change it if needed.`;
+  if(!pickerOpen) rInput.value=roleText(roleMode);
 }
 function setRole(id){
   roleMode=id; if(!pickerOpen) rInput.value=roleText(id);
@@ -1495,7 +1492,7 @@ rInput.addEventListener('keydown',e=>{
 rInput.addEventListener('blur',()=>setTimeout(()=>{ if(!$('#rp').contains(document.activeElement)) closePicker(); },0));
 document.addEventListener('mousedown',e=>{ if(pickerOpen && !$('#rp').contains(e.target)) { closePicker(); rInput.blur(); } });
 $('#roleReset').addEventListener('click',()=>{ setRole('auto'); });
-let hintTimer; $('#jd').addEventListener('input',()=>{ clearTimeout(hintTimer); hintTimer=setTimeout(updateRoleHint,250); });
+let hintTimer; ['#jd','#resume'].forEach(sel=>$(sel).addEventListener('input',()=>{ clearTimeout(hintTimer); hintTimer=setTimeout(updateRoleHint,250); }));
 updateRoleHint();
 
 
@@ -1694,6 +1691,34 @@ function updateClear(){ $('#clear').hidden = !($('#resume').value.trim() || $('#
 ['#resume','#jd'].forEach(sel=>$(sel).addEventListener('input',updateClear));
 $('#clear').addEventListener('click',()=>{ $('#top').classList.remove('is-results');$('#resume').value=''; $('#jd').value=''; $('#results').innerHTML=''; clearToast(); ignored.clear(); updateRoleHint(); updateClear(); $('#resume').focus(); });
 $('#run').addEventListener('click',()=>{ ignored.clear(); renderWithLoader(); });
+
+/* ---------- Keep work across a page refresh (sessionStorage: cleared when the tab closes) ---------- */
+const STATE_KEY='skillproof:state';
+function saveState(){
+  try{
+    const tab=document.querySelector('[data-result-tab][aria-selected="true"]');
+    sessionStorage.setItem(STATE_KEY,JSON.stringify({
+      resume:$('#resume').value, jd:$('#jd').value, role:roleMode, ignored:[...ignored],
+      view:$('#top').classList.contains('is-results')?'results':'editor',
+      tab:tab?tab.dataset.resultTab:(restoreTab||'')
+    }));
+  }catch(e){}
+}
+['input','click','keyup'].forEach(ev=>document.addEventListener(ev,()=>setTimeout(saveState,0)));
+window.addEventListener('pagehide',saveState);
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) saveState(); });
+(function restoreState(){
+  let st; try{ st=JSON.parse(sessionStorage.getItem(STATE_KEY)||'null'); }catch(e){}
+  if(!st) return;
+  $('#resume').value=st.resume||''; $('#jd').value=st.jd||'';
+  ignored=new Set(st.ignored||[]);
+  setRole(st.role==='auto'||ROLES[st.role]?st.role:'auto');
+  updateClear();
+  if(st.view==='results' && st.resume && st.resume.trim() && st.jd && st.jd.trim()){
+    restoreTab=st.tab||'';
+    renderWithLoader('Restoring your results…');
+  }
+})();
 })();
 </script>
 
