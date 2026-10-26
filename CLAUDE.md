@@ -28,19 +28,15 @@ One file: `<style>` block, then CDN scripts for PDF.js 3.11.174 and Mammoth 1.6.
    - **Sectioning**: `sectionResume()` splits the resume by headings (`RES_HEADS`); `sectionJD()` tags each JD line as required / neutral / nice-to-have (`REQ_HEAD`, `NICE_RE`, `NEU_HEAD`, `PRI`).
    - **Analysis**: `analyze(resume, jd)` finds every dictionary term in the JD, then `classify()` labels each as `backed` / `listed` / `wording` / `missing` based on where and how it appears in the resume. `stuffing()` (keyword-stuffing checks) and `parseChecks()` (ATS-parse checks) run alongside.
    - **Role profiles**: `ROLE_CATALOG` (55 roles across `DOMAINS`), `detectRole()`, `expectations()` (per-role "starter pack"), `roleChecks()` (years of experience, bullet impact, portfolio link, etc.).
-   - **Rendering**: `render()` → builds tabbed results HTML → `bindAfter()` wires up events. `bindAfter()` also makes the AI calls: per-skill "✨" buttons POST to `/api/suggest`, and if `#ai-insights-container` exists it POSTs to `/api/role-insights` and renders the "Deep AI Insights" tab from the returned JSON.
+   - **Rendering**: `render()` → builds tabbed results HTML → `bindAfter()` wires up events. `bindAfter()` also wires the per-skill "✦ Suggest a bullet" buttons, which POST to `/api/suggest`.
    - **Role picker** (searchable combobox), file upload / drag-and-drop (`readPdf`, `readAnyFile`, `loadInto`), and sample inputs (`SAMPLE_JD`, `SAMPLE_RESUME`, design variants).
 2. **Cursor trail script** — a canvas comet-trail effect, independent of the app logic.
 
-The rule-based matcher runs entirely in the browser. Only the AI features send resume/JD text to the server.
+The rule-based matcher runs entirely in the browser. Only the bullet-suggestion feature sends text (skill, role, resume) to the server.
 
-### `api/` (Vercel Node functions)
-- `suggest.js` — `{skill, role}` → `{suggestion}`: one resume bullet for a missing skill.
-- `role-insights.js` — `{target_role, resume_text, job_description}` → structured JSON (`must_haves`, `nice_to_haves`, `summary`). The system prompt is inlined; the response is parsed by slicing from the first `{` to the last `}` because the model may wrap JSON in prose/markdown. `maxDuration = 60`.
-- Both hardcode the model ID (`nvidia/nemotron-3.5-lightning-30b-a3b`) and read `message.content || message.reasoning_content`. If the model changes, update both files.
-- The JSON shape returned by `role-insights.js` is consumed directly by `bindAfter()` in `index.html`; keep them in sync.
-
-`ROLE_INSIGHTS_PROMPT.md` is a fuller design of the role-insights prompt (aggregates 15–30 web job postings, frequency-based classification). The live endpoint uses a simplified single-JD version of it — the two are not automatically linked.
+### `api/` (Vercel Node function)
+- `suggest.js` — `{skill, role, resume_text}` → `{suggestion}`: one resume bullet for a missing skill.
+- It hardcodes the model ID (`nvidia/nemotron-3.5-lightning-30b-a3b`) and reads `message.content || message.reasoning_content`. This is a reasoning model, so a small `max_tokens` can be consumed by thinking and truncate the answer.
 
 ## Design constraints
 
