@@ -79,7 +79,7 @@ OUTPUT FORMAT: Return ONLY valid JSON in the exact structure below, no markdown 
         'Authorization': `Bearer ${process.env.NVIDIA_NIM_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'meta/llama-3.1-8b-instruct',
+        model: 'nvidia/nemotron-3.5-lightning-30b-a3b',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: `Job Description:\n${job_description}\n\nResume:\n${resume_text}` }
@@ -96,7 +96,8 @@ OUTPUT FORMAT: Return ONLY valid JSON in the exact structure below, no markdown 
     }
 
     const data = await response.json();
-    let content = data.choices[0].message.content.trim();
+    const message = data.choices && data.choices[0] && data.choices[0].message;
+    let content = ((message && (message.content || message.reasoning_content)) || '').trim();
     
     // Find the first { and last } to extract JSON safely, ignoring markdown wrappers
     const startIdx = content.indexOf('{');

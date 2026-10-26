@@ -17,7 +17,7 @@ export default async function handler(req, res) {
         'Authorization': `Bearer ${process.env.NVIDIA_NIM_API_KEY}`
       },
       body: JSON.stringify({
-        model: 'meta/llama-3.1-8b-instruct',
+        model: 'nvidia/nemotron-3.5-lightning-30b-a3b',
         messages: [
           {
             role: 'system',
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
           }
         ],
         temperature: 0.7,
-        max_tokens: 150
+        max_tokens: 700
       })
     });
 
@@ -40,7 +40,9 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
-    return res.status(200).json({ suggestion: data.choices[0].message.content.trim() });
+    const message = data.choices && data.choices[0] && data.choices[0].message;
+    const content = (message && (message.content || message.reasoning_content)) || '';
+    return res.status(200).json({ suggestion: content.trim() });
   } catch (error) {
     console.error('Server Error:', error);
     return res.status(500).json({ error: 'Internal server error' });
