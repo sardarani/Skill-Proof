@@ -1205,6 +1205,7 @@ function render(){
       ${required.length?`<div class="must-have-bar" role="group" aria-label="Must-have skills, ordered from proven to missing">${mustSegments}</div>`:`<p class="must-empty">No must-have skills were called out in this job description.</p>`}
     </div>
     <p class="nice-line">Nice-to-haves: ${niceProven} of ${nice.length} proven.</p>
+    ${topKeywordsHtml(T,EXP)}
     <div class="all-skills">
       <h2>All ${T.length} skills in the job description</h2>
       <div class="bar" role="img" aria-label="All ${T.length} skills in the job description: ${b.length} backed, ${l.length} only listed, ${w.length} different wording, ${m.length} missing">
@@ -1251,6 +1252,22 @@ function roleHtml(role,EXP,RC){
   const rcHtml = RC.length ? `<section class="group"><h2>Role-specific checks</h2><ul class="checks">${RC.map(p=>`<li><span class="status ${p.ok?'ok':'warn'}">${p.ok?'All good':'Fix this'}</span><span><strong>${p.label}.</strong> ${esc(p.msg)}</span></li>`).join('')}</ul></section>` : '';
   if(!expHtml && !rcHtml) return '';
   return `<div class="cols">${expHtml}${rcHtml}</div>`;
+}
+/* Rank the job description's skills by how strongly this job asks for them, so users know which few to work in first. */
+function topKeywords(T,EXP,n=10){
+  const pack=new Set((EXP||[]).map(e=>e.key));
+  const score=t=>(t.pri===3?6:t.pri===2?3:0)+Math.min(t.jdCount,5)*2+(pack.has(t.key)?3:0);
+  return T.slice().sort((x,y)=>score(y)-score(x)||y.jdCount-x.jdCount).slice(0,n);
+}
+function topKeywordsHtml(T,EXP){
+  const top=topKeywords(T,EXP); if(!top.length) return '';
+  const cls={backed:'mk-b',listed:'mk-l',wording:'mk-w',missing:'mk-m'},word={backed:'backed',listed:'only listed',wording:'different wording',missing:'missing'};
+  const todo=top.filter(t=>t.status!=='backed');
+  return `<div class="all-skills top-keywords"><h2>Top ${top.length} keywords for this job</h2>
+    <p class="hint">You can't use every word. These are asked for most strongly: required, repeated, or expected for the role. Prove these first.</p>
+    <div class="chips">${top.map(t=>`<span class="chip mk ${cls[t.status]}" title="${esc(t.name)}: ${word[t.status]}">${esc(t.name)}${t.jdCount>1?` ×${t.jdCount}`:''}${t.pri===3?' <span aria-label="required">★</span>':''}<span class="sr">, ${word[t.status]}</span></span>`).join('')}</div>
+    <p class="hint" style="margin-top:.9rem">★ = required. × = times it appears in the job description.${todo.length?` Still to work on: ${todo.map(t=>esc(t.name)).join(', ')}.`:' All of them are already backed.'}</p>
+  </div>`;
 }
 function bindAfter(){
   document.querySelectorAll('[data-ignore]').forEach(btn=>btn.addEventListener('click',()=>{ ignored.add(btn.dataset.ignore); renderWithLoader('Refreshing your results…'); }));
