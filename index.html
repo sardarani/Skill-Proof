@@ -1218,7 +1218,9 @@ function bindAfter(){
     e.stopPropagation();
     const skill = btn.dataset.skill;
     const target = btn.nextElementSibling;
-    const role = $('#roleInput').value;
+    const roleVal = $('#roleInput')?.value || '';
+    const role = (typeof roleMode !== 'undefined' && roleMode !== 'auto' && ROLES[roleMode] ? ROLES[roleMode].label : roleVal) || 'Target Role';
+    const resume_text = $('#resume')?.value || '';
     btn.disabled = true;
     btn.textContent = '✨ Generating...';
     target.hidden = false;
@@ -1227,7 +1229,7 @@ function bindAfter(){
       const res = await fetch('/api/suggest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ skill, role })
+        body: JSON.stringify({ skill, role, resume_text })
       });
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();
