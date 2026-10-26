@@ -446,7 +446,7 @@ const GROUPS = [
  ["Kubernetes","kubernetes","k8s"],["Docker","docker","containerization","containers"],["Terraform","terraform","infrastructure as code","infrastructure-as-code"],
  "Ansible","Jenkins","GitHub Actions",["CI/CD","ci/cd","ci cd","continuous integration","continuous delivery","continuous deployment"],
  ["Git","git","version control"],"GitHub","GitLab","Linux",
- ["DevOps","devops","sre","site reliability","site reliability engineering"],["Observability","observability","monitoring"],"Prometheus","Grafana","Datadog",
+ ["DevOps","devops","sre","site reliability","site reliability engineering"],["Observability","observability","monitoring and alerting"],"Prometheus","Grafana","Datadog",
  ["REST APIs","rest","restful","rest api","rest apis","restful apis"],"GraphQL","gRPC",["Microservices","microservices","microservice","microservice architecture"],
  ["System design","system design","distributed systems","scalable systems"],
  ["Automated testing","unit testing","integration testing","test automation","automated testing"],"Selenium","Jest","Pytest",["QA","qa","quality assurance"],
@@ -487,7 +487,7 @@ const MORE = [
  ["Event-driven architecture","event-driven","event driven architecture","event-driven architecture"],["Caching","caching"],
  /* Databases & data engineering */
  ["SQL Server","sql server","mssql"],["Oracle Database","oracle","oracle database"],"SQLite","Cassandra","Neo4j","ClickHouse","Redshift","Kinesis","Flink",
- ["Delta Lake","delta lake","lakehouse"],["Data warehousing","data warehousing","data warehouse"],["Data modeling","data modeling","data modelling","dimensional modeling"],
+ ["Delta Lake","delta lake"],["Data warehousing","data warehousing","data warehouse"],["Data modeling","data modeling","data modelling","dimensional modeling"],
  ["Data governance","data governance"],["Data quality","data quality"],["SSIS","ssis"],["SSRS","ssrs"],"Informatica","Fivetran",["Looker Studio","looker studio","google data studio"],
  ["Business intelligence","business intelligence"],"Jupyter",
  /* Cloud & infra */
@@ -540,7 +540,7 @@ const MORE = [
  ["Product marketing","product marketing"],["Copywriting","copywriting"],["CRO","cro","conversion rate optimization","conversion optimization"],
  ["Marketing analytics","marketing analytics"],["Meta Ads","meta ads","facebook ads","instagram ads"],["LinkedIn Ads","linkedin ads"],["Influencer marketing","influencer marketing"],
  ["Affiliate marketing","affiliate marketing"],["Public relations","public relations","media relations"],["Event marketing","event marketing"],
- ["Customer segmentation","customer segmentation","market segmentation"],["Marketing attribution","attribution","marketing attribution"],["Keyword research","keyword research"],
+ ["Customer segmentation","customer segmentation","market segmentation"],["Marketing attribution","marketing attribution","attribution modeling","attribution modelling","multi-touch attribution"],["Keyword research","keyword research"],
  ["Link building","link building"],"SEMrush","Ahrefs","Mailchimp","Klaviyo",["Campaign management","campaign management"],["ROI analysis","roi","roas"],
  ["Unit economics","cac","ltv","unit economics"],["Funnel optimization","funnel optimization","funnel analysis","conversion funnel"],["Digital marketing","digital marketing"],
  ["Community management","community management"],"Shopify","WordPress","Webflow",["E-commerce","e-commerce","ecommerce"],["Localization","localization","localisation"],
@@ -602,10 +602,10 @@ const MORE = [
  ["Curriculum design","curriculum design","curriculum development"],["Lesson planning","lesson planning"],["Instructional design","instructional design"],
  ["Classroom management","classroom management"],["E-learning","e-learning","elearning"],["LMS","lms","learning management system"],"Articulate Storyline",["Training delivery","training delivery","corporate training","facilitation"],
  /* Writing & content */
- ["Technical writing","technical writing","documentation"],["Content writing","content writing","blogging"],["Editing","editing","proofreading"],["Research","research skills"],
+ ["Technical writing","technical writing","documentation"],["Content writing","content writing","blogging"],["Editing","copy editing","copyediting","proofreading"],["Research","research skills"],
  /* Soft skills */
  ["Collaboration","collaboration","teamwork"],["Time management","time management"],["Attention to detail","attention to detail","detail-oriented"],["Critical thinking","critical thinking"],
- ["Adaptability","adaptability","flexibility"],["Analytical skills","analytical skills","analytical thinking"],["Decision making","decision making","decision-making"],
+ ["Adaptability","adaptability"],["Analytical skills","analytical skills","analytical thinking"],["Decision making","decision making","decision-making"],
  ["Conflict resolution","conflict resolution"],["Customer focus","customer focus","customer-centric","customer obsession"],["Self-starter","self-starter","self-motivated"],
  ["Multitasking","multitasking","multi-tasking"],["Interpersonal skills","interpersonal skills","relationship building"],["Leadership","leadership","leadership skills"]
 ];
@@ -619,15 +619,15 @@ const DESIGN = [
  ["User interviews","user interviews","user interview","contextual inquiry","stakeholder interviews"],
  ["Surveys","surveys","survey design"],
  ["Qualitative research","qualitative research","qualitative methods","qualitative"],
- ["Quantitative research","quantitative research","quantitative methods","quantitative"],
- ["Research synthesis","research synthesis","synthesis","affinity mapping","affinity diagramming"],
+ ["Quantitative research","quantitative research","quantitative methods"],
+ ["Research synthesis","research synthesis","affinity mapping","affinity diagramming"],
  ["Personas","personas","persona","user personas"],
  ["Journey mapping","journey mapping","journey maps","journey map","customer journey","customer journeys","user journeys","user journey","customer journey mapping"],
  ["Empathy maps","empathy maps","empathy mapping"],
  ["Service design","service design","service blueprints","service blueprint"],
  ["Card sorting","card sorting","tree testing"],
  ["UX audits","ux audit","ux audits","usability audit","usability audits"],
- ["Product discovery","product discovery","discovery","continuous discovery"],
+ ["Product discovery","product discovery","continuous discovery"],
  ["Problem framing","problem framing","problem definition"],
  ["Data-informed design","data-informed","data-driven","data informed","data driven"],
  /* Core UX / UI craft */
@@ -647,7 +647,7 @@ const DESIGN = [
  ["End-to-end design","end-to-end","end to end","0 to 1","0-to-1","zero-to-one","zero to one","concept to launch"],
  ["Product thinking","product thinking","product sense"],
  ["Systems thinking","systems thinking"],
- ["Craft","craft","high-craft","visual polish","polish"],
+ ["Craft","high-craft","strong craft","design craft","craft skills","visual polish","attention to craft","craftsmanship"],
  ["Design strategy","design strategy","design vision","north star"],
  ["UX writing","ux writing","content design","microcopy","ux copy"],
  ["Edge cases and states","edge cases","empty states","error states","loading states"],
@@ -719,11 +719,30 @@ const DICT = GROUPS.concat(MORE,DESIGN).map(g=>{
 
 const BYNAME = Object.fromEntries(DICT.map(g=>[g.name,g]));
 BYNAME['Framer'].aliases[0].re = /(?<![A-Za-z0-9+#])framer(?![A-Za-z0-9+#])(?![ \t]+motion)/gi;
+/* Words that are also ordinary English (Go, Excel, Spark, Unity...). They only count as a skill when the surrounding words look like a skills
+   context: "experience with Excel", "Python, Go, SQL", "Go developer". "Go beyond", "Excel in a fast-paced team", "Unity Catalog" do not. */
+const GATED = new Set(["go","excel","spark","unity","segment","outreach","cursor","principle","bolt","sketch","swift","rust","helm","epic","waterfall","derivatives","notion","tally","maze","rive","spline","mural","chef","puppet","lambda"]);
+const NOT_AFTER = /^\s*(to|beyond|ahead|above|through|from|live|catalog|joy|at|as a|for a|in (a|an|the|this|our|your|that|fast|ambiguity))\b|^-/i;
+const CUE_BEFORE = /(\b(with|in|using|of|via|and|or|plus|like|including|on|knowledge|proficiency|proficient|experience|expertise|familiarity|fluency|skills?|stack|tools?|languages?|such as)\s+|[,/&(:;|•·*-]\s*|e\.g\.,?\s*)$/i;
+const CUE_AFTER = /^\s*([,;/)&|•]|\b(developers?|engineers?|programming|language|framework|tools?|skills?|experience|proficiency|certification|spreadsheets?|models?|pipelines?|jobs?)\b)/i;
+function skillContext(text,i,len){
+  const before=text.slice(Math.max(0,i-28),i), after=text.slice(i+len,i+len+30);
+  return !NOT_AFTER.test(after) && (CUE_BEFORE.test(before) || CUE_AFTER.test(after));
+}
+/* CAD the currency ("$128,000 CAD") is not CAD the software. */
+function isCurrency(text,i,len){ return /[\d$][\d,.\s]*(&\w+;|[-\u2013\u2014])?[\d$,.\s]*$/.test(text.slice(Math.max(0,i-16),i)) || /^\s*[\d$]/.test(text.slice(i+len,i+len+3)); }
+/* Equal-opportunity, benefits, pay and scam-warning paragraphs say nothing about the job. Blank them (same length, so offsets stay valid). */
+const BOILER_RE = /(equal (employment )?opportunity|commitment to diversity|committed to (diversity|building a diverse|fostering)|reasonable accommodations?|pay range|salary range|base pay|compensation and benefits (are|will)|benefits (include|package)|never ask you to pay|while you are interviewing|employment agenc|candidate privacy|privacy (notice|policy)|e-?verify|affirmative action|protected (veteran|characteristic))/i;
+function maskBoilerplate(text){
+  return text.split('\n').map(l=>BOILER_RE.test(l)?' '.repeat(l.length):l).join('\n');
+}
 function findAll(text, al){
   const re = al.re; re.lastIndex = 0; const out=[]; let m;
   while((m=re.exec(text))){
     const t=m[0]; let ok=true;
-    if(al.mode==='U') ok = t===t.toUpperCase();
+    if(al.a==='cad' && isCurrency(text,m.index,t.length)) ok=false;
+    if(ok && GATED.has(al.a.toLowerCase()) && !skillContext(text,m.index,t.length)) ok=false;
+    if(!ok){} else if(al.mode==='U') ok = t===t.toUpperCase();
     else if(al.mode==='C') ok = /[A-Z]/.test(t[0]);
     else if(al.mode==='X') ok = t===al.a;
     if(ok) out.push({i:m.index,len:t.length,t,a:al.a.toLowerCase()});
@@ -819,6 +838,7 @@ function sameWord(a,b){
 let ignored = new Set();
 let restoreTab='';
 function analyze(resume, jd){
+  jd = maskBoilerplate(jd);
   const R = sectionResume(resume);
   const J = sectionJD(jd);
   const terms=[];
