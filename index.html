@@ -348,6 +348,46 @@ textarea:focus-visible,
 #cometCursor{position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:50}
 @media (hover:hover) and (pointer:fine){html.comet-active,html.comet-active *{cursor:none!important}}
 @media (prefers-reduced-motion:reduce){#cursorTrail,#cursorGlow,#cometCursor{display:none}}
+
+/* ---------- Responsive refinements (all device sizes) ---------- */
+/* Keep the role picker inside its card on the narrowest phones. */
+.rolebar{grid-template-columns:minmax(0,1fr)}
+.rp{width:100%;min-width:0}
+/* Respect notches in landscape. */
+.wrap{padding-left:max(1.25rem,env(safe-area-inset-left,0px));padding-right:max(1.25rem,env(safe-area-inset-right,0px))}
+/* iOS zooms into fields under 16px; keep typing comfortable on touch. */
+@media (pointer:coarse),(max-width:600px){textarea{font-size:max(16px,1rem)}}
+/* Bigger hit areas on touch screens. */
+@media (hover:none),(pointer:coarse){
+  .x{min-height:36px;padding:.35rem .85rem}
+  .ai-suggest-btn{padding:.4rem 0}
+  .rp-reset,.rp-domains button{min-height:36px}
+  .rp-opt{padding:.7rem .95rem}
+  .result-tab{min-height:40px}
+}
+/* Small phones (≤420px). */
+@media (max-width:420px){
+  .wrap{padding-left:max(1rem,env(safe-area-inset-left,0px));padding-right:max(1rem,env(safe-area-inset-right,0px))}
+  button.primary{padding:.95rem 1.5rem;font-size:1.2rem}
+  .pane,.rolebar{padding:.95rem}
+  textarea{min-height:240px}
+  .checks li{grid-template-columns:1fr;gap:.35rem}
+  .group{padding:1.1rem 1rem .6rem}
+  .summary{padding:1.15rem}
+}
+/* Very small phones (≤360px). */
+@media (max-width:360px){
+  .cta-sub{flex-direction:column;width:100%}
+  .cta-sub button:not(.link){width:100%}
+  .sticker{font-size:.95rem;padding:.35rem .85rem}
+}
+/* Short landscape screens (phones on their side). */
+@media (max-height:500px) and (orientation:landscape){
+  .wrap{padding-top:1.5rem}
+  textarea{min-height:180px}
+  .result-tabs{padding:.4rem;top:4px}
+  .rp-list{max-height:45vh}
+}
 </style>
 </head>
 <body>
