@@ -32,10 +32,10 @@ One file: `<style>` block, then CDN scripts for PDF.js 3.11.174 and Mammoth 1.6.
    - **Role picker** (searchable combobox), file upload / drag-and-drop (`readPdf`, `readAnyFile`, `loadInto`), and sample inputs (`SAMPLE_JD`, `SAMPLE_RESUME`, design variants).
 2. **Cursor trail script** — a canvas comet-trail effect, independent of the app logic.
 
-The rule-based matcher runs entirely in the browser. Only the bullet-suggestion feature sends text (skill, role, resume) to the server.
+The rule-based matcher runs entirely in the browser. Only the bullet-suggestion feature sends text to the server: the skill, the JD keyword, the role and the resume's experience bullet lines (`experienceBullets()` drops the header, contact line, summary, education, skills list and job-title lines; `scrubContact()` on both client and server removes emails, links and phone numbers).
 
 ### `api/` (Vercel Node function)
-- `suggest.js` — `{skill, role, resume_text}` → `{suggestion}`: one resume bullet for a missing skill.
+- `suggest.js` — `{skill, keyword, role, resume_text}` → `{suggestion}`: one resume bullet that must contain `keyword` (the JD's wording) and only numbers present in `resume_text`; retries once with feedback if not.
 - Model defaults to `nvidia/nemotron-3.5-lightning-30b-a3b` (override with `NVIDIA_SUGGEST_MODEL`) with `chat_template_kwargs: {enable_thinking: false}`; that answers in ~1s. `nemotron-3.5-bolt-e4b` was tried and sat in NVIDIA's queue for 40–100s per call. The request aborts after 20s (504) and only `message.content` is used — never `reasoning_content`.
 
 ## Design constraints

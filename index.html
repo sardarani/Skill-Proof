@@ -1392,12 +1392,31 @@ function bindAfter(){
   
   const ICON_REGEN='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.4 6.4L3 16"/><path d="M3 21v-5h5"/><path d="M3 12A9 9 0 0 1 18.4 5.6L21 8"/><path d="M21 3v5h-5"/></svg>';
   const ICON_COPY='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>';
+  /* Only the experience bullets go to the AI: no name, header, contact line, summary, education or job-title lines.
+     Contact details are scrubbed again in case one sits inside a bullet. */
+  function experienceBullets(text){
+    const R=sectionResume(text);
+    const BULLET=/^\s*([-•*▪◦–—·]|\d+[.)])\s+/;
+    const DATES=/\b(19|20)\d{2}\b.*\b((19|20)\d{2}|present|current|now)\b/i;
+    return R.lines
+      .filter(l=>l.evidence && !l.heading && l.text.trim() && (BULLET.test(l.text) || (l.text.trim().length>=40 && !DATES.test(l.text))))
+      .map(l=>scrubContact(l.text.replace(BULLET,'').trim()))
+      .filter(Boolean)
+      .join('\n')
+      .slice(0,2500);
+  }
+  function scrubContact(t){
+    return t.replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g,'')
+      .replace(/\b(https?:\/\/|www\.)\S+|\b(linkedin|github|behance|dribbble)\.com\/\S*/gi,'')
+      .replace(/\+?\d[\d\s().-]{7,}\d/g,m=>(m.match(/\d/g)||[]).length>=9?'':m)
+      .replace(/\s{2,}/g,' ').trim();
+  }
   async function generateBullet(btn, target){
     const skill = btn.dataset.skill;
     const keyword = btn.dataset.keyword || skill;
     const roleVal = $('#roleInput')?.value || '';
     const role = (typeof roleMode !== 'undefined' && roleMode !== 'auto' && ROLES[roleMode] ? ROLES[roleMode].label : roleVal) || 'Target Role';
-    const resume_text = $('#resume')?.value || '';
+    const resume_text = experienceBullets($('#resume')?.value || '');
     const regen = target.querySelector('[data-ai-action="regenerate"]');
     btn.disabled = true;
     btn.classList.add('is-active');

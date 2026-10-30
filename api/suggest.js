@@ -9,7 +9,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Skill is required' });
   }
 
-  const candidateResume = (resume_text || resume || '').trim().slice(0, 3000);
+  // The page sends only experience bullets; scrub contact details here too in case an older page or another client sends more.
+  const candidateResume = scrubContact(resume_text || resume || '').slice(0, 2500);
   const targetRole = (role && role !== 'auto' && role !== 'Detect from job description') ? role : 'Target Role';
   // ATS systems match the job description's own wording, so that is the phrase the bullet must carry.
   const mustInclude = String(keyword || skill).trim();
@@ -28,7 +29,7 @@ RULES:
   const userPrompt = `Target Role: ${targetRole}
 Skill: ${skill}
 Required keyword (must appear verbatim): ${mustInclude}
-${candidateResume ? `Candidate Resume Context:\n${candidateResume}` : 'Candidate Resume Context: Not provided'}`;
+${candidateResume ? `Candidate's experience bullets:\n${candidateResume}` : "Candidate's experience bullets: Not provided"}`;
 
   const messages = [
     { role: 'system', content: systemPrompt },
@@ -98,6 +99,16 @@ async function complete(messages, signal, retried = false) {
   const content = (message && message.content) || '';
   if (!content.trim()) throw Object.assign(new Error('Empty suggestion'), { status: 502 });
   return content;
+}
+
+// Emails, links and phone numbers (9+ digits, so year ranges and metrics survive).
+function scrubContact(text) {
+  return String(text)
+    .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, '')
+    .replace(/\b(https?:\/\/|www\.)\S+|\b(linkedin|github|behance|dribbble)\.com\/\S*/gi, '')
+    .replace(/\+?\d[\d\s().-]{7,}\d/g, m => ((m.match(/\d/g) || []).length >= 9 ? '' : m))
+    .replace(/[ \t]{2,}/g, ' ')
+    .trim();
 }
 
 // Strip quotes, bullet characters and labels, and cap at 30 words.
