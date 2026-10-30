@@ -1180,7 +1180,7 @@ function termRow(t){
   if(t.status==='listed') d=`Only in ${t.where}. Show it in a bullet.`;
   if(t.status==='wording') d=`They say <q>${esc(t.jdWord)}</q>. You say <q>${t.resumeWords.map(esc).join('</q>, <q>')}</q>. Steal their word.`;
   if(t.status==='backed') d=`<q>${esc(t.line.length>150?t.line.slice(0,150)+'…':t.line)}</q>`;
-  d += ` <button type="button" class="ai-suggest-btn" data-skill="${esc(t.name)}">✦ Suggest a bullet</button><div class="ai-suggestion" hidden></div>`;
+  d += ` <button type="button" class="ai-suggest-btn" data-skill="${esc(t.name)}" data-keyword="${esc(t.jdWord||t.name)}">✦ Suggest a bullet</button><div class="ai-suggestion" hidden></div>`;
   return `<div class="term" id="${esc(t.detailId||'')}" tabindex="-1"><div class="name">${esc(t.name)}<span class="tags">${priTag(t)}</span></div>
   <button class="x" data-ignore="${esc(t.key)}" aria-label="Ignore ${esc(t.name)}">Not relevant</button>
   <div class="detail">${d}</div></div>`;
@@ -1394,6 +1394,7 @@ function bindAfter(){
   const ICON_COPY='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>';
   async function generateBullet(btn, target){
     const skill = btn.dataset.skill;
+    const keyword = btn.dataset.keyword || skill;
     const roleVal = $('#roleInput')?.value || '';
     const role = (typeof roleMode !== 'undefined' && roleMode !== 'auto' && ROLES[roleMode] ? ROLES[roleMode].label : roleVal) || 'Target Role';
     const resume_text = $('#resume')?.value || '';
@@ -1407,7 +1408,7 @@ function bindAfter(){
       const res = await fetch('/api/suggest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ skill, role, resume_text })
+        body: JSON.stringify({ skill, keyword, role, resume_text })
       });
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();
