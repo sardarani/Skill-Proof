@@ -255,6 +255,18 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
   border-radius:2px;
   text-decoration-color:currentColor;
 }
+.ai-actions{display:inline-flex;gap:.4rem;margin-left:.55rem;vertical-align:middle;white-space:nowrap}
+.ai-icon-btn{display:inline-grid;place-items:center;width:30px;height:30px;padding:0;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--muted);box-shadow:none;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s,transform .15s}
+.ai-icon-btn:hover:not(:disabled){background:var(--lime);color:#141414;border-color:var(--lime);transform:translateY(-1px)}
+.ai-icon-btn:active:not(:disabled){transform:translateY(0)}
+.ai-icon-btn:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.ai-icon-btn:disabled{cursor:wait;opacity:.6}
+.ai-icon-btn.is-spinning svg{animation:aiSpin .8s linear infinite}
+.ai-suggestion.is-loading .ai-text{opacity:.45}
+@keyframes aiSpin{to{transform:rotate(360deg)}}
+.copy-tip{position:fixed;z-index:90;transform:translate(-50%,0) scale(.92);padding:.28rem .65rem;border-radius:999px;background:var(--lime);color:#141414;font:700 .82rem "Urbanist",system-ui,sans-serif;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;box-shadow:var(--shadow)}
+.copy-tip.is-visible{opacity:1;transform:translate(-50%,0) scale(1)}
+@media(prefers-reduced-motion:reduce){.ai-icon-btn,.copy-tip{transition:none}.ai-icon-btn.is-spinning svg{animation:none}}
 .ai-suggestion{
   margin-top:.5rem;
   font-size:.92rem;
@@ -1327,24 +1339,49 @@ function topKeywordsHtml(T,EXP){
     <p class="hint" style="margin-top:.9rem">★ = required. × = times it appears in the job description.${todo.length?` Still to work on: ${todo.map(t=>esc(t.name)).join(', ')}.`:' All of them are already backed.'}</p>
   </div>`;
 }
+/* "Copied" tooltip that sits next to the pointer (or the button, for keyboard users) and fades out. */
+let copyTip, copyTipTimer, copyTipMove;
+function showCopyTip(e, el){
+  if(!copyTip){ copyTip=document.createElement('div'); copyTip.className='copy-tip'; copyTip.setAttribute('role','status'); document.body.appendChild(copyTip); }
+  const r=el.getBoundingClientRect(), keyboard=!e.clientX&&!e.clientY;
+  let x=keyboard?r.left+r.width/2:e.clientX, y=keyboard?r.top:e.clientY;
+  const place=(px,py)=>{ copyTip.style.left=Math.min(Math.max(px,40),window.innerWidth-40)+'px'; copyTip.style.top=Math.max(py-18,24)+'px'; };
+  copyTip.textContent='Copied'; place(x,y);
+  copyTip.classList.remove('is-visible'); void copyTip.offsetWidth; copyTip.classList.add('is-visible');
+  document.removeEventListener('pointermove',copyTipMove);
+  copyTipMove=ev=>place(ev.clientX,ev.clientY);
+  if(!keyboard) document.addEventListener('pointermove',copyTipMove);
+  clearTimeout(copyTipTimer);
+  copyTipTimer=setTimeout(()=>{ copyTip.classList.remove('is-visible'); document.removeEventListener('pointermove',copyTipMove); },1200);
+}
+async function copyBullet(text, e, el){
+  if(!text) return;
+  let ok=false;
+  try{ await navigator.clipboard.writeText(text); ok=true; }
+  catch(_){
+    const ta=document.createElement('textarea'); ta.value=text; ta.setAttribute('readonly',''); ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+    document.body.appendChild(ta); ta.select(); try{ ok=document.execCommand('copy'); }catch(__){} ta.remove();
+  }
+  if(ok) showCopyTip(e, el); else showSnackbar('Could not copy. Select the text and copy it manually.');
+}
 function bindAfter(){
   document.querySelectorAll('[data-ignore]').forEach(btn=>btn.addEventListener('click',()=>{ ignored.add(btn.dataset.ignore); renderWithLoader('Refreshing your results…'); }));
   const reset=$('#reset'); if(reset) reset.addEventListener('click',()=>{ ignored.clear(); renderWithLoader('Restoring ignored skills…'); });
   const back=$('#editInputs');if(back)back.addEventListener('click',showEditor);
   
-  document.querySelectorAll('.ai-suggest-btn').forEach(btn => btn.addEventListener('click', async (e) => {
-    e.stopPropagation();
+  const ICON_REGEN='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 1-15.4 6.4L3 16"/><path d="M3 21v-5h5"/><path d="M3 12A9 9 0 0 1 18.4 5.6L21 8"/><path d="M21 3v5h-5"/></svg>';
+  const ICON_COPY='<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V6.5A2.5 2.5 0 0 1 7.5 4H15"/></svg>';
+  async function generateBullet(btn, target){
     const skill = btn.dataset.skill;
-    const target = btn.nextElementSibling;
     const roleVal = $('#roleInput')?.value || '';
     const role = (typeof roleMode !== 'undefined' && roleMode !== 'auto' && ROLES[roleMode] ? ROLES[roleMode].label : roleVal) || 'Target Role';
     const resume_text = $('#resume')?.value || '';
+    const regen = target.querySelector('[data-ai-action="regenerate"]');
     btn.disabled = true;
     btn.classList.add('is-active');
     btn.classList.remove('is-retry');
-    btn.textContent = '✦ Generating...';
-    target.hidden = false;
-    target.textContent = 'Contacting AI...';
+    if(regen){ regen.disabled = true; regen.classList.add('is-spinning'); target.classList.add('is-loading'); }
+    else { btn.textContent = '✦ Generating...'; target.hidden = false; target.textContent = 'Contacting AI...'; }
     try {
       const res = await fetch('/api/suggest', {
         method: 'POST',
@@ -1353,17 +1390,37 @@ function bindAfter(){
       });
       if (!res.ok) throw new Error('Failed');
       const data = await res.json();
-      target.innerHTML = `<span style="color:var(--olive); font-weight:700;">✦ AI Suggestion:</span> <span style="font-weight:500;">${esc(data.suggestion)}</span>`;
+      if (!data.suggestion) throw new Error('Empty');
+      target.dataset.text = data.suggestion;
+      target.classList.remove('is-loading');
+      target.innerHTML = `<span style="color:var(--olive); font-weight:700;">✦ AI Suggestion:</span> <span class="ai-text" style="font-weight:500;">${esc(data.suggestion)}</span>
+        <span class="ai-actions"><button type="button" class="ai-icon-btn" data-ai-action="regenerate" aria-label="Regenerate bullet" title="Regenerate">${ICON_REGEN}</button><button type="button" class="ai-icon-btn" data-ai-action="copy" aria-label="Copy bullet" title="Copy">${ICON_COPY}</button></span>`;
       btn.hidden = true;
-      btn.classList.remove('is-active');
     } catch (err) {
-      target.textContent = 'Could not generate suggestion.';
+      target.classList.remove('is-loading');
+      if(regen){
+        regen.disabled = false; regen.classList.remove('is-spinning');
+        showSnackbar('Could not regenerate. Try again.');
+      } else {
+        target.textContent = 'Could not generate suggestion.';
+        btn.classList.add('is-retry');
+        btn.textContent = '✦ Try again';
+      }
+    } finally {
       btn.disabled = false;
       btn.classList.remove('is-active');
-      btn.classList.add('is-retry');
-      btn.textContent = '✦ Try again';
     }
-  }));
+  }
+  document.querySelectorAll('.ai-suggest-btn').forEach(btn => {
+    const target = btn.nextElementSibling;
+    btn.addEventListener('click', e => { e.stopPropagation(); generateBullet(btn, target); });
+    target.addEventListener('click', e => {
+      const act = e.target.closest('[data-ai-action]'); if(!act || act.disabled) return;
+      e.stopPropagation();
+      if(act.dataset.aiAction==='regenerate') generateBullet(btn, target);
+      else copyBullet(target.dataset.text||'', e, act);
+    });
+  });
 
   const tabs=[...document.querySelectorAll('[data-result-tab]')];
   function activate(tab,focus=false){
