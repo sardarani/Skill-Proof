@@ -135,6 +135,11 @@ button.primary:active{transform:translateY(4px);box-shadow:0 1px 0 #141414}
 button.link{border:none;background:none;padding:.4rem .2rem;text-decoration:underline;text-underline-offset:4px;color:var(--muted);box-shadow:none}
 button.link:hover{background:none;color:var(--ink);text-decoration-thickness:2px}
 button.link:active{transform:translateY(1px);opacity:.72}
+/* Tertiary links share the button.link look. */
+a.link{font-weight:700;text-decoration:underline;text-underline-offset:4px;color:var(--muted);border-radius:4px}
+a.link:hover{color:var(--ink);text-decoration-thickness:2px}
+a.link:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.privacy-link{margin:.9rem auto 0;text-align:center;font-size:.95rem}
 button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none!important}
 #msg{font-weight:800;background:var(--m);color:#141414;padding:.2rem .7rem;border-radius:999px}
 #msg:empty{display:none}
@@ -431,7 +436,8 @@ textarea:focus-visible,
         <svg class="target t2" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="#C8F53B"/><circle cx="20" cy="20" r="11" fill="none" stroke="#141414" stroke-width="2.5"/><circle cx="20" cy="20" r="4" fill="#141414"/><path d="M20 20 L33 7" stroke="#141414" stroke-width="2.5" stroke-linecap="round"/></svg>
     </div>
     </div>
-    <p class="lede">Resume in. Job description in. See what's backed by evidence, what needs proof, and what's missing. Nothing leaves your browser.</p>
+    <p class="lede">Resume in. Job description in. See what's backed by evidence, what needs proof, and what's missing. Your skill check runs in your browser.</p>
+    <p class="privacy-link"><a class="link" href="privacy.html">How Skill Proof handles your data</a></p>
   </header>
 
   <div class="inputs">
@@ -482,7 +488,7 @@ textarea:focus-visible,
 
   <div id="results" aria-live="polite"></div>
 
-  <footer>Not a real ATS. No tool can promise interviews. Add only what's true.</footer>
+  <footer>Not a real ATS. No tool can promise interviews. Add only what's true. <a class="link" href="privacy.html">Your data</a></footer>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
