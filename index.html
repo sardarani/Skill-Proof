@@ -889,6 +889,7 @@ function sameWord(a,b){
 /* ---------- Analysis ---------- */
 let ignored = new Set();
 let restoreTab='';
+let keepScroll=false;
 function analyze(resume, jd){
   jd = maskBoilerplate(jd);
   const R = sectionResume(resume);
@@ -1161,7 +1162,7 @@ function roleChecks(role,resume,jd,R,exp){
 }
 
 /* ---------- Rendering ---------- */
-function priTag(t){ return t.pri===3?'<span class="tag req">Required</span>':t.pri===1?'<span class="tag">Nice to have</span>':''; }
+function priTag(t){ return t.pri===3?`<span class="tag req">${t.status==='backed'?'Strong match':'Required'}</span>`:t.pri===1?'<span class="tag">Nice to have</span>':''; }
 function termRow(t){
   let d='';
   if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
@@ -1195,6 +1196,7 @@ function resultsPage(panels,active='overview'){
 }
 function showResults(){
   $('#top').classList.add('is-results');
+  if(keepScroll) return;
   window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
 }
 function showEditor(){
@@ -1211,7 +1213,7 @@ function showSnackbar(message){
   snackbarTimer=setTimeout(()=>{
     bar.classList.remove('is-visible');
     setTimeout(()=>{if(!bar.classList.contains('is-visible'))bar.textContent='';},250);
-  },4000);
+  },3000);
 }
 let renderTicket=0;
 function renderWithLoader(label='Checking your resume…'){
@@ -1365,7 +1367,15 @@ async function copyBullet(text, e, el){
   if(ok) showCopyTip(e, el); else showSnackbar('Could not copy. Select the text and copy it manually.');
 }
 function bindAfter(){
-  document.querySelectorAll('[data-ignore]').forEach(btn=>btn.addEventListener('click',()=>{ ignored.add(btn.dataset.ignore); renderWithLoader('Refreshing your results…'); }));
+  document.querySelectorAll('[data-ignore]').forEach(btn=>btn.addEventListener('click',()=>{
+    // Re-run in place: same tab, same scroll position, no loading screen.
+    const tab=document.querySelector('[data-result-tab][aria-selected="true"]'), y=window.scrollY;
+    ignored.add(btn.dataset.ignore);
+    restoreTab=tab?tab.dataset.resultTab:'';
+    keepScroll=true; render(); keepScroll=false;
+    window.scrollTo(0,y);
+    showSnackbar('One skill marked Not relevant');
+  }));
   const reset=$('#reset'); if(reset) reset.addEventListener('click',()=>{ ignored.clear(); renderWithLoader('Restoring ignored skills…'); });
   const back=$('#editInputs');if(back)back.addEventListener('click',showEditor);
   
