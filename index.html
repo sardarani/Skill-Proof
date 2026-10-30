@@ -879,6 +879,8 @@ function sectionJD(text){
   return lines;
 }
 const PRI={req:3,neutral:2,nice:1};
+/* Generic soft skills that every posting mentions: shown as a skill, but never counted as a must-have. */
+const NEVER_REQUIRED=new Set(['d:communication']);
 function stem(w){ for(const s of ['ing','ers','es','ed','er','s','e']){ if(w.endsWith(s)&&w.length-s.length>=3) return w.slice(0,-s.length); } return w; }
 function sameWord(a,b){
   if(a===b) return true;
@@ -903,6 +905,7 @@ function analyze(resume, jd){
     if(!jOcc.length) continue;
     for(const o of jOcc) masked = masked.slice(0,o.i)+' '.repeat(o.len)+masked.slice(o.i+o.len);
     let pri=0; for(const o of jOcc){ pri=Math.max(pri,PRI[J[lineAt(J,o.i)].type]||2); }
+    if(NEVER_REQUIRED.has(g.key)) pri=Math.min(pri,PRI.neutral);
     const freq={}; for(const o of jOcc){ freq[o.a]=(freq[o.a]||0)+1; }
     const topAlias=Object.keys(freq).sort((x,y)=>freq[y]-freq[x])[0];
     const jdWord=jOcc.find(o=>o.a===topAlias).t;
@@ -1162,7 +1165,7 @@ function roleChecks(role,resume,jd,R,exp){
 }
 
 /* ---------- Rendering ---------- */
-function priTag(t){ return t.pri===3?`<span class="tag req">${t.status==='backed'?'Strong match':'Required'}</span>`:t.pri===1?'<span class="tag">Nice to have</span>':''; }
+function priTag(t){ return t.pri===3?`<span class="tag req">${t.status==='backed'?'Strong match':t.status==='missing'?'Critical':'Required'}</span>`:t.pri===1?'<span class="tag">Nice to have</span>':''; }
 function termRow(t){
   let d='';
   if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
