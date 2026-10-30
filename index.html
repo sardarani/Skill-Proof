@@ -187,6 +187,8 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
 .must-segment:hover{filter:brightness(1.08)}
 .must-segment:active{transform:scaleY(.86);filter:brightness(.96)}
 .must-segment:focus-visible{z-index:2}
+/* Headings and skill rows receive focus from code (for screen readers / jump links); they are not controls, so no focus ring. */
+[tabindex="-1"]:focus{outline:none}
 .must-b{--segment-color:var(--b)}.must-l{--segment-color:var(--l)}.must-w{--segment-color:var(--w)}.must-m{--segment-color:var(--m)}
 .must-empty{color:var(--muted);font-size:.95rem;margin:.75rem 0}
 .nice-line{margin:1rem 0 1.2rem;font-weight:700}

@@ -26,10 +26,15 @@ CRITICAL INSTRUCTIONS:
 Missing Skill / Criterion: ${skill}
 ${candidateResume ? `Candidate Resume Context:\n${candidateResume.slice(0, 3000)}` : 'Candidate Resume Context: Not provided'}`;
 
+  // bolt-e4b sat in NVIDIA's queue for 40-100s per call; lightning with thinking off answers in ~1-2s.
+  // Abort well before the function limit so the UI can offer "Try again" instead of hanging.
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 20000);
   try {
-    const model = process.env.NVIDIA_SUGGEST_MODEL || 'nvidia/nemotron-3.5-bolt-e4b';
+    const model = process.env.NVIDIA_SUGGEST_MODEL || 'nvidia/nemotron-3.5-lightning-30b-a3b';
     const response = await fetch('https://integrate.api.nvidia.com/v1/chat/completions', {
       method: 'POST',
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${process.env.NVIDIA_NIM_API_KEY}`
@@ -41,7 +46,9 @@ ${candidateResume ? `Candidate Resume Context:\n${candidateResume.slice(0, 3000)
           { role: 'user', content: userPrompt }
         ],
         temperature: 0.3,
-        max_tokens: 300
+        max_tokens: 120,
+        // A one-line bullet needs no reasoning; thinking only adds latency and can eat the token budget.
+        chat_template_kwargs: { enable_thinking: false }
       })
     });
 
@@ -53,7 +60,11 @@ ${candidateResume ? `Candidate Resume Context:\n${candidateResume.slice(0, 3000)
 
     const data = await response.json();
     const message = data.choices && data.choices[0] && data.choices[0].message;
-    let rawContent = (message && (message.content || message.reasoning_content)) || '';
+    // Never fall back to reasoning_content: that is the model's scratch work, not a bullet.
+    let rawContent = (message && message.content) || '';
+    if (!rawContent.trim()) {
+      return res.status(502).json({ error: 'Empty suggestion' });
+    }
 
     // Clean up formatting, quotation marks, bullet symbols, introductory labels
     let cleaned = rawContent
@@ -76,8 +87,13 @@ ${candidateResume ? `Candidate Resume Context:\n${candidateResume.slice(0, 3000)
 
     return res.status(200).json({ suggestion: finalBullet });
   } catch (error) {
+    if (error.name === 'AbortError') {
+      return res.status(504).json({ error: 'Suggestion timed out' });
+    }
     console.error('Server Error:', error);
     return res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    clearTimeout(timer);
   }
 }
 

@@ -36,7 +36,7 @@ The rule-based matcher runs entirely in the browser. Only the bullet-suggestion 
 
 ### `api/` (Vercel Node function)
 - `suggest.js` — `{skill, role, resume_text}` → `{suggestion}`: one resume bullet for a missing skill.
-- It hardcodes the model ID (`nvidia/nemotron-3.5-lightning-30b-a3b`) and reads `message.content || message.reasoning_content`. This is a reasoning model, so a small `max_tokens` can be consumed by thinking and truncate the answer.
+- Model defaults to `nvidia/nemotron-3.5-lightning-30b-a3b` (override with `NVIDIA_SUGGEST_MODEL`) with `chat_template_kwargs: {enable_thinking: false}`; that answers in ~1s. `nemotron-3.5-bolt-e4b` was tried and sat in NVIDIA's queue for 40–100s per call. The request aborts after 20s (504) and only `message.content` is used — never `reasoning_content`.
 
 ## Design constraints
 
