@@ -1847,6 +1847,14 @@ window.addEventListener('pagehide',saveState);
 document.addEventListener('visibilitychange',()=>{ if(document.hidden) saveState(); });
 (function restoreState(){
   let st; try{ st=JSON.parse(sessionStorage.getItem(STATE_KEY)||'null'); }catch(e){}
+  // Refreshing the first page starts a new session. Results survive a refresh, and Back from another page keeps your text.
+  let nav=''; try{ nav=(performance.getEntriesByType('navigation')[0]||{}).type||''; }catch(e){}
+  if(nav==='reload' && (!st || st.view!=='results')){
+    try{ sessionStorage.removeItem(STATE_KEY); }catch(e){}
+    // Some browsers refill textareas on reload, so clear them explicitly.
+    $('#resume').value=''; $('#jd').value=''; ignored.clear(); setRole('auto'); updateClear();
+    return;
+  }
   if(!st) return;
   $('#resume').value=st.resume||''; $('#jd').value=st.jd||'';
   ignored=new Set(st.ignored||[]);
