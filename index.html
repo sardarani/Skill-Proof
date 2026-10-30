@@ -1096,12 +1096,30 @@ const DOMAINS=['Design','Engineering','Data & AI','Product','Marketing','Sales &
 const KW={pm:'pm',tpm:'pm',ae:'ae',csm:'csm',uxr:'uxr',ux:'ui ux',ui:'ui ux',fe:'fe web',be:'be server',fs:'swe',mle:'ml',ai:'genai',desmgr:'manager',rec:'hr',ld:'hr training',hrbp:'hr people'};
 ROLE_CATALOG.forEach(r=>{ r.kw=KW[r.id]||''; });
 const ROLES=Object.fromEntries(ROLE_CATALOG.map(r=>[r.id,r]));
-ROLE_CATALOG.forEach(r=>{ r.res=[r.label.toLowerCase(),...r.titles].map(t=>({len:t.length,re:new RegExp('(?<![a-z])'+reEsc(t)+'(?![a-z])','i')})); });
+ROLE_CATALOG.forEach(r=>{ r.res=[r.label.toLowerCase(),...r.titles].map(t=>({title:t,len:t.length,re:new RegExp('(?<![a-z])'+reEsc(t)+'(?![a-z])','i')})); });
+/* "Software engineer" alone says nothing about the specialism, so a specific title wins over it,
+   and a specialism word on the same line ("Software Engineer, Backend") picks the role. */
+const GENERIC_TITLES=new Set(['software engineer','software developer','sde']);
+const SPECIALISM=[
+  [/\b(?:back[- ]?end|server[- ]side|api)\b/i,'be'],[/\b(?:front[- ]?end|web|ui)\b/i,'fe'],[/\bfull[- ]?stack\b/i,'fs'],
+  [/\b(?:ios|android|mobile)\b/i,'mobile'],[/\b(?:machine learning|ml|ai)\b/i,'mle'],[/\bdata\b/i,'de'],
+  [/\bsecurity\b/i,'sec'],[/\b(?:embedded|firmware)\b/i,'embedded'],[/\b(?:test|qa|quality)\b/i,'qa'],
+  [/\b(?:infrastructure|platform|devops|sre|reliability|cloud)\b/i,'devops']
+];
 function detectRole(jd){
   for(const scope of [jd.slice(0,300),jd]){
-    let best=null;
-    for(const r of ROLE_CATALOG) for(const t of r.res){ if(t.re.test(scope) && (!best||t.len>best.len)) best={id:r.id,len:t.len}; }
+    let best=null,generic=null;
+    for(const r of ROLE_CATALOG) for(const t of r.res){
+      const m=t.re.exec(scope); if(!m) continue;
+      if(GENERIC_TITLES.has(t.title)){ if(!generic) generic={id:r.id,i:m.index}; }
+      else if(!best||t.len>best.len) best={id:r.id,len:t.len};
+    }
     if(best) return best.id;
+    if(generic){
+      const s=scope.lastIndexOf('\n',generic.i)+1, e=scope.indexOf('\n',generic.i), line=scope.slice(s,e<0?undefined:e);
+      const hit=SPECIALISM.find(([re])=>re.test(line));
+      return hit?hit[1]:generic.id;
+    }
   }
   return 'general';
 }
@@ -1704,7 +1722,7 @@ async function loadInto(which,f){
     $(u.area).value=text; updateClear();
     st.textContent=u.ok(f.name);
     showSnackbar(`${which==='resume'?'Resume':'Job description'} added from ${f.name}.`);
-    if(which==='jd') updateRoleHint();
+    updateRoleHint();
     if($('#top').classList.contains('is-results') && $('#results').innerHTML.trim() && $('#resume').value.trim() && $('#jd').value.trim()) renderWithLoader('Refreshing your results…');
   }catch(err){
     st.textContent=`Could not read ${f.name}. ${err.message}.`;
