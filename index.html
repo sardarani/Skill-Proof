@@ -17,8 +17,9 @@
   --glass:rgba(34,38,31,.90);--glass-field:rgba(17,19,15,.52);--glass-border:rgba(255,255,255,.2);--glass-sheen:rgba(255,255,255,.065);--glass-shadow:0 12px 36px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.2),inset 0 -1px 0 rgba(255,255,255,.035);--ink:#F1F3EC;--muted:#A7AC9E;--line:rgba(255,255,255,.12);--edge:#F1F3EC;
   --lime:#C8F53B;--lime-soft:rgba(200,245,59,.3);--olive:#DDFB82;--gridline:rgba(255,255,255,.045);--glow:rgba(200,245,59,.35);
   --btn:#C8F53B;--btn-ink:#141414;--focus:#FFFFFF;--focus-edge:#050505;
-  --b:#C8F53B;--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--warn:#141414;--ok:#141414;
+  --b:#22C55E;--b-soft:rgba(34,197,94,.24);--l:#FFE066;--w:#CFDCFF;--m:#FFB3A6;--warn:#141414;--ok:#141414;
   --shadow:0 8px 18px rgba(0,0,0,.45);
+  --card-pad:1.25rem;--gap:1.25rem;--after-heading:.4rem;--after-hint:.75rem;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -100,7 +101,7 @@ pre.ats .mk{border-radius:4px;padding:0 .15em;font-weight:600}
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .pane,.rolebar,.summary,.group{background:var(--surface);border-color:var(--line)}
 }
-.pane{padding:1.1rem 1.1rem 1.15rem;display:flex;flex-direction:column;gap:.7rem;min-width:0}
+.pane{padding:var(--card-pad);display:flex;flex-direction:column;gap:.7rem;min-width:0}
 .pane-head{display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap}
 label.title{display:inline-block;font-weight:800;font-size:1.2rem;letter-spacing:-.01em;background:var(--lime);color:#141414;border:1.5px solid #141414;padding:.1rem .65rem;border-radius:6px;transform:rotate(-1.5deg)}
 .rolebar label.title{justify-self:start}
@@ -108,9 +109,10 @@ textarea{width:100%;min-height:280px;resize:vertical;border:1.5px solid var(--li
 textarea::placeholder{color:var(--muted)}
 textarea::selection,input::selection{background:#FFF;color:#141414}
 .hint{font-size:.93rem;color:var(--muted)}
+.hint.note{margin-top:var(--after-hint)}
 .pane.dropping{outline:3px dashed var(--lime);outline-offset:4px;background:linear-gradient(var(--lime-soft),var(--lime-soft)),var(--glass);box-shadow:var(--glass-shadow)}
 .pane.dropping textarea{opacity:.6}
-.file-btn{position:relative;display:inline-flex;align-items:center;gap:.35rem;border:1.5px solid var(--edge);border-radius:999px;padding:.35rem .9rem;font-size:.92rem;font-weight:700;cursor:pointer;background:var(--surface)}
+.file-btn{position:relative;display:inline-flex;align-items:center;gap:.35rem;border:1.5px solid var(--edge);border-radius:999px;padding:.55rem 1.1rem;font-size:.93rem;font-weight:700;line-height:1.2;cursor:pointer;background:var(--surface)}
 .file-btn:hover{background:var(--lime-soft);color:var(--ink)}
 .file-btn:active{transform:translateY(1px) scale(.98)}
 .file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
@@ -158,10 +160,10 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
 .wrap.is-results{max-width:1080px;padding-top:1.6rem}
 .wrap.is-results .brand-header{margin-bottom:1.35rem}
 .wrap.is-results #results{margin-top:0}
-.results-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.results-heading{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:var(--gap)}
 .results-heading h1{font-size:clamp(1.65rem,4vw,2.35rem);font-weight:800;letter-spacing:-.04em}
-.results-heading .back{white-space:nowrap}
-.result-tabs{position:sticky;top:10px;z-index:12;display:flex;gap:.55rem;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:.7rem;margin:0 0 1.15rem;border:1px solid var(--glass-border);border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(115%);backdrop-filter:blur(22px) saturate(115%);box-shadow:var(--glass-shadow)}
+.results-heading .back{white-space:nowrap;font-size:.93rem;padding:.55rem 1.1rem}
+.result-tabs{position:sticky;top:10px;z-index:12;display:flex;gap:.55rem;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;padding:.7rem;margin:0 0 var(--gap);border:1px solid var(--glass-border);border-radius:999px;background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(115%);backdrop-filter:blur(22px) saturate(115%);box-shadow:var(--glass-shadow)}
 .result-tabs::-webkit-scrollbar{display:none}
 .result-tab{flex:0 0 auto;display:inline-flex;align-items:center;gap:.45rem;padding:.57rem 1rem;border:1.5px solid transparent;background:transparent;color:var(--muted);font-size:.96rem;font-weight:800;white-space:nowrap;transition:background .15s,border-color .15s,color .15s,transform .2s}
 .result-tab:hover{background:var(--lime-soft);color:var(--ink)}
@@ -170,7 +172,7 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
 .result-count{font-size:.78rem;opacity:.75}
 .result-panel{min-width:0;scroll-margin-top:6rem}
 .result-panel[hidden]{display:none!important}
-.must-have-summary{padding:clamp(1.2rem,3vw,2rem)}
+.must-have-summary{padding:var(--card-pad)}
 .must-label{color:var(--muted);font-size:.96rem;font-weight:800;letter-spacing:.035em;text-transform:uppercase}
 .must-topline{display:flex;align-items:center;gap:clamp(1rem,4vw,2.75rem);flex-wrap:wrap;margin:.35rem 0 1rem}
 .must-count{display:flex;align-items:baseline;letter-spacing:-.065em;line-height:.98}
@@ -189,7 +191,6 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
 .must-empty{color:var(--muted);font-size:.95rem;margin:.75rem 0}
 .nice-line{margin:1rem 0 1.2rem;font-weight:700}
 .all-skills{border-top:1px solid var(--line);padding-top:1.15rem}
-.all-skills h2{font-size:1.2rem;letter-spacing:-.02em}
 .must-segment .sr{font-size:0} 
 .term.skill-flash{animation:skill-flash 1.8s ease-out}
 @keyframes skill-flash{0%,20%{box-shadow:0 0 0 4px var(--lime),0 0 28px rgba(200,245,59,.6);background:rgba(200,245,59,.2)}100%{box-shadow:none;background:transparent}}
@@ -203,15 +204,19 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
  .result-tabs{top:6px;gap:.3rem;padding:.45rem}
  .result-tab{padding:.52rem .82rem;font-size:.9rem}
 }
-.summary{padding:1.5rem}
+.summary{padding:var(--card-pad)}
 .summary p.big{font-size:1.3rem;font-weight:600;max-width:60ch;margin-top:.6rem}
-.bar{display:flex;height:46px;border-radius:999px;overflow:hidden;margin-top:1.2rem;border:1.5px solid var(--edge)}
+.bar{display:flex;height:46px;border-radius:999px;overflow:hidden;margin-top:var(--after-hint);border:1.5px solid var(--edge)}
 .bar div{display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1rem;min-width:0;color:#141414}
-.cols{display:grid;grid-template-columns:1fr;gap:1.25rem;margin-top:1.25rem}
+.cols{display:grid;grid-template-columns:1fr;gap:var(--gap);margin-top:var(--gap)}
 @media (min-width:900px){.cols{grid-template-columns:1fr 1fr}}
-.group{padding:1.25rem 1.25rem .7rem;min-width:0}
-.group h3{font-size:1.25rem}
-.group > p.hint{margin:.4rem 0 .7rem}
+.group{padding:var(--card-pad);min-width:0}
+/* Rows carry their own vertical padding; drop it on the last row so every card ends with the same inner space. */
+.group>.term:last-child,.group>.empty:last-child,.checks li:last-child{padding-bottom:0}
+.group>:last-child,.group>p.hint:last-child{margin-bottom:0}
+.group h2,.group h3,.all-skills h2{font-size:1.25rem;letter-spacing:-.02em}
+:is(h2,h3)+.hint{margin-top:var(--after-heading)}
+.group > p.hint{margin:var(--after-heading) 0 var(--after-hint)}
 .term{border-top:1px solid var(--line);padding:.85rem 0;display:grid;grid-template-columns:1fr auto;gap:.2rem .75rem}
 .term .name{font-weight:800}
 .term .detail{grid-column:1/-1;font-size:.96rem;color:var(--muted);overflow-wrap:anywhere}
@@ -267,6 +272,8 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
 .copy-tip{position:fixed;z-index:90;transform:translate(-50%,0) scale(.92);padding:.28rem .65rem;border-radius:999px;background:var(--lime);color:#141414;font:700 .82rem "Urbanist",system-ui,sans-serif;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;box-shadow:var(--shadow)}
 .copy-tip.is-visible{opacity:1;transform:translate(-50%,0) scale(1)}
 @media(prefers-reduced-motion:reduce){.ai-icon-btn,.copy-tip{transition:none}.ai-icon-btn.is-spinning svg{animation:none}}
+.ai-label{color:var(--olive);font-weight:700}
+.ai-text{font-weight:500}
 .ai-suggestion{
   margin-top:.5rem;
   font-size:.92rem;
@@ -286,22 +293,23 @@ button:disabled{cursor:wait;opacity:.62;transform:none!important;box-shadow:none
   }
 }
 .tags{display:inline-flex;gap:.4rem;margin-left:.5rem;vertical-align:1px}
-.tag{font-size:.78rem;border:1.5px solid var(--line);border-radius:999px;padding:.02rem .55rem;color:var(--muted);font-weight:700}
+.tag{font-size:.8rem;border:1.5px solid var(--line);border-radius:999px;padding:.12rem .6rem;color:var(--muted);font-weight:800}
 .tag.req{border-color:var(--edge);color:var(--ink);background:var(--lime-soft)}
-.x{padding:.2rem .7rem;font-size:.84rem;color:var(--muted);border-color:var(--line);align-self:start;white-space:nowrap}
-.chips{display:flex;flex-wrap:wrap;gap:.55rem .45rem;margin-top:1rem}
+.tag.req.strong{border-color:var(--b);background:var(--b-soft)}
+.x{padding:.2rem .7rem;font-size:.8rem;color:var(--muted);border-color:var(--line);align-self:start;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:.55rem .45rem;margin-top:var(--after-hint)}
 .chip{font-size:.95rem;padding:.25rem .7rem}
 .empty{color:var(--muted);padding:.85rem 0;border-top:1px solid var(--line);font-weight:600}
-.checks{list-style:none;padding:0;margin:.7rem 0 0}
+.checks{list-style:none;padding:0;margin:var(--after-hint) 0 0}
 .checks li{border-top:1px solid var(--line);padding:.75rem 0;display:grid;grid-template-columns:6.3rem 1fr;gap:.75rem;align-items:baseline}
-.status{justify-self:start;font-size:.8rem;font-weight:800;padding:.12rem .6rem;border-radius:999px;color:#141414}
+.status{justify-self:start;font-size:.8rem;font-weight:800;padding:.12rem .6rem;border:1.5px solid transparent;border-radius:999px;color:#141414}
 .status.ok{background:var(--b)}.status.warn{background:var(--m)}
-.section{margin-top:1.25rem}
-.ats-wrap{overflow-x:auto;margin-top:.9rem;border:1.5px solid var(--line);border-radius:12px;background:var(--glass-field)}
+.section{margin-top:var(--gap)}
+.ats-wrap{overflow-x:auto;margin-top:var(--after-hint);border:1.5px solid var(--line);border-radius:12px;background:var(--glass-field)}
 pre.ats{margin:0;padding:1rem;font:500 .95rem/1.65 "Urbanist",system-ui,sans-serif;white-space:pre-wrap;word-break:break-word;min-width:0}
 
 /* ---------- Role picker ---------- */
-.rolebar{margin-top:1.4rem;padding:1.1rem;display:grid;gap:.65rem}
+.rolebar{margin-top:1.4rem;padding:var(--card-pad);display:grid;gap:.65rem}
 .rp{position:relative;max-width:560px}
 .rp-box{display:flex;align-items:center;border:1.5px solid var(--edge);border-radius:999px;background:var(--glass-field);padding-right:.35rem}
 .rp-box input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);font:600 1rem "Urbanist",system-ui,sans-serif;padding:.72rem 1rem;outline:none}
@@ -381,11 +389,9 @@ textarea:focus-visible,
 @media (max-width:420px){
   .wrap{padding-left:max(1rem,env(safe-area-inset-left,0px));padding-right:max(1rem,env(safe-area-inset-right,0px))}
   button.primary{padding:.95rem 1.5rem;font-size:1.2rem}
-  .pane,.rolebar{padding:.95rem}
+  :root{--card-pad:1rem;--gap:1rem}
   textarea{min-height:240px}
   .checks li{grid-template-columns:1fr;gap:.35rem}
-  .group{padding:1.1rem 1rem .6rem}
-  .summary{padding:1.15rem}
 }
 /* Very small phones (≤360px). */
 @media (max-width:360px){
@@ -1165,7 +1171,7 @@ function roleChecks(role,resume,jd,R,exp){
 }
 
 /* ---------- Rendering ---------- */
-function priTag(t){ return t.pri===3?`<span class="tag req">${t.status==='backed'?'Strong match':t.status==='missing'?'Critical':'Required'}</span>`:t.pri===1?'<span class="tag">Nice to have</span>':''; }
+function priTag(t){ return t.pri===3?`<span class="tag req${t.status==='backed'?' strong':''}">${t.status==='backed'?'Strong match':t.status==='missing'?'Critical':'Required'}</span>`:t.pri===1?'<span class="tag">Nice to have</span>':''; }
 function termRow(t){
   let d='';
   if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
@@ -1296,7 +1302,7 @@ function render(){
       </div>
       <div class="legend" aria-label="Colour key"><span><span class="mk mk-b">Backed</span> proven</span><span><span class="mk mk-l">Only listed</span> named, not demonstrated</span><span><span class="mk mk-w">Different phrase</span> same idea, different language</span><span><span class="mk mk-m">Missing</span> not found</span></div>
     </div>
-    ${A.hidden?`<p class="hint" style="margin-top:.8rem">${A.hidden} ignored. <button class="link" id="reset">Restore</button></p>`:''}
+    ${A.hidden?`<p class="hint note">${A.hidden} ignored. <button class="link" id="reset">Restore</button></p>`:''}
   </section>`;
   const skills=`<div class="cols">
     ${group('Missing','mk-m','Requested in the job description, but not found in your resume.',m,'Nothing missing. Every requested skill appears in your resume.')}
@@ -1322,7 +1328,7 @@ function roleHtml(role,EXP,RC){
     <p class="hint">Common expectations for this role. • = also requested in this job description.</p>
     <div class="chips">${EXP.map(e=>`<span class="chip mk ${cls[e.status]}" title="${esc(e.name)}: ${word[e.status]}${e.line?' ('+esc(e.line.slice(0,120))+')':''}">${esc(e.name)}${e.inJD?' <span aria-label="also requested in this job description">•</span>':''}<span class="sr">, ${word[e.status]}</span></span>`).join('')}</div>
     ${(()=>{const miss=EXP.filter(e=>e.status==='missing'),lst=EXP.filter(e=>e.status==='listed');
-      return `<p class="hint" style="margin-top:.9rem">${miss.length?`Missing: ${miss.map(e=>esc(e.name)).join(', ')}.`:'Everything covered.'}${lst.length?` Unproven: ${lst.map(e=>esc(e.name)).join(', ')}.`:''}</p>`})()}
+      return `<p class="hint note">${miss.length?`Missing: ${miss.map(e=>esc(e.name)).join(', ')}.`:'Everything covered.'}${lst.length?` Unproven: ${lst.map(e=>esc(e.name)).join(', ')}.`:''}</p>`})()}
   </section>` : '';
   const rcHtml = RC.length ? `<section class="group"><h2>Role-specific checks</h2><ul class="checks">${RC.map(p=>`<li><span class="status ${p.ok?'ok':'warn'}">${p.ok?'All good':'Fix this'}</span><span><strong>${p.label}.</strong> ${esc(p.msg)}</span></li>`).join('')}</ul></section>` : '';
   if(!expHtml && !rcHtml) return '';
@@ -1341,7 +1347,7 @@ function topKeywordsHtml(T,EXP){
   return `<div class="all-skills top-keywords"><h2>Top ${top.length} keywords for this job</h2>
     <p class="hint">You can't use every word. These are asked for most strongly: required, repeated, or expected for the role. Prove these first.</p>
     <div class="chips">${top.map(t=>`<span class="chip mk ${cls[t.status]}" title="${esc(t.name)}: ${word[t.status]}">${esc(t.name)}${t.jdCount>1?` ×${t.jdCount}`:''}${t.pri===3?' <span aria-label="required">★</span>':''}<span class="sr">, ${word[t.status]}</span></span>`).join('')}</div>
-    <p class="hint" style="margin-top:.9rem">★ = required. × = times it appears in the job description.${todo.length?` Still to work on: ${todo.map(t=>esc(t.name)).join(', ')}.`:' All of them are already backed.'}</p>
+    <p class="hint note">★ = required. × = times it appears in the job description.${todo.length?` Still to work on: ${todo.map(t=>esc(t.name)).join(', ')}.`:' All of them are already backed.'}</p>
   </div>`;
 }
 /* "Copied" tooltip that sits next to the pointer (or the button, for keyboard users) and fades out. */
@@ -1406,7 +1412,7 @@ function bindAfter(){
       if (!data.suggestion) throw new Error('Empty');
       target.dataset.text = data.suggestion;
       target.classList.remove('is-loading');
-      target.innerHTML = `<span style="color:var(--olive); font-weight:700;">✦ AI Suggestion:</span> <span class="ai-text" style="font-weight:500;">${esc(data.suggestion)}</span>
+      target.innerHTML = `<span class="ai-label">✦ AI Suggestion:</span> <span class="ai-text">${esc(data.suggestion)}</span>
         <span class="ai-actions"><button type="button" class="ai-icon-btn" data-ai-action="regenerate" aria-label="Regenerate bullet" title="Regenerate">${ICON_REGEN}</button><button type="button" class="ai-icon-btn" data-ai-action="copy" aria-label="Copy bullet" title="Copy">${ICON_COPY}</button></span>`;
       btn.hidden = true;
     } catch (err) {
