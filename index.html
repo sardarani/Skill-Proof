@@ -509,7 +509,7 @@ const GROUPS = [
  ["Kafka","kafka","apache kafka"],["Spark","spark","apache spark","pyspark"],"Hadoop","Airflow","Snowflake","dbt","BigQuery","Databricks",
  ["ETL","etl","elt","data pipeline","data pipelines"],
  ["AWS","aws","amazon web services"],["GCP","gcp","google cloud","google cloud platform"],["Azure","azure","microsoft azure"],
- ["Kubernetes","kubernetes","k8s"],["Docker","docker","containerization","containers"],["Terraform","terraform","infrastructure as code","infrastructure-as-code"],
+ ["Kubernetes","kubernetes","k8s"],["Docker","docker","containerization","containers"],["Terraform","terraform","infrastructure as code","infrastructure-as-code","iac"],
  "Ansible","Jenkins","GitHub Actions",["CI/CD","ci/cd","ci cd","continuous integration","continuous delivery","continuous deployment"],
  ["Git","git","version control"],"GitHub","GitLab","Linux",
  ["DevOps","devops","sre","site reliability","site reliability engineering"],["Observability","observability","monitoring and alerting"],"Prometheus","Grafana","Datadog",
@@ -518,19 +518,19 @@ const GROUPS = [
  ["Automated testing","unit testing","integration testing","test automation","automated testing"],"Selenium","Jest","Pytest",["QA","qa","quality assurance"],
  ["Security","cybersecurity","information security","application security","owasp"],
  "Android",["iOS","iOS"],"React Native","Flutter",
- ["Machine learning","ml","machine learning"],["AI","ai","artificial intelligence"],["Deep learning","deep learning","neural networks"],
+ ["Machine learning","ml","machine learning"],["AI","artificial intelligence","ai tools","ai agents","agentic ai","ai fluency","ai/ml"],["Deep learning","deep learning","neural networks"],
  ["LLMs","llm","llms","large language models","generative ai","genai"],["NLP","nlp","natural language processing"],"Computer vision",
  "Pandas","NumPy","TensorFlow","PyTorch",["scikit-learn","scikit-learn","sklearn"],
  ["Data analysis","data analysis","data analytics"],["Data visualization","data visualization","dashboards","dashboarding"],"Tableau",["Power BI","power bi","powerbi"],"Looker",
  ["Excel","excel","microsoft excel","spreadsheets"],["Statistics","statistics","statistical analysis","statistical modeling"],
  ["A/B testing","a/b testing","ab testing","split testing","experimentation"],
  ["Agile","agile","scrum","kanban"],"Jira",["Product management","product management"],["Roadmaps","roadmap","roadmaps","product roadmap"],
- ["Stakeholder management","stakeholder management","stakeholders","cross-functional"],["Project management","project management","program management"],
+ ["Stakeholder management","stakeholder management","stakeholder engagement","stakeholder communication","stakeholder alignment","managing stakeholders"],["Project management","project management","program management"],
  ["Team leadership","team leadership","led a team","managed a team","people management","mentor","mentoring","mentored","mentorship"],
  ["Communication","communication","communication skills","written communication","verbal communication","written and verbal communication"],["Problem solving","problem solving","problem-solving"],
  ["SEO","seo","search engine optimization"],["Paid search","sem","ppc","paid search","google ads"],["Content marketing","content marketing","content strategy"],
  ["Social media","social media","social media marketing"],"Email marketing",["Marketing automation","marketing automation"],"HubSpot","Marketo",
- ["Google Analytics","google analytics","ga4"],["Salesforce","salesforce","sfdc"],"CRM",["Lead generation","lead generation","demand generation"],"B2B","SaaS",["KPIs","kpi","kpis"],
+ ["Google Analytics","google analytics","ga4"],["Salesforce","salesforce","sfdc"],"CRM",["Lead generation","lead generation","demand generation"],["KPIs","kpi","kpis"],
  ["Recruiting","recruiting","recruitment","talent acquisition"],["University recruiting","university recruiting","campus recruiting","campus recruiter","university recruiter","college recruiting","campus hiring"],
  ["Sourcing","sourcing","candidate sourcing"],["Applicant tracking systems","applicant tracking","applicant tracking system"],"Greenhouse","Workday",
  ["Financial modeling","financial modeling","financial modelling"],"Forecasting","Budgeting","Accounting","GAAP","IFRS",
@@ -548,8 +548,8 @@ const MORE = [
  /* Mobile */
  "SwiftUI","Jetpack Compose","Xcode","Android Studio",
  /* Backend, APIs, messaging */
- ["API design","api design","api development"],["API integration","api integration","third-party integrations","integrations"],"Webhooks",
- ["OAuth","oauth","oauth2"],["JWT","jwt"],["SSO","sso","single sign-on","saml"],"RabbitMQ","Celery","Protobuf","Nginx",["Serverless","serverless"],
+ ["API design","api design","api development"],["API integration","api integration","api integrations","third-party integrations"],"Webhooks",
+ ["OAuth","oauth","oauth2"],["JWT","jwt"],["SSO","sso","single sign-on","saml","oidc","openid connect"],"RabbitMQ","Celery","Protobuf","Nginx",["Serverless","serverless"],
  ["Event-driven architecture","event-driven","event driven architecture","event-driven architecture"],["Caching","caching"],
  /* Databases & data engineering */
  ["SQL Server","sql server","mssql"],["Oracle Database","oracle","oracle database"],"SQLite","Cassandra","Neo4j","ClickHouse","Redshift","Kinesis","Flink",
@@ -578,18 +578,18 @@ const MORE = [
  /* Web3 */
  ["Blockchain","blockchain","web3","smart contracts"],
  /* ML / AI / data science */
- ["Regression","regression","linear regression","logistic regression"],["Classification","classification models"],["Clustering","clustering"],
+ ["Regression","linear regression","logistic regression","regression analysis","regression models"],["Classification","classification models"],["Clustering","clustering"],
  ["Time series","time series","time-series"],["Feature engineering","feature engineering"],["Hyperparameter tuning","hyperparameter tuning"],"XGBoost","LightGBM","Keras","OpenCV",
  ["Hugging Face","hugging face","huggingface"],"LangChain",["RAG","rag","retrieval-augmented generation","retrieval augmented generation"],["Prompt engineering","prompt engineering"],
  ["Fine-tuning","fine-tuning","fine tuning"],["MLOps","mlops"],"MLflow","Kubeflow",["SageMaker","sagemaker","amazon sagemaker"],["Vertex AI","vertex ai"],
- ["Vector databases","vector database","vector databases","pinecone","weaviate","faiss"],["OpenAI API","openai","openai api"],["Reinforcement learning","reinforcement learning"],
+ ["Vector databases","vector database","vector databases","vector search","pinecone","weaviate","faiss"],["OpenAI API","openai api","openai apis","openai sdk"],["Reinforcement learning","reinforcement learning"],
  ["Recommendation systems","recommendation systems","recommender systems"],["Hypothesis testing","hypothesis testing","statistical significance"],["Causal inference","causal inference"],
  ["Predictive modeling","predictive modeling","predictive modelling","predictive analytics"],["SPSS","spss"],["SAS","sas"],"Stata",
  /* Product */
  ["Product strategy","product strategy"],["Go-to-market","go-to-market","gtm","go to market"],["User stories","user stories"],["PRDs","prd","prds","product requirements"],
  ["Requirements gathering","requirements gathering","requirements analysis","requirement gathering"],["Market research","market research"],["Competitive analysis","competitive analysis","competitor analysis"],
  ["Product analytics","product analytics"],["OKRs","okr","okrs"],["Prioritization","prioritization","prioritisation"],["Customer discovery","customer discovery","customer interviews"],
- ["MVP","mvp"],["Product-led growth","product-led growth","plg"],["Pricing strategy","pricing strategy","pricing"],["Backlog management","backlog management","backlog grooming","backlog refinement"],
+ ["MVP","mvp"],["Product-led growth","product-led growth","plg"],["Pricing strategy","pricing strategy","pricing models","pricing analysis"],["Backlog management","backlog management","backlog grooming","backlog refinement"],
  ["Release management","release management"],"Amplitude","Mixpanel","Segment","Optimizely","Hotjar",
  /* Business analysis & consulting */
  ["Business analysis","business analysis"],["Process mapping","process mapping","bpmn"],["Gap analysis","gap analysis"],["Market sizing","market sizing"],
@@ -616,7 +616,7 @@ const MORE = [
  ["Consultative selling","consultative selling","solution selling","value selling"],["Sales forecasting","sales forecasting"],["Territory management","territory management"],
  ["Key account management","key account management","key accounts"],["Channel sales","channel sales","channel partners"],["Partnerships","partnerships","strategic partnerships"],
  ["Upselling","upselling","cross-selling","upsell"],["Revenue operations","revenue operations","revops","sales operations"],"Salesloft","Outreach","Gong","ZoomInfo",
- ["LinkedIn Sales Navigator","sales navigator","linkedin sales navigator"],"MEDDIC",["SPIN selling","spin selling"],["RFPs","rfp","rfps"],["Sales presentations","sales presentations","product demos","demos"],
+ ["LinkedIn Sales Navigator","sales navigator","linkedin sales navigator"],["MEDDIC","meddic","meddpicc"],["SPIN selling","spin selling"],["RFPs","rfp","rfps"],["Sales presentations","sales presentations","product demos","product demonstrations"],
  /* Customer support & success */
  ["Customer support","customer support","customer service"],["Technical support","technical support"],"Zendesk","Freshdesk","Intercom",["CSAT","csat"],["NPS","nps","net promoter score"],
  ["Customer retention","customer retention","churn reduction","churn"],["Customer onboarding","customer onboarding","client onboarding"],["Escalation management","escalation management","escalations"],
@@ -637,7 +637,7 @@ const MORE = [
  ["Compensation and benefits","compensation and benefits","total rewards"],["Employee onboarding","employee onboarding","new hire onboarding"],
  ["Employee engagement","employee engagement"],["Learning and development","learning and development","l&d","training and development"],["Talent management","talent management"],
  ["Succession planning","succession planning"],["Workforce planning","workforce planning","headcount planning"],["HRIS","hris","hrms"],"BambooHR","SuccessFactors",
- ["Employment law","employment law","labor law","labour law"],["DEI","dei","diversity and inclusion","diversity, equity and inclusion"],["Interviewing","interviewing","structured interviews"],
+ ["Employment law","employment law","labor law","labour law"],["DEI","dei","diversity and inclusion","diversity, equity and inclusion"],["Interviewing","structured interviews","interviewing candidates","candidate interviews"],
  ["Employer branding","employer branding"],["Boolean search","boolean search"],["LinkedIn Recruiter","linkedin recruiter"],["Headhunting","headhunting","executive search"],
  ["Offer negotiation","offer negotiation"],["Background verification","background verification","background checks"],["HR policies","hr policies","policy development"],
  ["Organizational development","organizational development","organisational development"],["Change management","change management"],
@@ -668,12 +668,12 @@ const MORE = [
  ["Curriculum design","curriculum design","curriculum development"],["Lesson planning","lesson planning"],["Instructional design","instructional design"],
  ["Classroom management","classroom management"],["E-learning","e-learning","elearning"],["LMS","lms","learning management system"],"Articulate Storyline",["Training delivery","training delivery","corporate training","facilitation"],
  /* Writing & content */
- ["Technical writing","technical writing","documentation"],["Content writing","content writing","blogging"],["Editing","copy editing","copyediting","proofreading"],["Research","research skills"],
+ ["Technical writing","technical writing","technical documentation","api documentation"],["Content writing","content writing","blogging"],["Editing","copy editing","copyediting","proofreading"],["Research","research skills"],
  /* Soft skills */
- ["Collaboration","collaboration","teamwork"],["Time management","time management"],["Attention to detail","attention to detail","detail-oriented"],["Critical thinking","critical thinking"],
+ ["Collaboration","collaboration","teamwork","cross-functional collaboration","cross-functional teams"],["Time management","time management"],["Attention to detail","attention to detail","detail-oriented"],["Critical thinking","critical thinking"],
  ["Adaptability","adaptability"],["Analytical skills","analytical skills","analytical thinking"],["Decision making","decision making","decision-making"],
- ["Conflict resolution","conflict resolution"],["Customer focus","customer focus","customer-centric","customer obsession"],["Self-starter","self-starter","self-motivated"],
- ["Multitasking","multitasking","multi-tasking"],["Interpersonal skills","interpersonal skills","relationship building"],["Leadership","leadership","leadership skills"]
+ ["Conflict resolution","conflict resolution"],["Customer focus","customer focus","customer-centric","customer obsession"],
+ ["Interpersonal skills","interpersonal skills","relationship building"],["Leadership","leadership skills","leadership experience","people leadership"]
 ];
 
 
@@ -684,22 +684,22 @@ const DESIGN = [
  ["Usability testing","usability testing","usability tests","usability test","user testing","moderated testing","unmoderated testing","usability sessions"],
  ["User interviews","user interviews","user interview","contextual inquiry","stakeholder interviews"],
  ["Surveys","surveys","survey design"],
- ["Qualitative research","qualitative research","qualitative methods","qualitative"],
+ ["Qualitative research","qualitative research","qualitative methods"],
  ["Quantitative research","quantitative research","quantitative methods"],
  ["Research synthesis","research synthesis","affinity mapping","affinity diagramming"],
- ["Personas","personas","persona","user personas"],
- ["Journey mapping","journey mapping","journey maps","journey map","customer journey","customer journeys","user journeys","user journey","customer journey mapping"],
+ ["Personas","personas","user personas"],
+ ["Journey mapping","journey mapping","journey maps","journey map","user journeys","user journey","customer journey mapping"],
  ["Empathy maps","empathy maps","empathy mapping"],
  ["Service design","service design","service blueprints","service blueprint"],
  ["Card sorting","card sorting","tree testing"],
  ["UX audits","ux audit","ux audits","usability audit","usability audits"],
  ["Product discovery","product discovery","continuous discovery"],
  ["Problem framing","problem framing","problem definition"],
- ["Data-informed design","data-informed","data-driven","data informed","data driven"],
+ ["Data-informed design","data-informed design","data-driven design"],
  /* Core UX / UI craft */
  ["User flows","user flows","user flow","task flows","task flow"],
  ["Wireframing","wireframing","wireframes","wireframe","low-fidelity","lo-fi"],
- ["Prototyping","prototyping","prototypes","prototype","interactive prototypes","clickable prototypes"],
+ ["Prototyping","prototyping","prototypes","interactive prototypes","clickable prototypes"],
  ["High-fidelity design","high-fidelity","hi-fi","mockups","mockup","pixel-perfect"],
  ["Visual design","visual design","ui design","interface design","visual craft"],
  ["Interaction design","interaction design","interaction patterns","ixd"],
@@ -708,19 +708,19 @@ const DESIGN = [
  ["Design tokens","design tokens","token system","style dictionary","tokens studio","figma tokens"],
  ["Figma auto layout","auto layout","auto-layout"],
  ["Design QA","design qa","visual qa","implementation review"],
- ["Developer handoff","handoff","hand-off","developer handoff","dev mode","design specs","redlines","annotations"],
- ["Design critique","design critique","design critiques","design reviews","design review"],
- ["End-to-end design","end-to-end","end to end","0 to 1","0-to-1","zero-to-one","zero to one","concept to launch"],
+ ["Developer handoff","developer handoff","design handoff","dev mode","design specs","redlines"],
+ ["Design critique","design critique","design critiques"],
+ ["End-to-end design","end-to-end design","end-to-end product design","concept to launch"],
  ["Product thinking","product thinking","product sense"],
  ["Systems thinking","systems thinking"],
- ["Craft","high-craft","strong craft","design craft","craft skills","visual polish","attention to craft","craftsmanship"],
- ["Design strategy","design strategy","design vision","north star"],
+ ["Craft","high-craft","strong craft","design craft","craft skills","visual polish","attention to craft"],
+ ["Design strategy","design strategy","design vision"],
  ["UX writing","ux writing","content design","microcopy","ux copy"],
- ["Edge cases and states","edge cases","empty states","error states","loading states"],
+ ["Edge cases and states","empty states","error states","loading states"],
  ["Mobile design","mobile design","mobile apps","mobile app","native mobile","native apps"],
- ["Web design","web design","web applications","web apps","web app"],
- ["Enterprise UX","enterprise software","enterprise ux","complex workflows","complex systems"],
- ["Consumer products","consumer products","consumer apps","consumer app","b2c"],
+ ["Web design","web design"],
+ ["Enterprise UX","enterprise ux"],
+ 
  ["Inclusive design","inclusive design","universal design"],
  ["Human Interface Guidelines","human interface guidelines","hig","apple hig"],
  ["Material Design","material design"],
@@ -728,13 +728,13 @@ const DESIGN = [
  ["Motion design","motion design","motion graphics","motion language"],
  ["Animation","animation","animations","ui animation","easing","easing curves","spring animations"],
  ["Design sprints","design sprint","design sprints"],
- ["Workshop facilitation","workshop facilitation","workshops","facilitate workshops"],
+ ["Workshop facilitation","workshop facilitation","facilitate workshops","facilitating workshops","run workshops","lead workshops"],
  ["Storyboarding","storyboards","storyboarding"],
  ["Sketching","sketching","whiteboarding"],
  ["Illustration","illustration","illustrations"],
  ["Iconography","iconography","icon design"],
  ["Color theory","color theory","colour theory"],
- ["Layout and grids","grid systems","layout","layouts"],
+ ["Layout and grids","grid systems","layout design","page layout"],
  ["DesignOps","designops","design ops","design operations"],
  ["Growth design","growth design"],
  /* Design tools */
@@ -750,12 +750,25 @@ const DESIGN = [
  ["Radix UI","radix","radix ui"],["shadcn/ui","shadcn","shadcn/ui"],["Styled Components","styled-components","styled components","css-in-js"],
  ["CSS Grid and Flexbox","css grid","flexbox"],["CSS animations","css animations","css transitions","keyframes"],["SVG","svg"],["WebGL","webgl","shaders","glsl"],
  ["View Transitions","view transitions","view transitions api"],"Vercel",["Component APIs","component api","component apis","component api design"],
- ["Semantic HTML","semantic html"],["Keyboard accessibility","keyboard navigation","focus states","focus management","screen readers","screen reader","aria"],
+ ["Semantic HTML","semantic html"],["Keyboard accessibility","keyboard navigation","focus states","focus management","screen readers","screen reader"],
  ["Design to code","design-to-code","design to code","design implementation"]
 ];
+const FROM_POSTINGS = [
+ /* Added from what real job postings ask for (see SKILLS-BY-ROLE.md) */
+ ["Microsoft Office","microsoft office","ms office","microsoft 365","office 365"],["Microsoft Word","microsoft word","ms word"],["Outlook","microsoft outlook","ms outlook"],
+ ["Google Workspace","google workspace","g suite","gsuite","google suite"],["Google Sheets","google sheets"],["Slack","slack"],
+ ["ChatGPT","chatgpt"],["Claude","claude"],["Gemini","gemini"],
+ ["MCP","mcp","model context protocol"],["LLM evaluation","llm evaluation","model evaluation","evals"],["JAX","jax"],["CUDA","cuda"],["vLLM","vllm"],["Ray","ray"],["n8n","n8n"],
+ ["Pulumi","pulumi"],["Bazel","bazel"],["JSON","json"],["SDKs","sdk","sdks"],["RBAC","rbac","role-based access control"],["Auth0","auth0"],["mTLS","mtls"],["macOS","macos"],["UNIX","unix"],
+ ["Debugging","debugging"],["Troubleshooting","troubleshooting"],["Code review","code review","code reviews"],["Data structures","data structures","data structures and algorithms"],["SDLC","sdlc","software development lifecycle","software development life cycle"],["Scripting","scripting languages","scripting"],
+ ["Apache Hive","apache hive","hiveql"],["Alteryx","alteryx"],["SAP Concur","sap concur"],
+ ["FedRAMP","fedramp"],["GRC","grc"],["MES","mes","manufacturing execution system"],
+ ["Command of the Message","command of the message"],["Customer.io","customer.io"],["DV360","dv360","display & video 360"],
+ ["German","fluent in german","fluent german","fluency in german","native german","business german","german speaker","german speaking","german-speaking","speak german","proficiency in german","german language skills"],["French","fluent in french","fluent french","fluency in french","native french","business french","french speaker","french speaking","french-speaking","speak french","proficiency in french","french language skills"],["Spanish","fluent in spanish","fluent spanish","fluency in spanish","native spanish","business spanish","spanish speaker","spanish speaking","spanish-speaking","speak spanish","proficiency in spanish","spanish language skills"],["Japanese","fluent in japanese","fluent japanese","fluency in japanese","native japanese","business japanese","japanese speaker","japanese speaking","japanese-speaking","speak japanese","proficiency in japanese","japanese language skills"],["Dutch","fluent in dutch","fluent dutch","fluency in dutch","native dutch","business dutch","dutch speaker","dutch speaking","dutch-speaking","speak dutch","proficiency in dutch","dutch language skills"],["Italian","fluent in italian","fluent italian","fluency in italian","native italian","business italian","italian speaker","italian speaking","italian-speaking","speak italian","proficiency in italian","italian language skills"],["Portuguese","fluent in portuguese","fluent portuguese","fluency in portuguese","native portuguese","business portuguese","portuguese speaker","portuguese speaking","portuguese-speaking","speak portuguese","proficiency in portuguese","portuguese language skills"],["Mandarin","fluent in mandarin","fluent mandarin","fluency in mandarin","native mandarin","business mandarin","mandarin speaker","mandarin speaking","mandarin-speaking","speak mandarin","proficiency in mandarin","mandarin language skills"],["Arabic","fluent in arabic","fluent arabic","fluency in arabic","native arabic","business arabic","arabic speaker","arabic speaking","arabic-speaking","speak arabic","proficiency in arabic","arabic language skills"],["Hindi","fluent in hindi","fluent hindi","fluency in hindi","native hindi","business hindi","hindi speaker","hindi speaking","hindi-speaking","speak hindi","proficiency in hindi","hindi language skills"]
+];
 const EXACT = new Set(["Go","iOS","SAFe","v0"]);
-const CAP = new Set(["framer","rive","principle","spline","miro","mural","maze","lookback","dovetail","cursor","bolt","react","excel","swift","spark","workday","greenhouse","snowflake","flutter","angular","airflow","rust","ruby","jest","looker","julia","dart","lua","bootstrap","vite","celery","helm","chef","puppet","vagrant","lambda","unity","sketch","segment","amplitude","outreach","gong","cypress","playwright","postman","asana","confluence","notion","tally","oracle","cassandra","waterfall","derivatives","bloomberg","epic","maven"]);
-const UFORCE = new Set(["aria"]);
+const CAP = new Set(["slack","claude","gemini","ray","framer","rive","principle","spline","miro","mural","maze","lookback","dovetail","cursor","bolt","react","excel","swift","spark","workday","greenhouse","snowflake","flutter","angular","airflow","rust","ruby","jest","looker","julia","dart","lua","bootstrap","vite","celery","helm","chef","puppet","vagrant","lambda","unity","sketch","segment","amplitude","outreach","gong","cypress","playwright","postman","asana","confluence","notion","tally","oracle","cassandra","waterfall","derivatives","bloomberg","epic","maven"]);
+const UFORCE = new Set(["aria","jax","cuda","grc","mes","sdk","json","unix","mcp"]);
 const IFORCE = new Set(["dbt","git","vue","npm","tax","s3","d3","ec2"]);
 function modeFor(a){
   if(EXACT.has(a)) return 'X';
@@ -770,13 +783,7 @@ function makeRe(a){
   return new RegExp('(?<![A-Za-z0-9+#])'+src+'(?![A-Za-z0-9+#])','gi');
 }
 const ALIASLOW = new Set();
-/* Acronyms and abbreviations that show up in job postings but are not skills: time zones, locations, employment boilerplate, titles. */
-const NOT_SKILL = new Set(("am pm ist est edt cst cdt mst mdt pst pdt gmt utc bst cet eet ist ast hst akst jst kst sgt aest "+
-  "usa us uk eu uae emea apac latam nyc sf la dc "+
-  "eoe fte llc inc ltd pvt plc gmbh ceo cfo cto coo cmo cio vp svp evp avp md hr "+
-  "mon tue wed thu fri sat sun jan feb mar apr jun jul aug sep sept oct nov dec "+
-  "faq pdf url www http https com org net asap tbd tba etc pto 401k fyi eta ooo wfh").split(" "));
-const DICT = GROUPS.concat(MORE,DESIGN).map(g=>{
+const DICT = GROUPS.concat(MORE,DESIGN,FROM_POSTINGS).map(g=>{
   const arr = typeof g==='string' ? [g,g] : g;
   const al = [...new Set(arr.slice(1).map(a=>EXACT.has(a)?a:a.toLowerCase()))];
   al.forEach(a=>ALIASLOW.add(a.toLowerCase()));
@@ -787,8 +794,8 @@ const BYNAME = Object.fromEntries(DICT.map(g=>[g.name,g]));
 BYNAME['Framer'].aliases[0].re = /(?<![A-Za-z0-9+#])framer(?![A-Za-z0-9+#])(?![ \t]+motion)/gi;
 /* Words that are also ordinary English (Go, Excel, Spark, Unity...). They only count as a skill when the surrounding words look like a skills
    context: "experience with Excel", "Python, Go, SQL", "Go developer". "Go beyond", "Excel in a fast-paced team", "Unity Catalog" do not. */
-const GATED = new Set(["go","excel","spark","unity","segment","outreach","cursor","principle","bolt","sketch","swift","rust","helm","epic","waterfall","derivatives","notion","tally","maze","rive","spline","mural","chef","puppet","lambda"]);
-const NOT_AFTER = /^\s*(to|beyond|ahead|above|through|from|live|catalog|joy|at|as a|for a|in (a|an|the|this|our|your|that|fast|ambiguity))\b|^-/i;
+const GATED = new Set(["slack","claude","gemini","ray","go","excel","spark","unity","segment","outreach","cursor","principle","bolt","sketch","swift","rust","helm","epic","waterfall","derivatives","notion","tally","maze","rive","spline","mural","chef","puppet","lambda"]);
+const NOT_AFTER = /^\s*(to|beyond|ahead|above|deep|through|from|live|catalog|joy|at|as a|for a|in (a|an|the|this|our|your|that|fast|ambiguity))\b|^-/i;
 const CUE_BEFORE = /(\b(with|in|using|of|via|and|or|plus|like|including|on|knowledge|proficiency|proficient|experience|expertise|familiarity|fluency|skills?|stack|tools?|languages?|such as)\s+|[,/&(:;|•·*-]\s*|e\.g\.,?\s*)$/i;
 const CUE_AFTER = /^\s*([,;/)&|•]|\b(developers?|engineers?|programming|language|framework|tools?|skills?|experience|proficiency|certification|spreadsheets?|models?|pipelines?|jobs?)\b)/i;
 function skillContext(text,i,len){
@@ -798,9 +805,17 @@ function skillContext(text,i,len){
 /* CAD the currency ("$128,000 CAD") is not CAD the software. */
 function isCurrency(text,i,len){ return /[\d$][\d,.\s]*(&\w+;|[-\u2013\u2014])?[\d$,.\s]*$/.test(text.slice(Math.max(0,i-16),i)) || /^\s*[\d$]/.test(text.slice(i+len,i+len+3)); }
 /* Equal-opportunity, benefits, pay and scam-warning paragraphs say nothing about the job. Blank them (same length, so offsets stay valid). */
-const BOILER_RE = /(equal (employment )?opportunity|commitment to diversity|committed to (diversity|building a diverse|fostering)|reasonable accommodations?|pay range|salary range|base pay|compensation and benefits (are|will)|benefits (include|package)|never ask you to pay|while you are interviewing|employment agenc|candidate privacy|privacy (notice|policy)|e-?verify|affirmative action|protected (veteran|characteristic))/i;
+const BOILER_RE = /(recruit(ing|ment) agenc|search firms?|unsolicited|background checks?|sick (leave|time)|parental leave|stipend|in (our|the) interview|interviewing for this role|transcription|equal (employment )?opportunity|commitment to diversity|committed to (diversity|building a diverse|fostering)|reasonable accommodations?|pay range|salary range|base pay|compensation and benefits (are|will)|benefits (include|package)|never ask you to pay|while you are interviewing|employment agenc|candidate privacy|privacy (notice|policy)|e-?verify|affirmative action|protected (veteran|characteristic))/i;
+/* Sections about the employer, not the job. A skill named under "About Acme" or "Benefits" is not being asked of the candidate. */
+const SKIP_HEAD = /^\W*(about\s+(?!(the|this|your?)\s+(role|job|position|team|opportunity)\b|you\b)[^\n]{0,40}|who we are|our (story|mission|values|culture|company|benefits)\b[^\n]{0,20}|why (join|work|you('|’)ll love)[^\n]{0,30}|(what|why) we offer[^\n]{0,20}|what('|’)?s in it for you|benefits[^\n]{0,20}|perks[^\n]{0,20}|compensation[^\n]{0,30}|total rewards|how to apply|application process|(our )?interview(ing)? process|equal (employment )?opportunity[^\n]{0,30}|diversity[^\n]{0,30}|life at [^\n]{0,30})\W*$/i;
 function maskBoilerplate(text){
-  return text.split('\n').map(l=>BOILER_RE.test(l)?' '.repeat(l.length):l).join('\n');
+  let skipping=false;
+  return text.split('\n').map(l=>{
+    const t=l.trim();
+    if(t.length<=60 && SKIP_HEAD.test(t)){ skipping=true; return ' '.repeat(l.length); }
+    if(skipping && t.length<=80 && /^[A-Z]/.test(t) && !/[.,;]$/.test(t) && t.split(/\s+/).length<=7) skipping=false;
+    return skipping||BOILER_RE.test(l) ? ' '.repeat(l.length) : l;
+  }).join('\n');
 }
 function findAll(text, al){
   const re = al.re; re.lastIndex = 0; const out=[]; let m;
@@ -824,15 +839,6 @@ function dedupe(occ){
 }
 
 /* ---------- Stop words for extra-term extraction ---------- */
-const STOP = new Set(("pm pms a an the and or of to in on at by for with from as is are be will can you your we our us they their it its this that these those who what why how when where which "+
-"i me my he she team teams company role roles job jobs position about apply applicants candidate candidates location remote hybrid onsite office salary benefits perks equal opportunity employer eoe "+
-"senior junior lead principal staff head engineer engineers engineering manager managers developer developers director associate intern analyst specialist consultant "+
-"years year experience responsibilities requirements qualifications nice must preferred bonus plus full time part contract "+
-"strong excellent good great ability work working build building design help join day week month new ideal ideally "+
-"january february march april may june july august september october november december jan feb mar apr jun jul aug sep sept oct nov dec monday tuesday wednesday thursday friday "+
-"india us usa uk eu apac emea ceo cto cfo coo hr faq tbd ok etc e.g i.e and/or vs per via our we're you'll you're we'll "+
-"bachelor bachelors master masters degree phd bs ms ba ma btech mtech mba "+
-"inc ltd llc pvt corp series startup mission vision values culture diversity inclusion").split(/\s+/));
 
 function isSentenceStart(text,i){
   let j=i-1;
@@ -894,7 +900,14 @@ function sectionJD(text){
 }
 const PRI={req:3,neutral:2,nice:1};
 /* Generic soft skills that every posting mentions: shown as a skill, but never counted as a must-have. */
-const NEVER_REQUIRED=new Set(['d:communication']);
+const NEVER_REQUIRED=new Set(['d:communication','d:collaboration','d:problem solving','d:attention to detail','d:decision making','d:interpersonal skills','d:analytical skills','d:time management','d:critical thinking','d:adaptability','d:customer focus','d:leadership']);
+/* Skills that only mean something for certain kinds of job. "Recruiting" in an engineering posting is about the employer, not the candidate.
+   A skill always counts when the role can't be detected, or when it is in that role's own starter pack. */
+const SKILL_SCOPE={"Recruiting":["People"],"University recruiting":["People"],"Interviewing":["People"],"Background verification":["People"],"Compensation and benefits":["People"],"Learning and development":["People"],"Talent management":["People"],"Greenhouse":["People"],"Applicant tracking systems":["People"],"DEI":["People"],"Customer success":["Sales & Customer"],"Quota attainment":["Sales & Customer"],"Prospecting":["Sales & Customer"],"Upselling":["Sales & Customer"],"Enterprise sales":["Sales & Customer"],"B2B sales":["Sales & Customer"],"Consultative selling":["Sales & Customer"],"Pipeline management":["Sales & Customer"],"Key account management":["Sales & Customer"],"MEDDIC":["Sales & Customer"],"Command of the Message":["Sales & Customer"],"Mobile design":["Design"],"Web design":["Design"],"Layout and grids":["Design"],"Developer handoff":["Design"],"Design strategy":["Design"],"Design critique":["Design"],"Enterprise UX":["Design"],"Data-informed design":["Design"],"End-to-end design":["Design"],"Craft":["Design"],"Logistics":["Operations"],"Supply chain management":["Operations"],"Inventory management":["Operations"],"Valuation":["Finance"],"Private equity":["Finance"],"Venture capital":["Finance"],"Investment banking":["Finance"],"Capital markets":["Finance"],"Roadmaps":["Product","Design","Marketing"],"Go-to-market":["Sales & Customer","Marketing","Product"],"Partnerships":["Sales & Customer","Marketing","Product","Other fields"],"Business development":["Sales & Customer","Marketing"],"Channel sales":["Sales & Customer","Marketing"],"Sales presentations":["Sales & Customer","Product"],"Cold outreach":["Sales & Customer","Marketing"],"Revenue operations":["Sales & Customer","Operations","Finance"],"Sourcing":["People","Operations"],"Performance management":["People","Operations"],"Workforce planning":["People","Operations"],"Compliance":["Finance","Operations","People","Other fields"],"Procurement":["Operations","Finance"],"M&A":["Finance","Other fields"],"Due diligence":["Finance","Other fields"],"Pricing strategy":["Product","Marketing","Sales & Customer","Finance"],"Reconciliation":["Finance","Operations"],"Forecasting":["Finance","Sales & Customer","Marketing","Data & AI","Operations","Product"],"Customer support":["Sales & Customer","Operations"],"Technical support":["Sales & Customer","Engineering"],"E-commerce":["Marketing","Product","Sales & Customer","Operations"],"Social media":["Marketing","Design","Sales & Customer","Other fields"],"Accessibility":["Design","Engineering","Product"],"Keyboard accessibility":["Design","Engineering"],"Edge cases and states":["Design","Engineering"],"Journey mapping":["Design","Product","Marketing"],"Personas":["Design","Product","Marketing"],"Prototyping":["Design","Product","Engineering","Data & AI"],"Front-end development":["Engineering","Design"],"ROI analysis":["Marketing","Finance","Sales & Customer","Product"],"Workday":["People","Finance","Operations"],"Workshop facilitation":["Design","Product","People","Other fields"]};
+function inScope(name,roleId){
+  const dom=SKILL_SCOPE[name], r=ROLES[roleId];
+  return !dom || !r || roleId==='general' || dom.includes(r.domain) || r.expect.includes(name);
+}
 function stem(w){ for(const s of ['ing','ers','es','ed','er','s','e']){ if(w.endsWith(s)&&w.length-s.length>=3) return w.slice(0,-s.length); } return w; }
 function sameWord(a,b){
   if(a===b) return true;
@@ -911,13 +924,13 @@ function analyze(resume, jd){
   const R = sectionResume(resume);
   const J = sectionJD(jd);
   const terms=[];
-  let masked = jd;
+  const roleId=roleMode==='auto'?detectRole(jd):roleMode;
 
   for(const g of DICT){
+    if(!inScope(g.name,roleId)) continue;
     let jOcc=[]; for(const al of g.aliases) jOcc.push(...findAll(jd,al));
     jOcc=dedupe(jOcc);
     if(!jOcc.length) continue;
-    for(const o of jOcc) masked = masked.slice(0,o.i)+' '.repeat(o.len)+masked.slice(o.i+o.len);
     let pri=0; for(const o of jOcc){ pri=Math.max(pri,PRI[J[lineAt(J,o.i)].type]||2); }
     if(NEVER_REQUIRED.has(g.key)) pri=Math.min(pri,PRI.neutral);
     const freq={}; for(const o of jOcc){ freq[o.a]=(freq[o.a]||0)+1; }
@@ -935,26 +948,6 @@ function analyze(resume, jd){
     const own=t.jOcc.filter(o=>!allJ.some(x=>x.k!==t.key && x.i<=o.i && x.e>=o.i+o.len && (x.e-x.i)>o.len));
     if(!own.length) terms.splice(n,1);
   }
-  // Extra terms not in the dictionary: tool-like tokens, acronyms, repeated proper nouns
-  const counts=new Map(); const tokRe=/[A-Za-z][A-Za-z0-9+#.\/-]*[A-Za-z0-9+#]/g; let m;
-  while((m=tokRe.exec(masked))){
-    const t=m[0], low=t.toLowerCase();
-    if(STOP.has(low)||NOT_SKILL.has(low)||ALIASLOW.has(low)||t.length<2||t.includes('/')) continue;
-    // Only tool-like tokens (Node.js, C++, .NET, k8s, gRPC) and 3-6 letter acronyms. Plain capitalised words (Health, Platform) are never skills.
-    const tech=/[+#]|[A-Za-z]{2,}\.[A-Za-z]{2,}|^[a-z]+[A-Z]|[A-Za-z]\d/.test(t);
-    const caps=/^[A-Z]{3,6}$/.test(t);
-    if(!(tech||caps)) continue;
-    const e=counts.get(low)||{t,n:0,need:1,idx:[]};
-    e.n++; e.idx.push(m.index); counts.set(low,e);
-  }
-  const extras=[...counts.values()].filter(e=>e.n>=e.need).sort((a,b)=>b.n-a.n).slice(0,12);
-  for(const e of extras){
-    let pri=0; for(const i of e.idx){ pri=Math.max(pri,PRI[J[lineAt(J,i)].type]||2); }
-    const al={a:e.t.toLowerCase(),mode:'i',re:makeRe(e.t.toLowerCase())};
-    const rOcc=dedupe(findAll(resume,al));
-    terms.push(classify({key:'x:'+e.t.toLowerCase(),name:e.t,jdWord:e.t,jdCount:e.n,pri,jdAliases:new Set([e.t.toLowerCase()])},rOcc,R));
-  }
-
   const active=terms.filter(t=>!ignored.has(t.key));
   active.sort((a,b)=>(b.pri-a.pri)||(b.jdCount-a.jdCount));
   return {terms:active,hidden:terms.length-active.length,R,stuffing:stuffing(resume,jd,R,active),parse:parseChecks(resume,R)};
@@ -1107,7 +1100,12 @@ const SPECIALISM=[
   [/\b(?:infrastructure|platform|devops|sre|reliability|cloud)\b/i,'devops']
 ];
 function detectRole(jd){
-  for(const scope of [jd.slice(0,300),jd]){
+  /* The title line first, then short heading-like lines at the top, then only places the posting names the job ("we're hiring a..."). A title elsewhere is usually "your recruiter will call you". */
+  const clean=maskBoilerplate(jd), firstLine=(jd.trim().split('\n')[0]||'').slice(0,120);
+  const named=(clean.match(/\b(?:hiring|looking for|seeking|join us as|as an?|role of|position of|job title:?)\s[^.\n]{0,60}/gi)||[]).join('\n');
+  const headings=clean.slice(0,300).split('\n').filter(l=>l.trim().length<=80 && !/[.!?,;]$/.test(l.trim())).join('\n');
+  let fallback=null;
+  for(const scope of [firstLine,headings,named]){
     let best=null,generic=null;
     for(const r of ROLE_CATALOG) for(const t of r.res){
       const m=t.re.exec(scope); if(!m) continue;
@@ -1118,10 +1116,11 @@ function detectRole(jd){
     if(generic){
       const s=scope.lastIndexOf('\n',generic.i)+1, e=scope.indexOf('\n',generic.i), line=scope.slice(s,e<0?undefined:e);
       const hit=SPECIALISM.find(([re])=>re.test(line));
-      return hit?hit[1]:generic.id;
+      if(hit) return hit[1];
+      fallback=fallback||generic.id;
     }
   }
-  return 'general';
+  return fallback||'general';
 }
 function groupStatus(g,resume,R){
   let occ=[]; for(const al of g.aliases) occ.push(...findAll(resume,al)); occ=dedupe(occ);
