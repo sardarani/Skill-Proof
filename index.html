@@ -698,8 +698,8 @@ const DESIGN = [
  ["Data-informed design","data-informed design","data-driven design"],
  /* Core UX / UI craft */
  ["User flows","user flows","user flow","task flows","task flow"],
- ["Wireframing","wireframing","wireframes","wireframe","low-fidelity","lo-fi"],
- ["Prototyping","prototyping","prototypes","interactive prototypes","clickable prototypes"],
+ ["Wireframing","wireframing","wireframed","wireframes","wireframe","low-fidelity","lo-fi"],
+ ["Prototyping","prototyping","prototypes","prototyped","interactive prototypes","clickable prototypes"],
  ["High-fidelity design","high-fidelity","hi-fi","mockups","mockup","pixel-perfect"],
  ["Visual design","visual design","ui design","interface design","visual craft"],
  ["Interaction design","interaction design","interaction patterns","ixd"],
@@ -862,24 +862,36 @@ function cleanHead(s){ return s.replace(/^[\s•*\-–—#|]+/,'').replace(/[:\s
 const RES_HEADS = [
   [/^(technical skills|key skills|core skills|skills|core competencies|competencies|tech stack|technical stack|tools|technologies|tools (and|&) technologies|skills (and|&) tools)\b/,'list'],
   [/^(professional summary|summary|profile|professional profile|objective|career objective|about me)\b/,'summary'],
-  [/^(work experience|professional experience|relevant experience|experience|employment|employment history|work history|projects|personal projects|key projects|internships?|leadership|volunteer(ing)?|achievements|accomplishments)\b/,'evidence'],
+  [/^(work experience|professional experience|relevant experience|experience|([a-z&]+ ){1,3}experience$|employment|employment history|work history|career history|career highlights|work$|selected work|case studies|portfolio|freelance|projects|([a-z]+ )?projects$|internships?|leadership|volunteer(ing)?|achievements|accomplishments)\b/,'evidence'],
   [/^(education|certifications?|licenses|courses|coursework|awards|honors|publications|languages|interests|hobbies|references)\b/,'other']
 ];
+/* A line that shows the skill being used counts as proof wherever it sits: a summary, an odd heading, a two-column PDF. */
+const ACTION_RE = /\b(built|rebuilt|designed|redesigned|created|developed|led|launched|shipped|delivered|owned|drove|ran|conducted|implemented|managed|improved|prototyped|researched|tested|established|scaled|reduced|increased|mapped|wrote|mentored|architected|automated|anal[yz]ed|analysed|collaborated|partnered|crafted|produced|facilitated|optimi[sz]ed|migrated|deployed|integrated|coded|engineered|model+ed|wireframed|illustrated|animated|negotiated|closed|sold|trained|taught|hired|recruited|reconciled|audited|forecasted|planned|organi[sz]ed|coordinated|executed|spearheaded|pioneered|revamped|streamlined|used|utili[sz]ed|building|designing|leading|creating|developing|shipping|working)\b|^\W*(build|design|develop|lead|create|ship|own|run|manage)\b/i;
+function showsUse(text){
+  const t=text.trim();
+  return t.split(/\s+/).length>=5 && (t.match(/,/g)||[]).length<5 && ACTION_RE.test(t);
+}
 function sectionResume(text){
   const lines = splitLines(text);
   let cur='header', hasEvidence=false, hasSkills=false; const heads=[];
   for(const ln of lines){
     const c = cleanHead(ln.text);
     let matched=null;
-    if(c.length>0 && !/[.,]$/.test(c)){
+    if(c.length>0 && !/[.,]$/.test(c) && c.split(' ').length<=4 && !/\b(in|with|using|for|at|designing|building)\b/.test(c)){
       for(const [re,type] of RES_HEADS){ if(re.test(c)){ matched=type; break; } }
     }
+    /* "Tools: Figma, Sketch" under a job is a list on one line, not the start of a new section. */
+    const label=/^\W*[^:]{2,30}:\s*\S/.test(ln.text);
+    ln.inlineList = label && !showsUse(ln.text) && (matched==='list' || (ln.text.match(/,/g)||[]).length>=2);
+    if(ln.inlineList && matched==='list') hasSkills=true;
+    if(label) matched=null;
     if(matched){ cur=matched; ln.heading=true; heads.push(c); if(matched==='evidence') hasEvidence=true; if(matched==='list') hasSkills=true; }
-    ln.type=cur;
+    ln.type=ln.inlineList?'list':cur;
   }
   for(const ln of lines){
     const commas=(ln.text.match(/,/g)||[]).length;
-    ln.evidence = hasEvidence ? (ln.type==='evidence' && !ln.heading) : (ln.text.trim().length>50 && commas<4);
+    ln.evidence = hasEvidence ? (ln.type==='evidence' && !ln.heading) : (ln.text.trim().length>50 && commas<4 && !ln.inlineList);
+    ln.proof = (hasEvidence && ln.evidence) || (!ln.heading && showsUse(ln.text));
   }
   return {lines,hasEvidence,hasSkills,heads};
 }
@@ -899,6 +911,15 @@ function sectionJD(text){
   return lines;
 }
 const PRI={req:3,neutral:2,nice:1};
+/* "Basic knowledge of HTML" is a real ask, but not a must-have. Returns the job's own words when the qualifier applies to this mention. */
+const BASIC_RE=/\b(?:basics? of|basic|foundational|rudimentary|familiar(?:ity)? with|exposure to|awareness of|some (?:experience|knowledge|familiarity|understanding|exposure))\b/gi;
+const STRONG_RE=/\b(strong|deep|solid|expert|extensive|advanced|excellent|proven)\b/i;
+function basicQuote(jd,o){
+  const start=Math.max(jd.lastIndexOf('\n',o.i),jd.lastIndexOf('. ',o.i),jd.lastIndexOf(';',o.i))+1;
+  const before=jd.slice(start,o.i), last=[...before.matchAll(BASIC_RE)].pop();
+  if(!last || STRONG_RE.test(before.slice(last.index)) || /\b(strong|deep|solid|expert|extensive|advanced|excellent|proven)\s+$/i.test(before.slice(0,last.index))) return '';
+  return (before.slice(last.index)+o.t).slice(0,70);
+}
 /* Skills that only mean something for certain kinds of job. "Recruiting" in an engineering posting is about the employer, not the candidate.
    It counts only for those role types or that role's own starter pack, so with no detected role it is left out. */
 const SKILL_SCOPE={"Process improvement":["Operations"],"Recruiting":["People"],"University recruiting":["People"],"Interviewing":["People"],"Background verification":["People"],"Compensation and benefits":["People"],"Learning and development":["People"],"Talent management":["People"],"Greenhouse":["People"],"Applicant tracking systems":["People"],"DEI":["People"],"Customer success":["Sales & Customer"],"Quota attainment":["Sales & Customer"],"Prospecting":["Sales & Customer"],"Upselling":["Sales & Customer"],"Enterprise sales":["Sales & Customer"],"B2B sales":["Sales & Customer"],"Consultative selling":["Sales & Customer"],"Pipeline management":["Sales & Customer"],"Key account management":["Sales & Customer"],"MEDDIC":["Sales & Customer"],"Command of the Message":["Sales & Customer"],"Mobile design":["Design"],"Web design":["Design"],"Layout and grids":["Design"],"Developer handoff":["Design"],"Design strategy":["Design"],"Design critique":["Design"],"Enterprise UX":["Design"],"Data-informed design":["Design"],"End-to-end design":["Design"],"Craft":["Design"],"Logistics":["Operations"],"Supply chain management":["Operations"],"Inventory management":["Operations"],"Valuation":["Finance"],"Private equity":["Finance"],"Venture capital":["Finance"],"Investment banking":["Finance"],"Capital markets":["Finance"],"Roadmaps":["Product","Design","Marketing"],"Go-to-market":["Sales & Customer","Marketing","Product"],"Partnerships":["Sales & Customer","Marketing","Product","Other fields"],"Business development":["Sales & Customer","Marketing"],"Channel sales":["Sales & Customer","Marketing"],"Sales presentations":["Sales & Customer","Product"],"Cold outreach":["Sales & Customer","Marketing"],"Revenue operations":["Sales & Customer","Operations","Finance"],"Sourcing":["People","Operations"],"Performance management":["People","Operations"],"Workforce planning":["People","Operations"],"Compliance":["Finance","Operations","People","Other fields"],"Procurement":["Operations","Finance"],"M&A":["Finance","Other fields"],"Due diligence":["Finance","Other fields"],"Pricing strategy":["Product","Marketing","Sales & Customer","Finance"],"Reconciliation":["Finance","Operations"],"Forecasting":["Finance","Sales & Customer","Marketing","Data & AI","Operations","Product"],"Customer support":["Sales & Customer","Operations"],"Technical support":["Sales & Customer","Engineering"],"E-commerce":["Marketing","Product","Sales & Customer","Operations"],"Social media":["Marketing","Design","Sales & Customer","Other fields"],"Accessibility":["Design","Engineering","Product"],"Keyboard accessibility":["Design","Engineering"],"Edge cases and states":["Design","Engineering"],"Journey mapping":["Design","Product","Marketing"],"Personas":["Design","Product","Marketing"],"Prototyping":["Design","Product","Engineering","Data & AI"],"Front-end development":["Engineering","Design"],"ROI analysis":["Marketing","Finance","Sales & Customer","Product"],"Workday":["People","Finance","Operations"],"Workshop facilitation":["Design","Product","People","Other fields"]};
@@ -913,6 +934,85 @@ function sameWord(a,b){
   return A.length===B.length && A.every((x,i)=>stem(x)===stem(B[i]));
 }
 
+/* ---------- Context: skills a resume shows without naming them ---------- */
+/* Knowing the tool means knowing what it is built on. Case-sensitive, so "react to" and "express" stay ordinary words. */
+const IMPLIED_BY_TOOL = {
+  "JavaScript":/\b(React|Vue|Angular|Next\.js|Node\.js|TypeScript|Svelte|jQuery)\b/,"HTML":/\b(React|Vue|Angular|Next\.js|Svelte|Webflow|Tailwind|CSS)\b/,"CSS":/\b(Tailwind|Sass|Bootstrap|Styled Components)\b/,"Front-end development":/\b(React|Vue|Angular|Svelte|Next\.js)\b/,
+  "Python":/\b(Django|Flask|FastAPI|Pandas|NumPy|PyTorch|TensorFlow|scikit-learn|PySpark)\b/,"Java":/\bSpring Boot\b/,"SQL":/\b(PostgreSQL|Postgres|MySQL|SQL Server|BigQuery|Snowflake|Redshift|dbt)\b/,
+  "Git":/\b(GitHub|GitLab|Bitbucket|pull requests?)\b/,"Docker":/\b(Kubernetes|K8s)\b/,"AWS":/\b(EC2|S3|AWS Lambda|DynamoDB|Redshift|SageMaker)\b/,"GCP":/\b(BigQuery|Vertex AI|Cloud Run)\b/,
+  "Machine learning":/\b(PyTorch|TensorFlow|scikit-learn|XGBoost|Keras)\b/,"Data visualization":/\b(Tableau|Power BI|Looker|D3\.js)\b/,"CRM":/\b(Salesforce|HubSpot|Pipedrive|Zoho CRM)\b/,"Agile":/\b(Scrum|Kanban|sprints?)\b/
+};
+/* What the work itself shows: [skill, what the line says, role types it applies to (none = all), resume words that rule it out]. */
+const UI_WORK=/\b(screens?|ui|ux|flows?|interfaces?|apps?|mobile|web ?sites?|dashboards?|landing pages?|checkout|onboarding|prototypes?|mockups?|wireframes?|design system)\b/i;
+const IMPLIED_BY_WORK = [
+  /* Design */
+  ["Figma",/\b(re)?designed\b|\bprototyped\b|\bwireframed\b/i,["Design"],/\b(sketch|adobe xd|penpot|invision)\b/i],
+  ["Figma",new RegExp('\\b(re)?designed\\b.*'+UI_WORK.source,'i'),["Product"],/\b(sketch|adobe xd|penpot|invision)\b/i],
+  ["Visual design",new RegExp('\\b(re)?designed\\b.*'+UI_WORK.source+'|\\b(visual|brand|branding|look and feel)\\b','i'),["Design"]],
+  ["Interaction design",/\b(re)?designed\b.*\b(flows?|interactions?|navigation|onboarding|checkout|journeys?)\b/i,["Design"]],
+  ["Prototyping",/\b(clickable|interactive)\b|\b(re)?designed\b.*\b(tested|validated|iterated)\b|\b(tested|validated|iterated)\b.*\bconcepts?\b/i,["Design","Product"]],
+  ["User research",/\b(interviewed|surveyed|spoke (to|with)|talked to|shadowed)\b.*\b(users?|customers?|clients?|participants?|people)\b|\b(user|customer) (insights?|interviews?|feedback)\b/i,["Design","Product","Marketing"]],
+  ["Usability testing",/\b(tested|validated)\b.*\b(with|on)\b.*\b(users?|customers?|participants?)\b|\busability\b/i,["Design","Product"]],
+  ["Information architecture",/\b(restructured|reorgani[sz]ed|simplified)\b.*\b(navigation|menu|content|site)\b/i,["Design"]],
+  ["Design systems",/\b(reusable|shared) components?\b|\bcomponent librar(y|ies)\b|\bdesign tokens?\b/i,["Design","Engineering"]],
+  ["End-to-end design",/\bend[- ]to[- ]end\b|\bfrom (research|discovery|concept|idea)\b.*\b(launch|ship|delivery|handoff|production)\b|\b0[- ]to[- ]1\b/i,["Design"]],
+  ["Developer handoff",/\b(with|alongside) (the )?(engineers?|developers?|engineering)\b.*\b(ship|build|launch|implement)|\b(shipped|launched|built|implemented)\b.*\bwith (the )?(engineers?|developers?|engineering)\b/i,["Design"]],
+  /* Growth, marketing */
+  ["CRO",/\bconversions?\b/i,["Design","Product","Marketing"]],
+  ["Data-informed design",/\bconversions?\b|\b(increased|improved|reduced|lifted)\b.*\d+ ?%/i,["Design"]],
+  ["A/B testing",/\b(ran|tested|launched)\b.*\b(experiments?|variants?)\b/i],
+  ["Campaign management",/\b(ran|launched|managed|planned)\b.*\bcampaigns?\b/i,["Marketing","Sales & Customer"]],
+  ["SEO",/\borganic (traffic|search)\b|\bsearch rankings?\b/i,["Marketing"]],
+  ["Content marketing",/\b(wrote|published|produced)\b.*\b(blogs?|articles?|newsletters?|whitepapers?)\b/i,["Marketing"]],
+  ["Email marketing",/\b(email|newsletter)s?\b.*\b(campaigns?|sequences?|open rates?)\b/i,["Marketing"]],
+  /* Engineering, data */
+  ["REST APIs",/\b(built|developed|designed|shipped)\b.*\b(apis?|endpoints?)\b/i,["Engineering","Data & AI"]],
+  ["API design",/\b(designed|architected)\b.*\b(apis?|endpoints?)\b/i,["Engineering"]],
+  ["Automated testing",/\b(unit|integration|end-to-end) tests?\b|\btest coverage\b/i,["Engineering","Data & AI"]],
+  ["CI/CD",/\b(deployment|release) (pipelines?|automation)\b|\bautomated (deployments?|releases?)\b/i,["Engineering","Data & AI"]],
+  ["System design",/\b(architected|scaled)\b/i,["Engineering","Data & AI"]],
+  ["SQL",/\b(wrote|optimi[sz]ed|tuned)\b.*\bquer(y|ies)\b|\bdatabase schemas?\b/i,["Engineering","Data & AI","Product"]],
+  ["Data analysis",/\banaly[sz]ed\b.*\b(data|metrics|usage|trends?|funnels?)\b/i],
+  ["Excel",/\b(pivot tables?|vlookups?|xlookups?)\b/i],
+  /* Leading, product, sales, finance, people */
+  ["Team leadership",/\b(led|managed|mentored|coached)\b.*\b(a )?(team|\d+ (engineers?|designers?|people|analysts?|reps?|developers?))\b/i],
+  ["Project management",/\b(coordinated|delivered|managed)\b.*\b(projects?|programs?|timelines?|launch(es)?|rollouts?)\b/i],
+  ["Stakeholder management",/\b(aligned|partnered|presented)\b.*\b(stakeholders?|leadership|executives?|vps?|c-suite|founders?)\b/i],
+  ["Roadmaps",/\b(defined|owned|set|prioriti[sz]ed)\b.*\b(roadmap|features|backlog)\b/i,["Product","Design","Engineering"]],
+  ["PRDs",/\bwrote\b.*\b(specs?|requirements)\b/i,["Product"]],
+  ["Product management",/\b(owned|launched|shipped)\b.*\bproducts?\b/i,["Product"]],
+  ["Negotiation",/\b(closed|negotiated)\b.*\b(deals?|contracts?|renewals?)\b/i,["Sales & Customer","Finance","Operations"]],
+  ["Prospecting",/\b(generated|sourced|booked)\b.*\b(leads?|meetings?|pipeline)\b/i,["Sales & Customer","Marketing"]],
+  ["Pipeline management",/\b(built|managed|grew)\b.*\bpipeline\b/i,["Sales & Customer"]],
+  ["Customer onboarding",/\bonboarded\b.*\b(customers?|clients?|accounts?)\b/i,["Sales & Customer"]],
+  ["Customer retention",/\b(renewals?|retention)\b/i,["Sales & Customer"]],
+  ["Budgeting",/\b(managed|owned|planned)\b.*\bbudgets?\b/i],
+  ["Financial modeling",/\bbuilt\b.*\b(financial|forecast|valuation|revenue) models?\b/i,["Finance"]],
+  ["Recruiting",/\b(hired|recruited)\b.*\b\d+\b|\b(hired|recruited)\b.*\b(engineers?|designers?|candidates?)\b/i,["People"]]
+];
+let currentRole='general';
+function impliedSkill(name,R,resume){
+  const r=ROLES[currentRole], general=!r||currentRole==='general';
+  for(const [skill,re,dom,unless] of IMPLIED_BY_WORK){
+    if(skill!==name || (dom&&!general&&!dom.includes(r.domain)) || (unless&&unless.test(resume))) continue;
+    if(dom&&general&&dom.length===1&&dom[0]==='Design'&&skill==='Figma') continue; /* "designed" alone needs a design role */
+    const ln=R.lines.find(l=>l.proof&&re.test(l.text)); if(ln) return {line:ln.text.trim()};
+  }
+  const tool=IMPLIED_BY_TOOL[name];
+  if(tool){
+    const shown=R.lines.find(l=>l.proof&&tool.test(l.text)); if(shown) return {line:shown.text.trim()};
+    const named=R.lines.find(l=>tool.test(l.text)); if(named) return {via:named.text.match(tool)[0]};
+  }
+  return null;
+}
+/* A skill only named, or not named at all, can still be shown by the work around it. */
+function applyContext(t,R,resume){
+  if(t.status!=='missing' && t.status!=='listed') return t;
+  const hit=impliedSkill(t.name,R,resume); if(!hit) return t;
+  if(hit.line){ t.implied=t.status==='missing'; t.status='backed'; t.line=hit.line; }
+  else if(t.status==='missing'){ t.status='listed'; t.where='your resume, through '+hit.via; }
+  return t;
+}
 /* ---------- Analysis ---------- */
 let ignored = new Set();
 let restoreTab='';
@@ -923,20 +1023,21 @@ function analyze(resume, jd){
   const J = sectionJD(jd);
   const terms=[];
   const roleId=roleMode==='auto'?detectRole(jd):roleMode;
+  currentRole=roleId;
 
   for(const g of DICT){
     if(!inScope(g.name,roleId)) continue;
     let jOcc=[]; for(const al of g.aliases) jOcc.push(...findAll(jd,al));
     jOcc=dedupe(jOcc);
     if(!jOcc.length) continue;
-    let pri=0; for(const o of jOcc){ pri=Math.max(pri,PRI[J[lineAt(J,o.i)].type]||2); }
+    let pri=0, basic=''; for(const o of jOcc){ const q=basicQuote(jd,o); if(q) basic=basic||q; pri=Math.max(pri,q?PRI.nice:PRI[J[lineAt(J,o.i)].type]||2); }
     const freq={}; for(const o of jOcc){ freq[o.a]=(freq[o.a]||0)+1; }
     const topAlias=Object.keys(freq).sort((x,y)=>freq[y]-freq[x])[0];
     const jdWord=jOcc.find(o=>o.a===topAlias).t;
     const jdAliases=new Set(jOcc.map(o=>o.a));
     let rOcc=[]; for(const al of g.aliases) rOcc.push(...findAll(resume,al));
     rOcc=dedupe(rOcc);
-    const t=classify({key:g.key,name:g.name,jdWord,jdCount:jOcc.length,pri,jdAliases},rOcc,R); t.jOcc=jOcc; terms.push(t);
+    const t=classify({key:g.key,name:g.name,jdWord,jdCount:jOcc.length,pri,jdAliases,basic:pri===PRI.nice?basic:''},rOcc,R); applyContext(t,R,resume); t.jOcc=jOcc; terms.push(t);
   }
 
   const allJ=terms.flatMap(t=>t.jOcc.map(o=>({i:o.i,e:o.i+o.len,k:t.key})));
@@ -958,7 +1059,7 @@ function classify(t,rOcc,R){
     t.resumeWords=[...new Set(rOcc.map(o=>o.t))].slice(0,3);
     return t;
   }
-  const ev=exact.find(o=>R.lines[lineAt(R.lines,o.i)].evidence)||rOcc.find(o=>R.lines[lineAt(R.lines,o.i)].evidence);
+  const ev=exact.find(o=>R.lines[lineAt(R.lines,o.i)].proof)||rOcc.find(o=>R.lines[lineAt(R.lines,o.i)].proof);
   if(ev){ t.status='backed'; t.line=R.lines[lineAt(R.lines,ev.i)].text.trim(); }
   else {
     t.status='listed';
@@ -1121,12 +1222,14 @@ function detectRole(jd){
 }
 function groupStatus(g,resume,R){
   let occ=[]; for(const al of g.aliases) occ.push(...findAll(resume,al)); occ=dedupe(occ);
-  if(!occ.length) return {status:'missing'};
-  const ev=occ.find(o=>R.lines[lineAt(R.lines,o.i)].evidence);
+  const ev=occ.find(o=>R.lines[lineAt(R.lines,o.i)].proof);
   if(ev) return {status:'backed',line:R.lines[lineAt(R.lines,ev.i)].text.trim()};
-  return {status:'listed'};
+  const hit=impliedSkill(g.name,R,resume);
+  if(hit&&hit.line) return {status:'backed',line:hit.line};
+  return {status:occ.length||(hit&&hit.via)?'listed':'missing'};
 }
 function expectations(role,resume,R,terms){
+  currentRole=role;
   const cfg=ROLES[role]; if(!cfg||!cfg.expect.length) return null;
   const inJD=new Set(terms.map(t=>t.key));
   return cfg.expect.map(n=>BYNAME[n]).filter(Boolean).map(g=>Object.assign({name:g.name,key:g.key,inJD:inJD.has(g.key)},groupStatus(g,resume,R)));
@@ -1193,15 +1296,15 @@ function roleChecks(role,resume,jd,R,exp){
 }
 
 /* ---------- Rendering ---------- */
-function priTag(t){ return t.pri===3?`<span class="tag req${t.status==='backed'?' strong':''}">${t.status==='backed'?'Strong match':t.status==='missing'?'Critical':'Required'}</span>`:t.pri===1?'<span class="tag">Nice to have</span>':''; }
+function priTag(t){ return t.pri===3?`<span class="tag req${t.status==='backed'?' strong':''}">${t.status==='backed'?'Strong match':t.status==='missing'?'Critical':'Required'}</span>`:t.pri===1?`<span class="tag">${t.basic?'Basic knowledge':'Nice to have'}</span>`:''; }
 function termRow(t){
   let d='';
-  if(t.status==='missing') d=`They say <q>${esc(t.jdWord)}</q>${t.jdCount>1?` ${t.jdCount}×`:''}.`;
+  if(t.status==='missing') d=`They say <q>${esc(t.basic||t.jdWord)}</q>${t.jdCount>1&&!t.basic?` ${t.jdCount}×`:''}.`;
   if(t.status==='listed') d=`Only in ${t.where}. Show it in a bullet.`;
   if(t.status==='wording') d=`They say <q>${esc(t.jdWord)}</q>. You say <q>${t.resumeWords.map(esc).join('</q>, <q>')}</q>. Steal their word.`;
-  if(t.status==='backed') d=`<q>${esc(t.line.length>150?t.line.slice(0,150)+'…':t.line)}</q>`;
+  if(t.status==='backed') d=`${t.implied?`Your work shows it, but you never name it. Add <q>${esc(t.jdWord)}</q> so an ATS can find it. `:''}<q>${esc(t.line.length>150?t.line.slice(0,150)+'…':t.line)}</q>`;
   d += ` <button type="button" class="ai-suggest-btn" data-skill="${esc(t.name)}" data-keyword="${esc(t.jdWord||t.name)}">✦ Suggest a bullet</button><div class="ai-suggestion" hidden></div>`;
-  return `<div class="term" id="${esc(t.detailId||'')}" tabindex="-1"><div class="name">${esc(t.name)}<span class="tags">${priTag(t)}</span></div>
+  return `<div class="term" id="${esc(t.detailId||'')}" tabindex="-1"><div class="name">${esc(t.name)}<span class="tags">${priTag(t)}${t.implied?'<span class="tag">Implied</span>':''}</span></div>
   <button class="x" data-ignore="${esc(t.key)}" aria-label="Ignore ${esc(t.name)}">Not relevant</button>
   <div class="detail">${d}</div></div>`;
 }
@@ -1315,7 +1418,7 @@ function render(){
     <div class="must-segment-wrap">
       ${required.length?`<div class="must-have-bar" role="group" aria-label="Must-have skills, ordered from proven to missing">${mustSegments}</div>`:`<p class="must-empty">No must-have skills were called out in this job description.</p>`}
     </div>
-    <p class="nice-line">Nice-to-haves: ${niceProven} of ${nice.length} proven.</p>
+    <p class="nice-line">${nice.some(t=>t.basic)?'Nice-to-haves and basics':'Nice-to-haves'}: ${niceProven} of ${nice.length} proven.</p>
     ${topKeywordsHtml(T,EXP)}
     <div class="all-skills">
       <h2>All ${T.length} skills in the job description</h2>
