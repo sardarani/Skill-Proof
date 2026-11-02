@@ -123,15 +123,14 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | PRDs | 7% |
 | Salesforce | 6% |
 | Partnerships | 6% |
-| CRM | 6% |
 | Claude | 6% |
+| Confluence | 6% |
 
 ## Marketing (91 postings)
 
 | Skill | Postings |
 |---|---|
 | Product marketing | 45% |
-| AI | 27% |
 | Go-to-market | 27% |
 | Partnerships | 25% |
 | Roadmaps | 23% |
@@ -149,12 +148,13 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Social media | 9% |
 | SEO | 9% |
 | Content marketing | 8% |
-| Prioritization | 8% |
 | Campaign management | 8% |
 | Copywriting | 8% |
-| LLMs | 8% |
 | Business development | 7% |
 | ChatGPT | 7% |
+| Salesforce | 7% |
+| Digital marketing | 7% |
+| Growth marketing | 5% |
 
 ## Sales & Customer (599 postings)
 
@@ -162,7 +162,6 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 |---|---|
 | Customer success | 49% |
 | Prospecting | 30% |
-| AI | 29% |
 | Salesforce | 29% |
 | Quota attainment | 29% |
 | CRM | 22% |
@@ -185,6 +184,7 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | ROI analysis | 7% |
 | Troubleshooting | 7% |
 | KPIs | 7% |
+| E-commerce | 7% |
 
 ## Finance (34 postings, small sample)
 
@@ -202,7 +202,6 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | ERP | 29% |
 | Forecasting | 29% |
 | GAAP | 26% |
-| AI | 24% |
 | Variance analysis | 24% |
 | Auditing | 21% |
 | SAP | 18% |
@@ -210,11 +209,12 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Financial planning | 18% |
 | Microsoft Office | 18% |
 | ACCA | 18% |
-| LLMs | 15% |
 | SOX | 15% |
 | Oracle Database | 15% |
 | Budgeting | 15% |
-| Scripting | 12% |
+| Claude | 12% |
+| Financial analysis | 12% |
+| Accounts receivable | 9% |
 
 ## People (49 postings, small sample)
 
@@ -224,9 +224,7 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Sourcing | 57% |
 | Stakeholder management | 27% |
 | Compliance | 24% |
-| AI | 24% |
 | Performance management | 16% |
-| Business strategy | 12% |
 | Applicant tracking systems | 12% |
 | LinkedIn Recruiter | 12% |
 | Employment law | 10% |
@@ -245,20 +243,20 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Instructional design | 6% |
 | Salesforce | 6% |
 | Learning and development | 6% |
+| Claude | 6% |
+| Employer branding | 6% |
 
 ## Operations (43 postings, small sample)
 
 | Skill | Postings |
 |---|---|
 | SQL | 40% |
-| AI | 37% |
 | Process improvement | 35% |
 | Compliance | 35% |
 | Data visualization | 26% |
 | Excel | 23% |
 | Salesforce | 21% |
 | KPIs | 21% |
-| Incident management | 19% |
 | Accounting | 19% |
 | Data analysis | 16% |
 | Project management | 16% |
@@ -275,6 +273,8 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Reconciliation | 12% |
 | SLAs | 12% |
 | Procurement | 12% |
+| Management consulting | 12% |
+| Customer support | 9% |
 
 ## Other fields (26 postings, small sample)
 
@@ -284,25 +284,25 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | M&A | 38% |
 | Team leadership | 35% |
 | Negotiation | 35% |
-| AI | 31% |
 | AML | 19% |
 | Partnerships | 15% |
 | SLAs | 15% |
-| Accounting | 15% |
 | Due diligence | 15% |
 | Risk mitigation | 12% |
 | Risk management | 12% |
 | KYC | 12% |
 | Data privacy | 12% |
 | MongoDB | 8% |
-| Machine learning | 8% |
 | Contract drafting | 8% |
 | Stakeholder management | 8% |
 | Regulatory affairs | 8% |
 | Contract management | 8% |
 | Corporate law | 8% |
 | Portuguese | 4% |
-| Presentation skills | 4% |
-| Corporate finance | 4% |
 | Okta | 4% |
+| FedRAMP | 4% |
+| Vercel | 4% |
+| Litigation | 4% |
+| HIPAA | 4% |
+| GDPR | 4% |
 
