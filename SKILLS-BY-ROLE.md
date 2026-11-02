@@ -16,43 +16,43 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Visual design | 38% |
 | AI | 28% |
 | Interaction design | 27% |
+| User research | 27% |
 | Front-end development | 24% |
 | Usability testing | 23% |
+| Project management | 20% |
 | Wireframing | 20% |
 | Typography | 20% |
+| Team leadership | 19% |
 | Accessibility | 18% |
 | High-fidelity design | 18% |
+| AI prototyping | 16% |
 | Systems thinking | 15% |
-| Team leadership | 15% |
-| User research | 15% |
 | Storytelling | 14% |
 | TypeScript | 14% |
 | React | 14% |
-| Project management | 14% |
 | Craft | 14% |
 | Roadmaps | 14% |
 | A/B testing | 14% |
 | Prioritization | 14% |
 | CSS | 14% |
-| Shopify | 14% |
 
 ## Engineering (597 postings)
 
 | Skill | Postings |
 |---|---|
 | Python | 40% |
-| Team leadership | 31% |
+| Team leadership | 39% |
 | System design | 28% |
 | React | 28% |
-| AI | 27% |
 | TypeScript | 27% |
 | CI/CD | 26% |
+| AI | 26% |
 | Front-end development | 25% |
 | Kubernetes | 25% |
 | Go | 24% |
 | AWS | 23% |
 | Observability | 23% |
-| Code review | 20% |
+| Code review | 23% |
 | Terraform | 20% |
 | LLMs | 17% |
 | DevOps | 17% |
@@ -80,15 +80,15 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | ETL | 24% |
 | Team leadership | 22% |
 | Data visualization | 20% |
+| Data modeling | 20% |
+| Data analysis | 19% |
 | Spark | 19% |
 | dbt | 19% |
 | Observability | 18% |
 | Data quality | 18% |
 | AWS | 17% |
-| Data modeling | 17% |
 | System design | 16% |
 | Deep learning | 15% |
-| Data analysis | 14% |
 | GCP | 14% |
 | Airflow | 14% |
 | BigQuery | 14% |
@@ -103,23 +103,23 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Roadmaps | 53% |
 | Product management | 46% |
 | AI | 37% |
-| Project management | 25% |
+| Project management | 27% |
+| Team leadership | 22% |
 | A/B testing | 20% |
 | LLMs | 19% |
 | Prioritization | 18% |
 | Machine learning | 16% |
 | Go-to-market | 15% |
 | Product strategy | 15% |
+| Data analysis | 14% |
 | Agile | 13% |
-| Team leadership | 11% |
 | SQL | 11% |
 | Stakeholder management | 11% |
 | Data visualization | 11% |
 | Prototyping | 11% |
-| Data analysis | 10% |
+| User research | 10% |
 | Jira | 8% |
 | KPIs | 8% |
-| User research | 7% |
 | PRDs | 7% |
 | Salesforce | 6% |
 | Partnerships | 6% |
@@ -139,22 +139,22 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | CRM | 19% |
 | Lead generation | 18% |
 | ROI analysis | 18% |
-| Project management | 15% |
+| Project management | 16% |
 | E-commerce | 14% |
 | Unit economics | 13% |
 | Performance marketing | 11% |
+| Team leadership | 11% |
 | KPIs | 11% |
 | Paid search | 9% |
-| Social media | 9% |
 | SEO | 9% |
 | Content marketing | 8% |
 | Campaign management | 8% |
 | Copywriting | 8% |
 | Business development | 7% |
+| Data analysis | 7% |
+| Social media | 7% |
 | ChatGPT | 7% |
 | Salesforce | 7% |
-| Digital marketing | 7% |
-| Growth marketing | 5% |
 
 ## Sales & Customer (599 postings)
 
@@ -166,6 +166,7 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Quota attainment | 29% |
 | CRM | 22% |
 | Negotiation | 18% |
+| Team leadership | 18% |
 | Presentation skills | 17% |
 | Go-to-market | 16% |
 | Partnerships | 15% |
@@ -174,17 +175,16 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Business development | 13% |
 | Consultative selling | 13% |
 | B2B sales | 13% |
-| Team leadership | 12% |
 | Enterprise sales | 11% |
 | Upselling | 10% |
 | Customer support | 9% |
 | Sales presentations | 9% |
 | Cold outreach | 9% |
 | Outreach | 8% |
+| Project management | 7% |
 | ROI analysis | 7% |
 | Troubleshooting | 7% |
 | KPIs | 7% |
-| E-commerce | 7% |
 
 ## Finance (34 postings, small sample)
 
@@ -204,8 +204,9 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | GAAP | 26% |
 | Variance analysis | 24% |
 | Auditing | 21% |
+| Financial modeling | 21% |
 | SAP | 18% |
-| Financial modeling | 18% |
+| Team leadership | 18% |
 | Financial planning | 18% |
 | Microsoft Office | 18% |
 | ACCA | 18% |
@@ -213,33 +214,32 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Oracle Database | 15% |
 | Budgeting | 15% |
 | Claude | 12% |
-| Financial analysis | 12% |
-| Accounts receivable | 9% |
+| Project management | 12% |
 
 ## People (49 postings, small sample)
 
 | Skill | Postings |
 |---|---|
-| Recruiting | 86% |
-| Sourcing | 57% |
+| Recruiting | 82% |
+| Sourcing | 55% |
 | Stakeholder management | 27% |
 | Compliance | 24% |
+| Team leadership | 16% |
 | Performance management | 16% |
 | Applicant tracking systems | 12% |
 | LinkedIn Recruiter | 12% |
 | Employment law | 10% |
 | Workforce planning | 10% |
 | Employee relations | 10% |
-| Team leadership | 10% |
 | Succession planning | 8% |
 | Change management | 8% |
 | HR business partnering | 8% |
-| Talent management | 8% |
 | Greenhouse | 8% |
 | Negotiation | 8% |
 | Project management | 8% |
 | DEI | 8% |
 | German | 8% |
+| Talent management | 6% |
 | Instructional design | 6% |
 | Salesforce | 6% |
 | Learning and development | 6% |
@@ -254,18 +254,18 @@ O*NET 30.2 (US Department of Labor, CC BY 4.0) was used as an independent check 
 | Process improvement | 35% |
 | Compliance | 35% |
 | Data visualization | 26% |
+| Team leadership | 23% |
 | Excel | 23% |
+| Data analysis | 21% |
 | Salesforce | 21% |
 | KPIs | 21% |
 | Accounting | 19% |
-| Data analysis | 16% |
 | Project management | 16% |
 | Tableau | 16% |
 | Stakeholder management | 16% |
 | Performance management | 16% |
 | Revenue operations | 16% |
 | Google Sheets | 14% |
-| Team leadership | 14% |
 | Forecasting | 14% |
 | Business strategy | 12% |
 | CRM | 12% |
